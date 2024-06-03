@@ -74,12 +74,15 @@ function Cart() {
                             <div className="d-flex align-items-end" style={{ width: '100%' }}>
                                 <div className="border" style={{ backgroundColor: 'white', height: '150px', width: '100%', ...fixedStyle }}>
                                     <div className='' style={{ marginTop: '20px' }}>
-                                        <div style={{ borderBottom: 'dashed gray 1px', height: '60px', paddingLeft: '2%',paddingRight:'10%' }}>
+                                        <div className='d-flex flex-row align-items-center' style={{ borderBottom: 'dashed gray 1px', height: '60px', paddingLeft: '2%', paddingRight: '10%' }}>
                                             <img src={img_voucher} style={{ width: '50px', height: '50px', marginRight: '1%' }}></img>
-                                            <button type="button" class="btn btn-success" style={{ marginLeft: '1%' }} >Chọn Voucher</button>
-                                            <h4 style={{ float: 'right'}}>
-                                                Giảm: 99999999999999999 VND
-                                            </h4>
+                                            {/* <button type="button" class="btn btn-success" style={{ marginLeft: '1%' }} >Chọn Voucher</button> */}
+                                            <span className='text-nowrap'>
+                                                Tổng Giảm:
+                                                <span className='text-nowrap' style={{ float: 'right', color: 'red' }}>
+                                                    9999999VND
+                                                </span>
+                                            </span>
                                         </div>
                                         {/* <div style={{ borderBottom: 'dashed gray 1px' }}>
                                         aaa
@@ -96,10 +99,11 @@ function Cart() {
                                                     <button type="button" class="btn btn-outline-danger">Xóa</button>
                                                 </div>
                                             </div>
+
                                             <h4 className='text-nowrap' style={{ marginRight: '10px' }}>
                                                 Tổng thanh toán:
                                             </h4>
-                                            <h4 className='text-nowrap'>
+                                            <h4 className='text-nowrap' style={{ color: 'red' }}>
                                                 1000000000000 VND
                                             </h4>
                                             <div className='d-block ' style={{ marginRight: '2%', marginLeft: '2%' }}>

@@ -32,7 +32,7 @@ function RegistrationPage({ onClose, onL }) {
     <div className={styles.modal}>
       <div className="container p-2 pb-0">
         <div style={{ paddingBottom: "10px" }} className='d-flex justify-content-between'>
-          <button  onClick={(e) => { onClose(); onL(); }} className='btn btn-primary ' style={{}}>Login</button>
+          <button  onClick={(e) => { onClose(); onL(); }} className='btn btn-primary ' style={{}}>Đăng Nhập</button>
           <button className='btn btn-danger d-flex' onClick={onClose} style={{}} >X</button>
         </div>
         <div className={`${styles.content}row justify-content-center`}>
@@ -41,8 +41,8 @@ function RegistrationPage({ onClose, onL }) {
               <div className="card-body">
                 <h3 className="card-title text-center p-2">Sign Up</h3>
                 <div>
-                  <div className="form-group">
-                    <label htmlFor="fullName">Full Name</label>
+                  <div className="form-group mb-2">
+                    <label htmlFor="fullName">Họ Và Tên:</label>
                     <input
                       type="text"
                       className="form-control"
@@ -52,8 +52,8 @@ function RegistrationPage({ onClose, onL }) {
                       onChange={(e) => setFullName(e.target.value)}
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="UserName">UserName</label>
+                  <div className="form-group mb-2">
+                    <label htmlFor="UserName">Tên Đăng Nhập:</label>
                     <input
                       type="text"
                       className="form-control"
@@ -63,8 +63,8 @@ function RegistrationPage({ onClose, onL }) {
                       onChange={(e) => setUsername(e.target.value)}
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="email">Email</label>
+                  <div className="form-group mb-2">
+                    <label htmlFor="email">Địa Chỉ Email:</label>
                     <input
                       type="email"
                       className="form-control"
@@ -74,8 +74,8 @@ function RegistrationPage({ onClose, onL }) {
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="password">Password</label>
+                  <div className="form-group mb-2">
+                    <label htmlFor="password">Mật Khẩu:</label>
                     <input
                       type="password"
                       className="form-control"
@@ -85,8 +85,8 @@ function RegistrationPage({ onClose, onL }) {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="confirmPassword">Confirm Password</label>
+                  <div className="form-group mb-2">
+                    <label htmlFor="confirmPassword">Nhập Lại Mật Khẩu:</label>
                     <input
                       type="password"
                       className="form-control"
@@ -96,8 +96,8 @@ function RegistrationPage({ onClose, onL }) {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="phone">Phone Number</label>
+                  <div className="form-group mb-2">
+                    <label htmlFor="phone">Số Điện Thoại:</label>
                     <input
                       type="text"
                       className="form-control"
@@ -108,20 +108,20 @@ function RegistrationPage({ onClose, onL }) {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="gender">Gender</label>
+                    <label htmlFor="gender">Giới Tính:</label>
                     <select
                       className="form-control"
                       id="gender"
                       value={gender}
                       onChange={(e) => setGender(e.target.value)}
                     >
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
+                      <option value="male">Nam</option>
+                      <option value="female">Nữ</option>
+                      <option value="other">Khác</option>
                     </select>
                   </div>
-                  <div className='d-flex flex-column p-3'>
-                    <button onClick={handleSubmit} type="submit" className="btn btn-primary btn-block">Sign Up</button>
+                  <div className='d-flex flex-column p-3 pb-0'>
+                    <button onClick={handleSubmit} type="submit" className="btn btn-primary btn-block">Đăng Ký</button>
                   </div>
                   <p>{message}</p>
                 </div>
