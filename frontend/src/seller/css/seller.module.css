@@ -1,0 +1,31 @@
+.navlinkactive {
+    color: red;
+    /* Màu chữ khi active */
+    text-decoration: none;
+    /* Gạch chân khi active */
+}
+
+.navlink {
+    /* Định nghĩa các thuộc tính CSS cho liên kết */
+    color: #000;
+    /* Màu chữ mặc định */
+    text-decoration: none;
+    /* Loại bỏ gạch chân */
+}
+
+.gachchanactive {
+    border-bottom: red 3px solid;
+}
+
+.gachchan {
+    /* Định nghĩa các thuộc tính CSS cho liên kết */
+    border-bottom: none;
+
+}
+
+.hovertext:hover{
+    color: red;
+}
+.small-text {
+    font-size: 12px; /* hoặc bất kỳ kích thước nào bạn muốn */
+  }

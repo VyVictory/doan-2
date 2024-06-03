@@ -1,0 +1,12 @@
+.button {
+    background: none;
+    border: 0;
+    /* border-radius: 10px; */
+    width: 100%;
+    transition: all 0.3s ease; /* Hiệu ứng chuyển đổi trong 0.3s */
+  }
+  
+  .button:hover {
+    background-color:  gainsboro; /* Màu nền khi hover */
+    transform: scale(1.1); /* Phóng to button khi hover */
+  }

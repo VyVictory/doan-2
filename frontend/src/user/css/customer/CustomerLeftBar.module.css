@@ -1,0 +1,15 @@
+.selectnav{
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    padding: 10;
+    padding-left: 4%;
+    text-decoration: none;
+    color: black;
+    margin-top: 1%;
+    min-height: 50px;
+}
+.textselect{
+    margin-left: 8%;
+    
+}

@@ -1,0 +1,88 @@
+/* Middle.module.css */
+.Middle {
+    background-color: lightblue;
+    padding: 20px;
+    border: 1px solid black;
+
+  }
+.dowle{
+    background-color: lightblue;
+    padding: 20px;
+    border: 1px solid black;
+  
+}
+.barcustom{
+  height: 80px;
+  background-color: white;
+
+}
+.search{
+    border:solid black 1px;
+    
+}
+/* .barcontainer{
+} */
+.logo{
+  height: 100%;
+  pointer-events: none;
+  float: right;
+  margin-right: 40%;
+}
+.cangiua{
+  display: flex;
+  justify-content: center;
+}
+.button {
+  background-color: transparent;
+  border: 0;
+  border-radius: 10px;
+  transition: all 0.3s ease; /* Hiệu ứng chuyển đổi trong 0.3s */
+}
+
+.button:hover {
+  background-color:  gainsboro; /* Màu nền khi hover */
+  transform: scale(1.1); /* Phóng to button khi hover */
+}
+
+.divider {
+  width: 1px;
+  background-color: #ccc; /* Màu của đường ngăn cách */
+}
+
+/* TenFileCSS.module.css */
+
+.container {
+  position: relative;
+  display: inline-block;
+  
+}
+
+.list {
+  margin-left: -60px;
+  width: 180px;
+  margin-top: 2px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color:white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  display: none;
+}
+.listaccount{
+  border: none;
+  height: 40px;
+  width: 100%;
+  background-color: white;
+  border-radius: 5px;
+}
+.listaccount:hover {
+  background-color:  gainsboro; /* Màu nền khi hover */
+  transform: scale(1.1); /* Phóng to button khi hover */
+}
+.container:hover .list {
+  display: block;
+}

@@ -1,0 +1,26 @@
+.buttonlist {
+  background-color: transparent;
+  border: 0;
+  transition: all 0.3s ease;
+  /* Hiệu ứng chuyển đổi trong 0.3s */
+}
+
+.buttonlist:hover {
+  background-color: rgb(223, 255, 219);
+  /* Màu nền khi hover */
+  transform: scale(1.05);
+  /* Phóng to button khi hover */
+}
+/* Lớp CSS cho liên kết khi active */
+.navlinkactive {
+  color: #00f; /* Màu chữ khi active */
+  text-decoration: underline; /* Gạch chân khi active */
+  text-transform: uppercase;
+}
+.navlink {
+  /* Định nghĩa các thuộc tính CSS cho liên kết */
+  color: #000; /* Màu chữ mặc định */
+  text-decoration: none; /* Loại bỏ gạch chân */
+  text-transform: uppercase;
+}
+
