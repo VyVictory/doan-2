@@ -3,7 +3,7 @@ import path from "path";
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import cors from "cors";  // Import CORS middleware
+
 // Utiles
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -22,14 +22,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-// Use CORS middleware
-app.use(cors({
-  origin: 'http://localhost:3000', // Allow requests from this origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-  credentials: true // Allow cookies and other credentials
-}));
 
 app.use("/api/users", userRoutes);
 app.use("/api/category", categoryRoutes);

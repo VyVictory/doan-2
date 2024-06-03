@@ -6,7 +6,7 @@ import createToken from "../utils/createToken.js";
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password, fullname } = req.body;
 
-  if (!username || !email || !password) {
+  if (!username || !email || !password || !fullname) {
     res.status(400);
     throw new Error("Please fill all the inputs.");
   }
@@ -20,16 +20,19 @@ const registerUser = asyncHandler(async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
   const newUser = new User({ 
+    
     username, 
     fullname,
     email, 
     password: hashedPassword
   });
 
+
+
   try {
     await newUser.save();
     createToken(res, newUser._id);
-
+    
     res.status(201).json({
       _id: newUser._id,
       username: newUser.username,
@@ -39,6 +42,7 @@ const registerUser = asyncHandler(async (req, res) => {
     });
   } catch (error) {
     res.status(400);
+    console.log(Error);
     throw new Error("Invalid user data");
   }
 });

@@ -1,19 +1,21 @@
 import mongoose from "mongoose";
 
-const userSchema = mongoose.Schema(
+// Định nghĩa schema cho User
+const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
       required: true,
     },
-    fullname: {
+
+    gender: {
       type: String,
       required: true,
     },
-    email: {
+
+    fullname: {
       type: String,
       required: true,
-      unique: true,
     },
 
     password: {
@@ -21,15 +23,37 @@ const userSchema = mongoose.Schema(
       required: true,
     },
 
+    phone: {
+      type: String,
+      required: true,
+    },
+
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
+    avatar: {
+      type: String,
+    },
+
     isAdmin: {
       type: Boolean,
       required: true,
       default: false,
     },
+
     isActive: {
       type: Boolean,
       required: true,
       default: true,
+    },
+
+    hidden: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
   },
   { timestamps: true }

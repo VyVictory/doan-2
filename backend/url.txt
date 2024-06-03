@@ -1,0 +1,14 @@
+
+users
+//logout
+localhost:5000/api/users/logout
+
+
+
+//catergory
+
+post
+localhost:5000/api/category
+    {
+        "name":"loai1"
+    }
