@@ -4,29 +4,33 @@ import styles from './css/Register.module.css';
 import axioslogin from '../function/user/axioslogin'
 
 function RegistrationPage({ onClose, onL }) {
+  //form data************************************************
   const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [gender, setGender] = useState('male');
-  const [message, setMessage] = useState('');
   const [phone, setPhone] = useState('');
+  //form data************************************************
+
+  const { registerfunction, message } = axioslogin(); // Corrected from axioslogin to Authmodule
+  const [messageregister, setMessageregister] = useState('');
   const [errors, setErrors] = useState({}); // State to hold form validation errors
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = ({
-      name: fullName, // Sử dụng biến fullName thay vì "fullName"
+      username: username, // tên đăng nhập
+      fullname: fullName, // Sử dụng biến fullName thay vì "fullName"
       email: email, // Sử dụng biến email thay vì "email@email.com"
       password: password, // Sử dụng biến password thay vì "password"
-      username: username, // tên đăng nhập
-      numberphone: +phone,// Sử dụng chuỗi số cho số điện thoại , ko trung 
+      phone: +phone,// Sử dụng chuỗi số cho số điện thoại , ko trung 
       gender: gender,
     });
-    axioslogin(formData);
-
+    await registerfunction(formData);
   };
+
 
   return (
     <div className={styles.modal}>

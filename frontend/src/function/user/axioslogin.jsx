@@ -5,15 +5,15 @@ const Authmodule = () => {
     const [errors, setErrors] = useState([]);
     const [isTokenExist, setIsTokenExist] = useState(false);
     const urlapi = useState('http://localhost:5000/api');
-    // Cài đặt một số giá trị mặc định cho tất cả các yêu cầu Axios
-    axios.defaults.baseURL = 'http://localhost:5000'; // URL của máy chủ Express
-    axios.defaults.withCredentials = true; // Đảm bảo cookie được gửi trong yêu cầu
+    // // Cài đặt một số giá trị mặc định cho tất cả các yêu cầu Axios
+    // axios.defaults.baseURL = 'http://localhost:5000'; // URL của máy chủ Express
+    // axios.defaults.withCredentials = true; // Đảm bảo cookie được gửi trong yêu cầu
 
-    // Thiết lập CORS cho tất cả các yêu cầu từ ứng dụng React của bạn
-    axios.interceptors.request.use(config => {
-        config.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000';
-        return config;
-    });
+    // // Thiết lập CORS cho tất cả các yêu cầu từ ứng dụng React của bạn
+    // axios.interceptors.request.use(config => {
+    //     config.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000';
+    //     return config;
+    // });
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token && token !== '') {
@@ -25,10 +25,17 @@ const Authmodule = () => {
 
     const registerfunction = async (formdata) => {
         try {
-            const response = await axios.post(`${urlapi}/users`, {
-                "email": "email@email.com",
-                "password": "password"
-              });
+            // {
+            //     "username": "username",
+            //   "fullname": "fullname",
+            //   "email": "email@email.com",
+            //   "password": "password",
+            //   "phone":"0836887911",
+            //   "gender":"nemo"
+            // }
+            // const response = await axios.post(`${urlapi}/users/`, formdata
+            const response = await axios.post(`http://localhost:5000/api/users/`, formdata);
+
             setMessage(response.data.message || 'Sign up successful!');
         } catch (error) {
             if (error.response) {
@@ -48,6 +55,10 @@ const Authmodule = () => {
     };
     const loginfunction = async (formdata) => {
         try {
+            // {
+            //     "username": "username",
+            //   "password": "password",
+            // }
             const response = await axios.post(`http://localhost:5000/api/users/auth`, formdata);
             // // Lưu token vào localStorage
             // localStorage.setItem('token', response.data.username);
