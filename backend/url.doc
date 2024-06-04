@@ -6,8 +6,8 @@ localhost:5000/api/users/logout
 //login
 localhost:5000/api/users/auth
 {
-    "email":""//your email
-    "passwrod":""//password
+  "email": "email@email.com",
+  "password": "password"
 }
 
 
