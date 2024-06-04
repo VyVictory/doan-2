@@ -102,6 +102,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 
 const getCurrentUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
+  console.log(user)
 
   if (user) {
     res.json({
@@ -110,10 +111,11 @@ const getCurrentUserProfile = asyncHandler(async (req, res) => {
       email: user.email,
       phone: user.phone,
       gender: user.gender,
+      fullname: user.fullname,
+      avatar: user.avatar,
       isAdmin: user.isAdmin,
+      isActive: user.isActive,
       hidden: user.hidden,
-      
-
     });
   } else {
     res.status(404);
