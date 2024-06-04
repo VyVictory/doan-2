@@ -1,5 +1,7 @@
 
 users
+//register
+http://localhost:5000/api/users
 //logout
 localhost:5000/api/users/logout
 

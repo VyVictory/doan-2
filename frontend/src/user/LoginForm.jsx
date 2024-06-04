@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './css/LoginForm.module.css'; // Import CSS module
 import axioslogin from '../function/user/axioslogin'
-
+import CloseButton from 'react-bootstrap/CloseButton';
 function LoginForm({ onClose, onR }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,18 +19,22 @@ function LoginForm({ onClose, onR }) {
 
   return (
     <div className={styles.modal}>
-
       <div className={styles.modalContent} style={{ width: '100%' }}>
         <div className='d-flex justify-content-center'>
-          <h2 style={{ position: 'absolute', }}>Đăng Nhập</h2>
+          <h2 className='sans-serif' style={{ position: 'absolute', }}>Đăng Nhập</h2>
         </div>
         <div className='d-flex justify-content-end'>
-          <button className='btn btn-danger d-flex' onClick={onClose}>X</button>
+          <div>
+            <CloseButton aria-label="Hide"
+              onClick={onClose} />
+          </div>
         </div>
+
         <div className='' style={{ margin: "10px" }}>
           <form onSubmit={handleSubmit} className='p-1'>
-            <div className='pd d-flex flex-column align-items-start'>
-              <label style={{}}>Email:</label>
+
+            <div className='pd d-flex flex-column align-items-start mt-3'>
+              <label >Địa Chỉ Email:</label>
               <input
                 type="email"
                 className="form-control"
@@ -38,7 +42,7 @@ function LoginForm({ onClose, onR }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <label style={{}} className='mt-1'>Password:</label>
+              <label  style={{}} className='mt-2'>Mật Khẩu:</label>
               <input
                 type="password"
                 className="form-control"
@@ -47,12 +51,19 @@ function LoginForm({ onClose, onR }) {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div className='p-2 d-flex flex-column'>
+            <div className='p-2 d-flex flex-column mt-3'>
               <button type="submit" className="btn btn-primary btn-block">Đăng Nhập</button>
-              Hoặc
-              <a href='#' onClick={onR}>Đăng Ký Mới</a>
+
+
+              <div className='d-flex flex-row items-center mt-1 justify-center'>
+                <div className='text-sm mr-1 text-gray-400'>
+                  chưa có cài choản
+                </div>
+                <a href='#' onClick={onR}>Đăng Ký Mới</a>
+
+              </div>
+              {message && <p className='text-red-600'>{message}</p>}
             </div>
-            {message && <p>{message}</p>}
 
           </form>
         </div>
