@@ -24,7 +24,9 @@ localhost:5000/api/users/auth
 }
 }
 
-//product [FORM DATA]
+//product [FORM DATA] 
+[POST]localhost:5000/api/products/
+//create
 name : ""
 description: ""
 price: ""
@@ -32,6 +34,19 @@ category: "ID OBJECT"
 quantity :number
 brand : ""
 image: [file]
+
+
+[POST]localhost:5000/api/products/:id
+//Update
+name : ""
+description: ""
+price: ""
+category: "ID OBJECT"
+quantity :number
+brand : ""
+image: [file]
+
+
 
 
 //catergory
