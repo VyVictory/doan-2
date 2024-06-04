@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import asyncHandler from "./asyncHandler.js";
 
+// xác thực // phân quyền // giải mã token
 const authenticate = asyncHandler(async (req, res, next) => {
   let token;
 

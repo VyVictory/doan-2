@@ -1,4 +1,4 @@
-đổi tên collection(user, product,...) => db cũ new add pass
+đổi tên collection(user, product,...) => db cũ new add pass  
 
 
 

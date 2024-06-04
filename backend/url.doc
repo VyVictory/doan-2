@@ -1,0 +1,45 @@
+
+users
+//logout
+localhost:5000/api/users/logout
+
+//login
+localhost:5000/api/users/auth
+{
+    "email":""//your email
+    "passwrod":""//password
+}
+
+
+// register
+[post] localhost:5000/api/users/
+{
+    {
+    "username": "username",
+  "fullname": "fullname",
+  "email": "email@email.com",
+  "password": "password",
+  "phone":"0836887911",
+  "gender":"nemo"
+}
+}
+
+//product [FORM DATA]
+name : ""
+description: ""
+price: ""
+category: "ID OBJECT"
+quantity :number
+brand : ""
+image: [file]
+
+
+//catergory
+
+post
+localhost:5000/api/category
+    {
+        "name":"loai1"
+    }
+
+
