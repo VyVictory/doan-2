@@ -15,7 +15,8 @@ import authmodule from '../module/authmodule';
 const NavigationBar = () => {
   const [showFormL, setShowFormL] = useState(false);
   const [showFormR, setShowFormR] = useState(false);
-  const { isTokenExist, handleLogout } = authmodule();
+  const [show, setShow] = useState('');
+  const { isTokenExist, handleLogout, getProfile } = authmodule();
   /*
   const [isTokenExist, setIsTokenExist] = useState(false);
   useEffect(() => {
@@ -27,11 +28,17 @@ const NavigationBar = () => {
     }
   }, []); // useEffect này chạy chỉ một lần khi component mount
 
-  const handleLogout = () => {
-    localStorage.removeItem('token'); // Xóa token khỏi localStorage
-    setIsTokenExist(false); // Cập nhật trạng thái token không tồn tại
-  };
+
 */
+console.log(show);
+  useEffect(() => {
+    const fetchData = async () => {
+      const profileData = await getProfile();
+      setShow(profileData);
+    };
+
+    fetchData();
+  }, []); // useEffect này chạy chỉ một lần khi component mount
   const toggleFormL = () => {
     setShowFormL(!showFormL);
     if (showFormL === true) {
@@ -88,7 +95,7 @@ const NavigationBar = () => {
             </div>
             {isTokenExist ? (
               <div style={{ marginRight: '8%' }}>
-                <button onClick={(e) => { handleClick('thongbao') }} className={`${styles.hover} ${styles.button} position-relative`} style={{ "height": "40px", "width": "40px", "marginRight": "4%", "marginLeft": "5%"  ,paddingLeft:'5px'}}>
+                <button onClick={(e) => { handleClick('thongbao') }} className={`${styles.hover} ${styles.button} position-relative`} style={{ "height": "40px", "width": "40px", "marginRight": "4%", "marginLeft": "5%", paddingLeft: '5px' }}>
                   <img src={img_thongbao} style={{ "height": "30px" }} alt="Car Icon" />
                   <span class="position-absolute translate-middle badge rounded-pill bg-danger" style={{ marginLeft: '30%', marginTop: '-63%' }}>
                     99+
@@ -99,8 +106,8 @@ const NavigationBar = () => {
             ) : (<></>)}
             {/* tk da dang nhap*/}
             {isTokenExist ? (
-              <div className={`${styles.container}`}>
-                <button type='submit' className={`${styles.hover} ${styles.button} d-flex flex-row`} style={{ "height": "40px", "paddingLeft": "12px", paddingTop:'5px' }}>
+              <div className={`${styles.container} `} style={{ zIndex: '9999' }}>
+                <button type='submit' className={`${styles.hover} ${styles.button} d-flex flex-row`} style={{ "height": "40px", "paddingLeft": "12px", paddingTop: '5px' }}>
                   <img src={img_avt} style={{ "height": "30px", "marginLeft": "-4px" }} alt="Car Icon" />
                   <div className='' style={{ "minWidth": "100px" }}>
                     Tài Khoản
@@ -114,7 +121,7 @@ const NavigationBar = () => {
               </div>
             ) : (
               <div className={`${styles.container}`}>
-                <button type='submit' className={`${styles.hover} ${styles.button} d-flex flex-row`} style={{ "height": "40px", "paddingLeft": "12px", paddingTop:'5px' }}>
+                <button type='submit' className={`${styles.hover} ${styles.button} d-flex flex-row`} style={{ "height": "40px", "paddingLeft": "12px", paddingTop: '5px' }}>
                   <img src={img_avt} style={{ "height": "30px", "marginLeft": "-4px" }} alt="Car Icon" />
                   <div className='' style={{ "minWidth": "100px" }}>
                     Tài Khoản
@@ -127,9 +134,9 @@ const NavigationBar = () => {
               </div>
             )}
             {/*000000000*/}
-            <div style={{ "height": "20px", "display": "block", "width": "1px", "marginLeft": "20px"}} className='bg-secondary'></div>
+            <div style={{ "height": "20px", "display": "block", "width": "1px", "marginLeft": "20px" }} className='bg-secondary'></div>
             <a href='/cart' style={{ "marginRight": "10%", "marginLeft": "3%" }}>
-              <button type='submit' className={`${styles.hover} ${styles.button} `} style={{ "height": "40px", "width": "40px"  ,paddingLeft:'10px'}}>
+              <button type='submit' className={`${styles.hover} ${styles.button} `} style={{ "height": "40px", "width": "40px", paddingLeft: '10px' }}>
                 <img src={img_car} style={{ "height": "30px", "marginLeft": "-4px" }} alt="Car Icon" />
               </button>
             </a>

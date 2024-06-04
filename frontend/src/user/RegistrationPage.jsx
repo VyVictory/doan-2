@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './css/Register.module.css';
-import axioslogin from '../function/user/axioslogin'
+import axioslogin from '../module/axioslogin'
 
 function RegistrationPage({ onClose, onL }) {
   //form data************************************************

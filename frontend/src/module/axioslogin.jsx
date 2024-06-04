@@ -22,7 +22,8 @@ const Authmodule = () => {
             setIsTokenExist(false);
         }
     }, []);
-
+    // cookie jwt=adadawdada
+    //http://localhost:5000/api/users/profile
     const registerfunction = async (formdata) => {
         try {
             // {
@@ -61,7 +62,7 @@ const Authmodule = () => {
             // }
             const response = await axios.post(`http://localhost:5000/api/users/auth`, formdata);
             // // Lưu token vào localStorage
-            // localStorage.setItem('token', response.data.username);
+            localStorage.setItem('token', response.data.token);
             // // Xử lý kết quả đăng nhập thành công
             setMessage('Đăng nhập thành công!');
             // Đóng form sau khi đăng nhập thành công
@@ -85,7 +86,6 @@ const Authmodule = () => {
             }
         }
     };
-
     return { isTokenExist, message, errors, loginfunction, registerfunction };
 };
 

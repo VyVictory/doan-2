@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './css/LoginForm.module.css'; // Import CSS module
-import axioslogin from '../function/user/axioslogin'
+import axioslogin from '../module/axioslogin'
 import CloseButton from 'react-bootstrap/CloseButton';
 function LoginForm({ onClose, onR }) {
   const [email, setEmail] = useState('');
