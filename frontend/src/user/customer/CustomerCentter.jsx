@@ -1,6 +1,5 @@
-import { NavLink, Link, useLocation } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+
+import React from 'react';
 import Spliturl from '../../module/spliturl';
 import { } from 'react-router-dom';
 import CustomerAccount from './CustomerAccount';

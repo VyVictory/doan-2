@@ -1,5 +1,4 @@
 import React from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
 import CustomerLeftBar from './CustomerLeftBar';
 import Renderbread from '../../allview/Renderbread'
 import CustomerCentter from './CustomerCentter';

@@ -11,12 +11,12 @@ import img_thongbao from './imguser/bar/thongbao.png';
 import img_avt from './imguser/bar/user.png';
 import img_home from './imguser/bar/home.png';
 import authmodule from '../module/authmodule';
-
+import profileModule from '../module/profile.module';
 const NavigationBar = () => {
   const [showFormL, setShowFormL] = useState(false);
   const [showFormR, setShowFormR] = useState(false);
-  const [show, setShow] = useState('');
-  const { isTokenExist, handleLogout, getProfile } = authmodule();
+  const { isTokenExist, handleLogout } = authmodule();
+  const { profile } = profileModule();
   /*
   const [isTokenExist, setIsTokenExist] = useState(false);
   useEffect(() => {
@@ -27,18 +27,7 @@ const NavigationBar = () => {
       setIsTokenExist(false);
     }
   }, []); // useEffect này chạy chỉ một lần khi component mount
-
-
 */
-console.log(show);
-  useEffect(() => {
-    const fetchData = async () => {
-      const profileData = await getProfile();
-      setShow(profileData);
-    };
-
-    fetchData();
-  }, []); // useEffect này chạy chỉ một lần khi component mount
   const toggleFormL = () => {
     setShowFormL(!showFormL);
     if (showFormL === true) {
@@ -79,6 +68,8 @@ console.log(show);
               <img type="submit" src={img_search} style={{ "height": "30px", position: 'absolute', marginRight: '15px' }} className='border-left-2' />
             </div>
           </nav>
+
+
           <div style={{ "marginTop": "2px", "height": "30px", "marginBottom": "-10px" }} className={`w-100 mt-10 bg-dark d-none`}>
             bbbbbnb
           </div>
@@ -110,7 +101,7 @@ console.log(show);
                 <button type='submit' className={`${styles.hover} ${styles.button} d-flex flex-row`} style={{ "height": "40px", "paddingLeft": "12px", paddingTop: '5px' }}>
                   <img src={img_avt} style={{ "height": "30px", "marginLeft": "-4px" }} alt="Car Icon" />
                   <div className='' style={{ "minWidth": "100px" }}>
-                    Tài Khoản
+                    {profile.fullname}
                   </div>
                 </button>
                 <ul className={styles.list}>
@@ -123,9 +114,7 @@ console.log(show);
               <div className={`${styles.container}`}>
                 <button type='submit' className={`${styles.hover} ${styles.button} d-flex flex-row`} style={{ "height": "40px", "paddingLeft": "12px", paddingTop: '5px' }}>
                   <img src={img_avt} style={{ "height": "30px", "marginLeft": "-4px" }} alt="Car Icon" />
-                  <div className='' style={{ "minWidth": "100px" }}>
-                    Tài Khoản
-                  </div>
+                  <div style={{ minWidth: "100px" }}>Tài Khoản</div>
                 </button>
                 <ul className={styles.list}>
                   <li><button className={`${styles.hover} ${styles.listaccount}`} onClick={toggleFormL}>Đăng Nhập</button></li>

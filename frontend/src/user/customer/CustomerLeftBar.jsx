@@ -1,6 +1,4 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import CustomerAccount from './CustomerAccount';
 import img_avt from '../imguser/bar/user.png'
 import stylesnavbar from '../css/Alluser.module.css';
 import style from '../css/customer/CustomerLeftBar.module.css'
@@ -53,7 +51,7 @@ function Customerleftbar() {
                                     <path d="M20.0002 10.18C19.7002 10.06 19.3702 9.99997 19.0302 9.99997C18.3702 9.99997 17.7302 10.24 17.2202 10.68L13.9402 13.54C13.3402 14.06 13.0002 14.82 13.0002 15.61C13.0002 16.41 13.3402 17.16 13.9402 17.69L16.5802 19.99L1.61023 20.03C1.60023 20.03 1.60023 20.03 1.60023 20.03C0.740234 20.03 0.0302344 19.32 0.0302344 18.45L-0.00976562 7.01997L9.24024 6.99997H10.7402L19.9902 6.96997L20.0002 10.18Z" fill="#000000" />
                                 </g>
                                 <defs>
-                                    <clipPath id="clip0_955_70824">
+                                    <clipPath  id="clip0_955_70824">
                                         <rect width="24" height="24" fill="white" />
                                     </clipPath>
                                 </defs>
