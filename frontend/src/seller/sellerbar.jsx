@@ -12,12 +12,13 @@ import FormR from '../user/RegistrationPage';
 import authmodule from '../module/authmodule';
 import Notification from './Notification'; // Import component thông báo
 import UserAvatarName from '../allview/useravtarname';
+import profileModule from '../module/profile.module';
 
 const NavigationBar = () => {
   const [open, setOpen] = useState(false);
   const [pageName, setPageName] = useState('');
   const location = useLocation();
-
+  const { profile } = profileModule();
   const { isTokenExist, handleLogout } = authmodule();
 
   useEffect(() => {
@@ -53,7 +54,7 @@ const NavigationBar = () => {
     try {
       const response = await fetch('your_api_endpoint');
       if
-      (!response.ok) {
+        (!response.ok) {
         throw new Error('Failed to fetch notifications');
       }
       const data = await response.json();
@@ -82,28 +83,44 @@ const NavigationBar = () => {
               <div className="navbar-nav me-auto mb-2 mb-lg-0">
                 HOME{pageName}
               </div>
-              <button type="button" className={`${styles.hover} ${styles.button}`} style={{ height: "40px", width: "40px", marginRight: "10px", marginLeft: "2px",paddingLeft:'5px' }}>
-                <img src={img_thongbao} style={{ height: "30px" }} alt="Notification Icon" />
-              </button>
+              <div style={{ marginRight: '2%' }}>
+                <button  className={`${styles.hover} ${styles.button} position-relative`} style={{ "height": "40px", "width": "40px", "marginRight": "4%", "marginLeft": "5%", paddingLeft: '5px' }}>
+                  <img src={img_thongbao} style={{ "height": "30px" }} alt="Car Icon" />
+                  <span class="position-absolute translate-middle badge rounded-pill bg-danger" style={{ marginLeft: '30%', marginTop: '-63%' }}>
+                    99+
+                    <span class="visually-hidden">unread messages</span>
+                  </span>
+                </button>
+              </div>
 
               <div className="d-flex" style={{ marginRight: "60px" }}>
                 <div className={`${styles.container}`}>
-                <div>
-                  {/* Gọi component UserAvatarName và truyền props fullname và imgSrc */}
-                  <UserAvatarName/>
-                </div>
+
                   {/* tk da dang nhap*/}
                   {isTokenExist ? (
-                    <ul className={styles.list} style={{ zIndex: 10 }}>
-                      <li><button className={`${styles.hover} ${styles.listaccount}`}>Thông Báo</button></li>
-                      <li><button className={`${styles.hover} ${styles.listaccount}`}>Hỗ Trợ</button></li>
-                      <li><button className={`${styles.hover} ${styles.listaccount}`} onClick={handleLogout}>Đăng Xuất</button></li>
-                    </ul>
+                    <>
+                      <div>
+                        <UserAvatarName profile={profile} />
+                      </div>
+                      <ul className={styles.list} style={{ zIndex: 10 }}>
+                        <li><button className={`${styles.hover} ${styles.listaccount}`}>Thông Báo</button></li>
+                        <li><button className={`${styles.hover} ${styles.listaccount}`}>Hỗ Trợ</button></li>
+                        <li><button className={`${styles.hover} ${styles.listaccount}`} onClick={handleLogout}>Đăng Xuất</button></li>
+                      </ul>
+                    </>
                   ) : (
-                    <ul className={styles.list}>
-                      <li><button className={`${styles.hover} ${styles.listaccount}`} onClick={toggleFormL}>Đăng Nhập</button></li>
-                      <li><button className={`${styles.hover} ${styles.listaccount}`} onClick={toggleFormR}>Đăng Ký</button></li>
-                    </ul>
+                    <>
+                      <button type="submit" className={`${styles.hover} ${styles.button} d-flex flex-row `} aria-label="Search" style={{ height: "40px", marginLeft: "2px", paddingLeft: "12px", paddingTop: '5px', paddingRight: "20px" }}>
+                        <img src={img_avt} style={{ height: "30px", marginLeft: "-4px" }} alt="User Avatar" />
+                        <span className="" style={{ minWidth: "100px" }}>
+                          Tài Khoản
+                        </span>
+                      </button>
+                      <ul className={styles.list}>
+                        <li><button className={`${styles.hover} ${styles.listaccount}`} onClick={toggleFormL}>Đăng Nhập</button></li>
+                        <li><button className={`${styles.hover} ${styles.listaccount}`} onClick={toggleFormR}>Đăng Ký</button></li>
+                      </ul>
+                    </>
                   )}
                   {/*000000000*/}
                 </div>
@@ -120,3 +137,4 @@ const NavigationBar = () => {
 };
 
 export default NavigationBar;
+

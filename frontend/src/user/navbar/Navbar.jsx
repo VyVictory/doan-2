@@ -104,15 +104,8 @@ const NavigationBar = () => {
             {isTokenExist ? (
               <div className={`${styles.container} `} style={{ zIndex: '9999' }}>
                 <div>
-                  {/* Gọi component UserAvatarName và truyền props fullname và imgSrc */}
-                  <UserAvatarName/>
+                  <UserAvatarName profile={profile} />
                 </div>
-                {/* <button type='submit' className={`${styles.hover} ${styles.button} d-flex flex-row`} style={{ "height": "40px", "paddingLeft": "12px", paddingTop: '5px' }}>
-                  <img src={img_avt} style={{ "height": "30px", "marginLeft": "-4px" }} alt="Car Icon" />
-                  <div className='' style={{ "minWidth": "100px" }}>
-                    {profile.fullname}
-                  </div>
-                </button> */}
                 <ul className={styles.list}>
                   <li><a href='/customer/account'><button className={`${styles.hover} ${styles.listaccount}`}>thông tin tài khoản</button></a></li>
                   <li><a href='/customer/historybuyandsell'><button className={`${styles.hover} ${styles.listaccount}`}>đơn hàng của tôi</button></a></li>
@@ -123,7 +116,9 @@ const NavigationBar = () => {
               <div className={`${styles.container}`}>
                 <button type='submit' className={`${styles.hover} ${styles.button} d-flex flex-row`} style={{ "height": "40px", "paddingLeft": "12px", paddingTop: '5px' }}>
                   <img src={img_avt} style={{ "height": "30px", "marginLeft": "-4px" }} alt="Car Icon" />
-                  <div style={{ minWidth: "100px" }}>Tài Khoản</div>
+                  <div className='' style={{ "minWidth": "100px" }}>
+                    Tài Khoản
+                  </div>
                 </button>
                 <ul className={styles.list} >
                   <li><button className={`${styles.hover} ${styles.listaccount}`} onClick={toggleFormL}>Đăng Nhập</button></li>
