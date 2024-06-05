@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import styles from './css/Navber.module.css'; // Import CSS module
-import FormL from './LoginForm';
-import FormR from './RegistrationPage';
+import styles from '../css/Navber.module.css'; // Import CSS module
+import FormL from '../LoginForm';
+import FormR from '../RegistrationPage';
 
-import logo from './imguser/bar/logo.png';
-import img_search from './imguser/bar/magnifying-glass.png';
-import img_local from './imguser/bar/place.png';
-import img_car from './imguser/bar/shopping-cart.png';
-import img_thongbao from './imguser/bar/thongbao.png';
-import img_avt from './imguser/bar/user.png';
-import img_home from './imguser/bar/home.png';
-import authmodule from '../module/authmodule';
-import profileModule from '../module/profile.module';
+import logo from '../imguser/bar/logo.png';
+import img_search from '../imguser/bar/magnifying-glass.png';
+import img_local from '../imguser/bar/place.png';
+import img_car from '../imguser/bar/shopping-cart.png';
+import img_thongbao from '../imguser/bar/thongbao.png';
+import img_avt from '../imguser/bar/user.png';
+import img_home from '../imguser/bar/home.png';
+import authmodule from '../../module/authmodule';
+import profileModule from '../../module/profile.module';
+import UserAvatarName from '../../allview/useravtarname';
+
 const NavigationBar = () => {
   const [showFormL, setShowFormL] = useState(false);
   const [showFormR, setShowFormR] = useState(false);
@@ -51,7 +53,10 @@ const NavigationBar = () => {
 
     }
   }
-
+  const profiles = {
+    fullname: "John Doe",
+    imgSrc: "path/to/your/image"
+  };
   return (
     <div style={{ "marginLeft": "0", "marginRight": "0", "width": "99.236438799999999%" }}>
       <div className={`${styles.barcustom, styles.barcontainer} row shadow-sm p-3  bg-body rounded`}>
@@ -98,12 +103,16 @@ const NavigationBar = () => {
             {/* tk da dang nhap*/}
             {isTokenExist ? (
               <div className={`${styles.container} `} style={{ zIndex: '9999' }}>
-                <button type='submit' className={`${styles.hover} ${styles.button} d-flex flex-row`} style={{ "height": "40px", "paddingLeft": "12px", paddingTop: '5px' }}>
+                <div>
+                  {/* Gọi component UserAvatarName và truyền props fullname và imgSrc */}
+                  <UserAvatarName/>
+                </div>
+                {/* <button type='submit' className={`${styles.hover} ${styles.button} d-flex flex-row`} style={{ "height": "40px", "paddingLeft": "12px", paddingTop: '5px' }}>
                   <img src={img_avt} style={{ "height": "30px", "marginLeft": "-4px" }} alt="Car Icon" />
                   <div className='' style={{ "minWidth": "100px" }}>
                     {profile.fullname}
                   </div>
-                </button>
+                </button> */}
                 <ul className={styles.list}>
                   <li><a href='/customer/account'><button className={`${styles.hover} ${styles.listaccount}`}>thông tin tài khoản</button></a></li>
                   <li><a href='/customer/historybuyandsell'><button className={`${styles.hover} ${styles.listaccount}`}>đơn hàng của tôi</button></a></li>

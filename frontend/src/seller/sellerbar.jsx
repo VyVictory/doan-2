@@ -11,6 +11,7 @@ import FormL from '../user/LoginForm';
 import FormR from '../user/RegistrationPage';
 import authmodule from '../module/authmodule';
 import Notification from './Notification'; // Import component thông báo
+import UserAvatarName from '../allview/useravtarname';
 
 const NavigationBar = () => {
   const [open, setOpen] = useState(false);
@@ -87,12 +88,10 @@ const NavigationBar = () => {
 
               <div className="d-flex" style={{ marginRight: "60px" }}>
                 <div className={`${styles.container}`}>
-                  <button type="submit" className={`${styles.hover} ${styles.button} d-flex flex-row `} aria-label="Search" style={{ height: "40px", marginLeft: "2px", paddingLeft: "12px",paddingTop:'5px', paddingRight: "20px" }}>
-                    <img src={img_avt} style={{ height: "30px", marginLeft: "-4px" }} alt="User Avatar" />
-                    <span className="" style={{ minWidth: "100px" }}>
-                      Tài Khoản
-                    </span>
-                  </button>
+                <div>
+                  {/* Gọi component UserAvatarName và truyền props fullname và imgSrc */}
+                  <UserAvatarName/>
+                </div>
                   {/* tk da dang nhap*/}
                   {isTokenExist ? (
                     <ul className={styles.list} style={{ zIndex: 10 }}>
