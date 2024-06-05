@@ -12,7 +12,7 @@ function RegistrationPage({ onClose, onL }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [gender, setGender] = useState('male');
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState(''); 
   //form data************************************************
 
   const { registerfunction, message } = axioslogin(); // Corrected from axioslogin to Authmodule
@@ -52,7 +52,6 @@ function RegistrationPage({ onClose, onL }) {
           <div className={`${styles.content}col-md-6 `}>
             <div className="card">
               <div className="card-body">
-
                 <div className='d-flex justify-content-center'>
                   <h2 className='sans-serif' style={{ position: 'absolute', }}>Đăng Ký</h2>
                 </div>
@@ -71,7 +70,7 @@ function RegistrationPage({ onClose, onL }) {
                         type="text"
                         className="form-control"
                         id="fullName"
-                        placeholder="Enter full name"
+                        placeholder="nhập họ và tên"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                       />
@@ -83,7 +82,7 @@ function RegistrationPage({ onClose, onL }) {
                         type="password"
                         className="form-control"
                         id="password"
-                        placeholder="Enter password"
+                        placeholder="nhập mật khẩu"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                       />
@@ -97,7 +96,7 @@ function RegistrationPage({ onClose, onL }) {
                         type="text"
                         className="form-control"
                         id="username"
-                        placeholder="Enter user name"
+                        placeholder="nhập tên đăng nhập"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                       />
@@ -108,7 +107,7 @@ function RegistrationPage({ onClose, onL }) {
                         type="password"
                         className="form-control"
                         id="confirmPassword"
-                        placeholder="Confirm password"
+                        placeholder="nhập lại mật khẩu"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                       />
@@ -122,7 +121,7 @@ function RegistrationPage({ onClose, onL }) {
                         type="email"
                         className="form-control"
                         id="email"
-                        placeholder="Enter email"
+                        placeholder="nhập địa chỉ email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                       />
@@ -133,7 +132,7 @@ function RegistrationPage({ onClose, onL }) {
                         type="text"
                         className="form-control"
                         id="phone"
-                        placeholder="Enter phone number"
+                        placeholder="nhập số điện thoại"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                       />
@@ -157,17 +156,19 @@ function RegistrationPage({ onClose, onL }) {
                     </div>
                   </div>
                   <div className='d-flex flex-column p-3 pb-0'>
-                    <button onClick={handleSubmit} type="submit" className="btn btn-primary btn-block">Đăng Ký</button>
+                    <button onClick={handleSubmit} type="submit" className="btn btn-success btn-block">Đăng Ký</button>
                   </div>
                   <div className='d-flex flex-row items-center mt-1 justify-center'>
                     <div className='text-sm mr-1 text-gray-400'>
                       đã có tài khoản
                     </div>
                     <a href='#' onClick={(e) => { onClose(); onL(); }}>Đăng Nhập</a>
-
+                    
                   </div>
-
-                  <p>{message}</p>
+                  <div className='d-flex flex-row items-center justify-center' style={{marginBottom:'-10px'}}>
+                    <p>{message}</p>
+                  </div>
+                  
                 </div>
               </div>
             </div>

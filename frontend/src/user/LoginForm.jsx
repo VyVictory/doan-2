@@ -4,8 +4,8 @@ import styles from './css/LoginForm.module.css'; // Import CSS module
 import axioslogin from '../module/axioslogin'
 import CloseButton from 'react-bootstrap/CloseButton';
 function LoginForm({ onClose, onR }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('email@email.com');
+  const [password, setPassword] = useState('password');
   const { loginfunction, message } = axioslogin(); // Corrected from axioslogin to Authmodule
 
   const handleSubmit = async (e) => {
@@ -41,7 +41,6 @@ function LoginForm({ onClose, onR }) {
                 onClick={onClose} />
             </div>
           </div>
-
           <div className='' style={{ margin: "10px" }}>
             <form onSubmit={handleSubmit} className='p-1'>
 
@@ -74,7 +73,7 @@ function LoginForm({ onClose, onR }) {
                   <a href='#' onClick={onR}>Đăng Ký Mới</a>
 
                 </div>
-                {message && <p className='text-red-600'>{message}</p>}
+                {message && <p className='text-red-600'  style={{marginBottom:'-10px'}}>{message}</p>}
               </div>
 
             </form>
