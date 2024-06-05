@@ -5,7 +5,7 @@ import createToken from "../utils/createToken.js";
 import jwt from "jsonwebtoken";
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, gender, fullname,  password, phone, email,born} = req.body;
+  const { username, gender, fullname,  password, phone, email,born,avatar} = req.body;
 
   if (!username || !email || !password || !fullname) {
     res.status(400);
@@ -28,11 +28,9 @@ const registerUser = asyncHandler(async (req, res) => {
     email, 
     password: hashedPassword,
     phone,
-    born
+    born,
+    avatar
   });
-
-
-
 
   try {
     await newUser.save();
@@ -147,6 +145,9 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
     if (req.body.born) {
       user.born = req.body.born;
     }
+    if (req.body.avatar) {
+      user.avatar = req.body.avatar;
+    }
     if (req.body.password) {
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(req.body.password, salt);
@@ -162,7 +163,8 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
       fullname: updatedUser.fullname,
       gender: updatedUser.gender,
       isAdmin: updatedUser.isAdmin,
-      born: updatedUser.born
+      born: updatedUser.born,
+      avatar: updatedUser.avatar
     });
   } else {
     res.status(404);
