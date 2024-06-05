@@ -4,13 +4,11 @@ import img_voucher from '../../seller/imgseller/voucher.png';
 function Cart() {
     const [isFixed, setIsFixed] = useState(true);
     const YcheckRef = useRef(null);
-
     useEffect(() => {
         const handleScroll = () => {
             if (YcheckRef.current) {
                 const YcheckPosition = YcheckRef.current.getBoundingClientRect().top + window.scrollY;
                 const windowHeight = window.innerHeight;
-
                 if (window.scrollY + windowHeight >= YcheckPosition) {
                     setIsFixed(false);
                 } else {
@@ -18,31 +16,15 @@ function Cart() {
                 }
             }
         };
-
         window.addEventListener('scroll', handleScroll);
-
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-
     const fixedStyle = isFixed
         ? {
-            position: 'fixed',
-            bottom: '0',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: '1000',
-            width: '80%',
-            height: '150px',
-
-        }
-        : {
-            width: '100%',
-        };
-
-    const marginTopStyle = isFixed ? { marginTop: '140px' } : {};
-
+            position: 'fixed', bottom: '0', left: '50%', transform: 'translateX(-50%)', zIndex: '1000', width: '80%', height: '150px',
+        } : { width: '100%', };
     return (
         <div>
             <div className="p-3 border d-flex flex-row justify-content-center align-items-center" style={{ height: '6%' }}>
@@ -58,18 +40,17 @@ function Cart() {
                     </nav>
                 </div>
             </div>
-
             <div className="container p-0" style={{ width: '80%', height: 'auto', marginBottom: '20px' }}>
                 <div className="d-flex flex-column bd-highlight" style={{ backgroundColor: 'white', width: '100%', height: '80%' }}>
                     {/* Placeholder content for demonstration */}
-                    {Array.from({ length: 30 }).map((_, index) => (
+                    {Array.from({ length: 15 }).map((_, index) => (
                         <div key={index} style={{ marginTop: '20px' }}>Cart Items</div>
                     ))}
                 </div>
             </div>
-            <div style={{ width: '100%', height: '170px' }}>
-                <div className="container p-0 mb-4 " style={{ width: '80%', height: 'auto' }}>
-                    <div className="d-flex flex-column bd-highlight" style={{ backgroundColor: 'white', width: '100%', height: '80%' }}>
+            <div style={{ width: '100%', height: '150px' }}>
+                <div className="container p-0 " style={{ width: '80%', height: 'auto' }}>
+                    <div className="d-flex flex-column bd-highlight" style={{ backgroundColor: 'white', width: '100%', height: '100%' }}>
                         <div>
                             <div className="d-flex align-items-end" style={{ width: '100%' }}>
                                 <div className="border" style={{ backgroundColor: 'white', height: '150px', width: '100%', ...fixedStyle }}>
@@ -125,7 +106,7 @@ function Cart() {
             </div>
             <div ref={YcheckRef} className="Ycheck" >
             </div>
-            <div style={{ height: '500px', backgroundColor: 'gray', ...marginTopStyle }}>
+            <div className='pt-3' style={{ height: '500px', backgroundColor: 'transparent' }}>
                 CÓ THỂ BẠN CŨNG THÍCH
             </div>
 
