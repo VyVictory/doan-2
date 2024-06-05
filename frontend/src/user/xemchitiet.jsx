@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import imguser from './imguser/bar/user.png'
 import useProductData from '../module/Productmodule';
-
+import GetProduct from '../module/getproduct';
 function Xemchitiet() {
     const [urlpicture, setUrlpicture] = useState('http://localhost:5000/uploads/');
 /*note get sanpham and get sanphams
@@ -40,7 +40,7 @@ function Xemchitiet() {
     }, []); // Empty dependency array to run once on component mount*/
     const urlParams = new URLSearchParams(window.location.search);
     const chitietproduct = urlParams.get('chitietproduct');
-    const { sanphams, sanpham } = useProductData(chitietproduct);
+    const {sanpham } = GetProduct(chitietproduct);
 
     const webpage = (a, b, c) => {
         // Chuyển hướng ở đây

@@ -12,7 +12,8 @@ function RegistrationPage({ onClose, onL }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [gender, setGender] = useState('male');
-  const [phone, setPhone] = useState(''); 
+  const [phone, setPhone] = useState('');
+  const [born, setBorn] = useState('');
   //form data************************************************
 
   const { registerfunction, message } = axioslogin(); // Corrected from axioslogin to Authmodule
@@ -28,6 +29,7 @@ function RegistrationPage({ onClose, onL }) {
       password: password, // Sử dụng biến password thay vì "password"
       phone: +phone,// Sử dụng chuỗi số cho số điện thoại , ko trung 
       gender: gender,
+      born: born,
     });
     await registerfunction(formData);
   };
@@ -139,7 +141,7 @@ function RegistrationPage({ onClose, onL }) {
                     </div>
                   </div>
                   <div className='d-flex bd-highlight'>
-                    <div className="form-group mb-2 me-auto pr-1" style={{minWidth:'50%'}}>
+                    <div className="form-group mb-2 me-auto pr-1" style={{ minWidth: '50%' }}>
                       <label htmlFor="gender">Giới Tính:</label>
                       <select
                         className="form-control"
@@ -152,7 +154,16 @@ function RegistrationPage({ onClose, onL }) {
                         <option value="other">Khác</option>
                       </select>
                     </div>
-                    <div className="form-group mb-2 bd-highlight " style={{minWidth:'50%'}}>
+                    <div className="form-group mb-2 bd-highlight" style={{ minWidth: '50%' }}>
+                      <label htmlFor="born">ngày sinh:</label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        id="born"
+                        placeholder="nhập ngày sinh"
+                        value={born}
+                        onChange={(e) => setBorn(e.target.value)}
+                      />
                     </div>
                   </div>
                   <div className='d-flex flex-column p-3 pb-0'>
@@ -163,12 +174,12 @@ function RegistrationPage({ onClose, onL }) {
                       đã có tài khoản
                     </div>
                     <a href='#' onClick={(e) => { onClose(); onL(); }}>Đăng Nhập</a>
-                    
+
                   </div>
-                  <div className='d-flex flex-row items-center justify-center' style={{marginBottom:'-10px'}}>
+                  <div className='d-flex flex-row items-center justify-center' style={{ marginBottom: '-10px' }}>
                     <p>{message}</p>
                   </div>
-                  
+
                 </div>
               </div>
             </div>

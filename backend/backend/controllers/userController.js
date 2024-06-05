@@ -110,6 +110,7 @@ const getCurrentUserProfile = asyncHandler(async (req, res) => {
       email: user.email,
       phone: user.phone,
       gender: user.gender,
+      born: user.born,
       fullname: user.fullname,
       avatar: user.avatar,
       isAdmin: user.isAdmin,

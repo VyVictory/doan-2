@@ -14,7 +14,7 @@ const addProduct = asyncHandler(async (req, res) => {
         return res.json({ error: "Brand is required" });
       case !description:
         return res.json({ error: "Description is required" });
-      case !price:
+      case !price:  
         return res.json({ error: "Price is required" });
       case !category:
         return res.json({ error: "Category is required" });

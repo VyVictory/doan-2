@@ -27,11 +27,8 @@ const ProductForm = () => {
   const handleCoverImageChange = (e) => {
     const file = e.target.files[0];
     setImg(file);
-    // Tạo chuỗi thời gian hiện tại
-    const currentDate = new Date();
-    const timestamp = currentDate.getTime(); // Lấy timestamp để đảm bảo tên file là duy nhất
     // Tạo tên file mới với timestamp
-    const newFileName = `cover_${timestamp}_${file.name}`;
+    const newFileName = `${file.name}`;
     const imageUrl = URL.createObjectURL(file);
     setProductData({ ...productData, coverImage: file });
     setCoverImagePreview(imageUrl);
@@ -62,77 +59,93 @@ const ProductForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const formData = ({
-        ten: ten,
-        gia: +gia,
-        mota: mota,
-        soluong: +soluong,
-        hinh: savedImagePath,
-        hidden: "yes",
-        loai: loai,
-      });
-      await postProduct(formData);
-      // const token = localStorage.getItem('token');
-      // const response = await axios.post('http://localhost:5000/product', {
+    // name: ten,
+    // price: +gia,
+    // description: mota,
+    // quantity: +soluong,
+    // image: savedImagePath,
+    // brand: '12',
+    // category: loai,
+    // rating:0,
+    // numReviews:0,
+    // countInStock:2,
+    const formData = ({
+      name:"aten",
+      price: 12,
+      description: "mota",
+      quantity: 12,
+      image: "savedImagePathd",
+      brand: '12',
+      category: "665e7a673a54e4e4ad90a8e9",
+      rating:0,
+      numReviews:0,
+      countInStock:2,
 
-      // }, {
-      //   headers: {
-      //     'Authorization': `Bearer ${token}`
-      //   }
-      // });
-      // if (!response.ok) {
-      //   alert('Thêm sản phẩm thành công');
-      // } else {
-      //   alert('Thêm sản phẩm thất bại');
-      // }
-      // if (img) {
-      //   const formData = new FormData();
-      //   formData.append('file', img, savedImagePath);
+    });
+    // try {// name, description, price, category, quantity, brand, image 
 
-      //   const response = await fetch('http://localhost:5000/upload', {
-      //     method: 'POST',
-      //     body: formData,
-      //     headers: {
-      //       'Authorization': `Bearer ${token}`
-      //     }
-      //   })
+    console.log(formData)
+    await postProduct(formData);
+    // const token = localStorage.getItem('token');
+    // const response = await axios.post('http://localhost:5000/product', {
 
-      //   if (!response.ok) {
-      //     throw new Error('Cover image upload failed');
-      //   }
+    // }, {
+    //   headers: {
+    //     'Authorization': `Bearer ${token}`
+    //   }
+    // });
+    // if (!response.ok) {
+    //   alert('Thêm sản phẩm thành công');
+    // } else {
+    //   alert('Thêm sản phẩm thất bại');
+    // }
+    // if (img) {
+    //   const formData = new FormData();
+    //   formData.append('file', img, savedImagePath);
 
-      //   const responseData = await response.json();
-      //   setSavedImagePath(responseData.filePath);
-      // }
-      // // Handle response if needed
-      // console.log('Product created:', response.data);
+    //   const response = await fetch('http://localhost:5000/upload', {
+    //     method: 'POST',
+    //     body: formData,
+    //     headers: {
+    //       'Authorization': `Bearer ${token}`
+    //     }
+    //   })
 
-    } catch (error) {
-      // Handle errors
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error('Server responded with an error:', error.response.data);
-        console.error('Status code:', error.response.status);
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.error('No response received from server:', error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error('Error setting up the request:', error.message);
-      }
-    }
+    //   if (!response.ok) {
+    //     throw new Error('Cover image upload failed');
+    //   }
 
-    // Reset form after submit
-    setTen('');
-    setGia('');
-    setMota('');
-    setSoluong('');
-    setLoai('661b85a4f0a27cb78fa93a5d');
-    setProductData({ coverImage: null, images: [] });
-    setCoverImagePreview('');
-    setImagePreviews([]);
+    //   const responseData = await response.json();
+    //   setSavedImagePath(responseData.filePath);
+    // }
+    // // Handle response if needed
+    // console.log('Product created:', response.data);
+
+    // } catch (error) {
+    //   // Handle errors
+    //   if (error.response) {
+    //     // The request was made and the server responded with a status code
+    //     // that falls out of the range of 2xx
+    //     console.error('Server responded with an error:', error.response.data);
+    //     console.error('Status code:', error.response.status);
+    //   } else if (error.request) {
+    //     // The request was made but no response was received
+    //     console.error('No response received from server:', error.request);
+    //   } else {
+    //     // Something happened in setting up the request that triggered an Error
+    //     console.error('Error setting up the request:', error.message);
+    //   }
+    // }
+
+    // // Reset form after submit
+    // setTen('');
+    // setGia('');
+    // setMota('');
+    // setSoluong('');
+    // setLoai('');
+    // setProductData({ coverImage: null, images: [] });
+    // setCoverImagePreview('');
+    // setImagePreviews([]);
   };
   return (
     <div className="container mt-5 mb-5">

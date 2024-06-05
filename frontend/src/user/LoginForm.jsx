@@ -7,7 +7,10 @@ function LoginForm({ onClose, onR }) {
   const [email, setEmail] = useState('email@email.com');
   const [password, setPassword] = useState('password');
   const { loginfunction, message } = axioslogin(); // Corrected from axioslogin to Authmodule
-
+  const formData = {
+    email: email,
+    password: password,
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
@@ -72,7 +75,7 @@ function LoginForm({ onClose, onR }) {
                   </div>
                   <a href='#' onClick={onR}>Đăng Ký Mới</a>
 
-                </div>
+                </div>  
                 {message && <p className='text-red-600'  style={{marginBottom:'-10px'}}>{message}</p>}
               </div>
 

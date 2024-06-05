@@ -4,11 +4,12 @@ import axios from 'axios';
 const useProductData = () => {
     const [message, setMessage] = useState('');
     const [errors, setErrors] = useState([]);
+    const [imgProduct, setImgProduct] = useState({});
 
     const postProduct = async (formData) => {
         try {
-            const response = await axios.post(`http://localhost:5000/api/users/`, formData, { withCredentials: true });
-            setMessage(response.data.message || 'Post product successful!');
+            const response = await axios.post(`http://localhost:5000/api/products/`, formData, { withCredentials: true });
+            setMessage( 'Post product successful!');
         } catch (error) {
             if (error.response) {
                 if (error.response.data.errors) {
@@ -22,75 +23,39 @@ const useProductData = () => {
             }
         }
     };
-
-    return { message, errors, postProduct };
+    const changeImgProduct = async (file) => {
+        const formData = new FormData();
+        formData.append('image', file);
+    
+        // Log FormData entries for debugging
+        for (let pair of formData.entries()) {
+          console.log(pair[0] + ': ' + pair[1]);
+        }
+    
+        try {
+          const token = localStorage.getItem('token');
+          const response = await axios.post('http://localhost:5000/api/upload/product', formData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          setImgProduct(response.data);
+        } catch (error) {
+          if (error.response) {
+            if (error.response.data.errors) {
+              setErrors(error.response.data.errors);
+              setMessage('Avatar upload failed. Please check your inputs.');
+            } else {
+              setMessage(error.response.data.message || 'Avatar upload failed. Please try again.');
+            }
+          } else {
+            setMessage('An error occurred. Please try again later.');
+          }
+        }
+      };
+    return { message, errors, postProduct,imgProduct ,changeImgProduct};
 };
 
 export default useProductData;
-
-// const useProductData = () => {
-//     const [message, setMessage] = useState('');
-//     const [sanphams, setSanphams] = useState([]);
-//     const [sanpham, setSanpham] = useState({});
-//     const urlParams = new URLSearchParams(window.location.search);
-//     const chitietproduct = urlParams.get('chitietproduct');
-//     const [getcategorys, setGetcategorys] = useState([]);
-//     useEffect(() => {
-
-//         const fetchProductList = async () => {
-//             try {
-//                 const response = await axios.get('http://localhost:5000/product/');
-//                 if (response.data) {
-//                     setSanphams(response.data);
-//                 } else {
-//                     alert('No data found');
-//                 }
-//             } catch (err) {
-//                 console.log(err);
-//             }
-//         };
-
-//         const fetchProductDetail = async () => {
-//             let productid = chitietproduct; // Initialize productid with chitietproduct
-//             if (!chitietproduct) {
-//                 const productidgeturl = urlParams.get('chitietproduct');
-//                 productid = productidgeturl;
-//             }
-//             if (productid) {
-//                 try {
-//                     const response = await axios.get('http://localhost:5000/product/' + productid);
-//                     if (response.data) {
-//                         setSanpham(response.data);
-//                     } else {
-//                         alert('No data found');
-//                     }
-//                 } catch (err) {
-//                     console.log(err);
-//                 }
-//             }
-//         };
-//         const categorys = async () => {
-//             //localhost:5000/api/category/categories
-//             try {
-//                 const response = await axios.get(`http://localhost:5000/api/category/categories`);
-//                 setGetcategorys(response.data)
-//                 console.log(response)
-//             } catch (error) {
-//                 if (error.response) {
-//                     setMessage(',err,');
-//                 } else {
-//                     // Xử lý lỗi không có phản hồi từ server
-//                     setMessage('Đã xảy ra lỗi. Vui lòng thử lại sau.');
-//                 }
-//             }
-//         };
-//         categorys();
-//         fetchProductList();
-//         fetchProductDetail();
-//     }, [chitietproduct, urlParams]); // Added urlParams to dependency array
-
-
-//     return { message, sanphams, sanpham ,getcategorys};
-// };
-// export default useProductData;
 
