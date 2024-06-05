@@ -2,7 +2,9 @@ import React from 'react';
 import img_avt from '../imguser/bar/user.png'
 import stylesnavbar from '../css/Alluser.module.css';
 import style from '../css/customer/CustomerLeftBar.module.css'
+import useProfile from '../../module/profile.module';
 function Customerleftbar() {
+    const { profile } = useProfile();
     return (
         <div >
             <div className='d-flex flex-column'>
@@ -11,7 +13,7 @@ function Customerleftbar() {
                     <div className='d-flex align-items-center' style={{ marginLeft: '1%' }}>
                         <div className='d-block'>
                             <div className='form-label m-0' style={{ fontSize: '13px' }}>Tài Khoản Của</div>
-                            <div>User Name</div>
+                            <div>{profile.fullname}</div>
                         </div>
                     </div>
                 </div>

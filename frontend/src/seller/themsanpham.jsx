@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import ImageInput from './imgthemanh';
 import axios from 'axios';
+import Getcategorys from '../module/getcategories.module';
+import useProductData from '../module/Productmodule';
 
 const ProductForm = () => {
+  const { message, errors, postProduct } = useProductData();
+  const { categorys } = Getcategorys();
   const [productData, setProductData] = useState({
     coverImage: null,
     images: [],
   });
+
   const [ten, setTen] = useState('');
   const [gia, setGia] = useState('');
   const [mota, setMota] = useState('');
   const [soluong, setSoluong] = useState('');
-  const [loai, setLoai] = useState('661b85a4f0a27cb78fa93a5d');
-
+  const [loai, setLoai] = useState('');
   const [hidden, setHidden] = useState('no');
+
   const [coverImagePreview, setCoverImagePreview] = useState('');
   const [imagePreviews, setImagePreviews] = useState([]);
-
   const [savedImagePath, setSavedImagePath] = useState('');
   const [img, setImg] = useState(null);
 
@@ -39,9 +43,6 @@ const ProductForm = () => {
     setCoverImagePreview('');
     setSavedImagePath(''); // Đặt lại savedImagePath khi xóa ảnh
   };
-
-
-
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const remainingSlots = 6 - imagePreviews.length;
@@ -61,10 +62,8 @@ const ProductForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/product', {
+      const formData = ({
         ten: ten,
         gia: +gia,
         mota: mota,
@@ -72,37 +71,42 @@ const ProductForm = () => {
         hinh: savedImagePath,
         hidden: "yes",
         loai: loai,
-      }, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
       });
-      if (!response.ok) {
-        alert('Thêm sản phẩm thành công');
-      } else {
-        alert('Thêm sản phẩm thất bại');
-      }
-      if (img) {
-        const formData = new FormData();
-        formData.append('file', img, savedImagePath);
+      await postProduct(formData);
+      // const token = localStorage.getItem('token');
+      // const response = await axios.post('http://localhost:5000/product', {
 
-        const response = await fetch('http://localhost:5000/upload', {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        })
+      // }, {
+      //   headers: {
+      //     'Authorization': `Bearer ${token}`
+      //   }
+      // });
+      // if (!response.ok) {
+      //   alert('Thêm sản phẩm thành công');
+      // } else {
+      //   alert('Thêm sản phẩm thất bại');
+      // }
+      // if (img) {
+      //   const formData = new FormData();
+      //   formData.append('file', img, savedImagePath);
 
-        if (!response.ok) {
-          throw new Error('Cover image upload failed');
-        }
+      //   const response = await fetch('http://localhost:5000/upload', {
+      //     method: 'POST',
+      //     body: formData,
+      //     headers: {
+      //       'Authorization': `Bearer ${token}`
+      //     }
+      //   })
 
-        const responseData = await response.json();
-        setSavedImagePath(responseData.filePath);
-      }
-      // Handle response if needed
-      console.log('Product created:', response.data);
+      //   if (!response.ok) {
+      //     throw new Error('Cover image upload failed');
+      //   }
+
+      //   const responseData = await response.json();
+      //   setSavedImagePath(responseData.filePath);
+      // }
+      // // Handle response if needed
+      // console.log('Product created:', response.data);
 
     } catch (error) {
       // Handle errors
@@ -132,41 +136,54 @@ const ProductForm = () => {
   };
   return (
     <div className="container mt-5 mb-5">
-      <h2>Thêm Sản Phẩm</h2>
-      <form onSubmit={handleSubmit}>
-        <div className='d-flex flex-row'>
-          <div className="mb-3 mr-5">
+      <div className='d-flex justify-center'>
+        <h2>Thêm Sản Phẩm</h2>
+      </div>
+      <div>
+        {/* Hiển thị thông điệp thành công hoặc thất bại */}
+        {message && <p>{message}</p>}
+        {errors.length > 0 && (
+          <ul>
+            {errors.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <form onSubmit={handleSubmit} >
+        <div className='d-flex flex-row '>
+          <div className="mb-3 justify-content-center border-end">
             <div className='d-flex flex-row align-items-center'>
               <h5 className='text-rose-500'>*</h5><label htmlFor="coverImage" className="form-label">Ảnh Bìa:</label>
-
             </div>
-            {coverImagePreview && (
-              <div className="mb-3 d-flex flex-column content-center">
-                <img src={coverImagePreview} alt="Cover Preview" style={{ maxWidth: '200px', marginBottom: '10px' }} />
-                <button type="button" className="btn btn-danger m-1" onClick={handleRemoveCoverImage}>Xóa Ảnh Bìa</button>
-              </div>
-            )}
-            {!coverImagePreview && (
-              <ImageInput
-                onChange={handleCoverImageChange}
-                multiple={false} />
-            )}
+            <div className='mr-5'>
+              {coverImagePreview && (
+                <div className="mb-3 d-flex flex-column content-center ">
+                  <img className='border' src={coverImagePreview} alt="Cover Preview" style={{ maxWidth: '200px', marginBottom: '10px' }} />
+                  <button type="button" className="btn btn-danger m-1" onClick={handleRemoveCoverImage}>Xóa Ảnh Bìa</button>
+                </div>
+              )}
+              {!coverImagePreview && (
+                <ImageInput
+                  onChange={handleCoverImageChange}
+                  multiple={false} />
+              )}
+            </div>
           </div>
-          <div className="mb-3">
+          <div className="mb-3 ml-4">
             <div className='d-flex flex-row align-items-center'>
               <h5 className='text-rose-500'>*</h5><label htmlFor="images" className="form-label">Hình Ảnh Khác:</label>
-
             </div>
 
             <div className='d-flex flex-wrap'>
               {imagePreviews.map((imageUrl, index) => (
-                <div key={index} className="mb-3 d-flex justify-content-center align-items-center flex-column mx-1">
-                  <img src={imageUrl} alt={`Product Image ${index}`} className="img-fluid" style={{ maxWidth: '200px', minHeight: '100px', maxHeight: "100px", marginBottom: '10px' }} />
+                <div key={index} className="mb-3 d-flex justify-content-center align-items-center flex-column mx-1  p-2">
+                  <img src={imageUrl} alt={`Product Image ${index}`} className="img-fluid border" style={{ maxWidth: '200px', minHeight: '100px', maxHeight: "100px", marginBottom: '10px' }} />
                   <button type="button" className="btn  btn-danger btn-sm" onClick={() => handleRemoveImage(index)}>Xóa Ảnh</button>
                 </div>
               ))}
               {imagePreviews.length < 6 && (
-                <div className='d-flex justify-content-center align-items-center'>
+                <div className='d-flex justify-content-center align-items-center '>
                   <ImageInput
                     onChange={handleImageChange}
                     multiple={true}
@@ -176,72 +193,70 @@ const ProductForm = () => {
             </div>
           </div>
         </div>
-
-        <div className="mb-3">
-          <div className='d-flex flex-row align-items-center'>
-            <h5 className='text-rose-500'>*</h5><label htmlFor="productName" className="form-label">Tên Sản Phẩm:</label>
-
+        <div className='d-flex flex-row'>
+          <div className="mb-3 pr-5" style={{ minWidth: '50%' }}>
+            <div className='d-flex flex-row align-items-center'>
+              <h5 className='text-rose-500'>*</h5><label htmlFor="productName" className="form-label">Tên Sản Phẩm:</label>
+            </div>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Tên Sản Phẩm"
+              value={ten}
+              onChange={(e) => setTen(e.target.value)}
+            />
           </div>
+          <div className="mb-3" style={{ minWidth: '50%' }}>
+            <div className='d-flex flex-row align-items-center'>
+              <h5 className='text-rose-500'>*</h5><label htmlFor="gia" className="form-label">Giá:</label>
 
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Tên Sản Phẩm"
-            value={ten}
-            onChange={(e) => setTen(e.target.value)}
-          />
+            </div>
+
+            <input
+              type="number"
+              className="form-control"
+              value={gia}
+              onChange={(e) => setGia(e.target.value)}
+              placeholder="Giá Sản Phẩm"
+            />
+          </div>
         </div>
-        <div className="mb-3">
-          <div className='d-flex flex-row align-items-center'>
-            <h5 className='text-rose-500'>*</h5><label htmlFor="gia" className="form-label">Giá:</label>
-
+        <div className='d-flex flex-row'>
+          <div className="mb-3 pr-5" style={{ minWidth: '50%' }}>
+            <div className='d-flex flex-row align-items-center'>
+              <h5 className='text-rose-500'>*</h5><label htmlFor="soluong" className="form-label">Số lượng:</label>
+            </div>
+            <input
+              type="number"
+              className="form-control"
+              value={soluong}
+              onChange={(e) => setSoluong(e.target.value)}
+              placeholder="Số Lượng Sản Phẩm"
+            />
           </div>
+          <div className="mb-3" style={{ minWidth: '50%' }}>
+            <div className='d-flex flex-row align-items-center'>
+              <h5 className='text-rose-500'>*</h5><label htmlFor="category" className="form-label">Ngành Hàng:</label>
+            </div>
+            <select
+              className="form-select"
+              id="category"
+              name="category"
+              value={loai}
+              onChange={(e) => setLoai(e.target.value)}
+            >
+              {
+                categorys.map(e => (
+                  <option value={e._id}>{e.name}</option>
+                ))
+              }
 
-          <input
-            type="number"
-            className="form-control"
-            value={gia}
-            onChange={(e) => setGia(e.target.value)}
-            placeholder="Giá Sản Phẩm"
-          />
-        </div>
-        <div className="mb-3">
-          <div className='d-flex flex-row align-items-center'>
-            <h5 className='text-rose-500'>*</h5><label htmlFor="soluong" className="form-label">Số lượng:</label>
-
-
+            </select>
           </div>
-          <input
-            type="number"
-            className="form-control"
-            value={soluong}
-            onChange={(e) => setSoluong(e.target.value)}
-            placeholder="Số Lượng Sản Phẩm"
-          />
-        </div>
-        <div className="mb-3">
-          <div className='d-flex flex-row align-items-center'>
-            <h5 className='text-rose-500'>*</h5><label htmlFor="category" className="form-label">Ngành Hàng:</label>
-
-
-          </div>
-          <select
-            className="form-select"
-            id="category"
-            name="category"
-            value={loai}
-            onChange={(e) => setLoai(e.target.value)}
-          >
-            <option value="661b85a4f0a27cb78fa93a5d">Điện Tử</option>
-            <option value="clothing">Thời Trang</option>
-            <option value="books">Sách</option>
-          </select>
         </div>
         <div className="mb-3">
           <div className='d-flex flex-row align-items-center'>
             <h5 className='text-rose-500'>*</h5><label htmlFor="description" className="form-label">Mô Tả Sản Phẩm:</label>
-
-
           </div>
           <textarea
             className="form-control"
@@ -250,7 +265,9 @@ const ProductForm = () => {
             placeholder="Mô Tả Sản Phẩm"
           />
         </div>
-        <button type="submit" className="btn btn-primary">Thêm Sản Phẩm</button>
+        <div className='d-flex justify-center'>
+          <button type="submit" className="btn btn-primary w-full">Thêm Sản Phẩm</button>
+        </div>
       </form>
     </div>
   );

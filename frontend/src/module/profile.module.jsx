@@ -3,18 +3,7 @@ import axios from 'axios';
 import cookieModule from './cookie.module';
 
 const useProfile = () => {
-  const [profile, setProfile] = useState({
-    email: "",
-    fullname: "",
-    gender: "",
-    hidden: false,
-    isActive: false,
-    isAdmin: false,
-    phone: "",
-    username: "",
-    _id: ""
-  });
-
+  const [profile, setProfile] = useState({});
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem('token');
