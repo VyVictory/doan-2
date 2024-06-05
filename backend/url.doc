@@ -58,3 +58,10 @@ localhost:5000/api/category
     }
 
 
+//uploads
+// backend/uploads/product/
+formdata -> image 
+localhost:5000/api/upload/product
+
+localhost:5000/api/upload/avatar
+
