@@ -1,5 +1,23 @@
 import mongoose from "mongoose";
 
+
+
+const addressSchema = mongoose.Schema(
+  {
+    contries: { type: String, required: true },
+    city: { type: Number, required: true },
+    Street : { type: String, required: true },
+    apartment  : { type: String, required: true },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
+  },
+  { timestamps: true }
+);
+
+
 // Định nghĩa schema cho User
 const userSchema = new mongoose.Schema(
   {
@@ -36,7 +54,10 @@ const userSchema = new mongoose.Schema(
 
     avatar: {
       type: String,
+      default: "/uploads\\avatar\\avatarDefault.jpg"
     },
+
+    address: [addressSchema],
 
     isAdmin: {
       type: Boolean,
@@ -50,9 +71,13 @@ const userSchema = new mongoose.Schema(
       default: true,
     },
 
+    isDelete:{
+      type: Boolean,
+      default:false
+    },
+
     hidden: {
       type: Boolean,
-      required: true,
       default: false,
     },
   },
