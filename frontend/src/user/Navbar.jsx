@@ -116,7 +116,7 @@ const NavigationBar = () => {
                   <img src={img_avt} style={{ "height": "30px", "marginLeft": "-4px" }} alt="Car Icon" />
                   <div style={{ minWidth: "100px" }}>Tài Khoản</div>
                 </button>
-                <ul className={styles.list}>
+                <ul className={styles.list} >
                   <li><button className={`${styles.hover} ${styles.listaccount}`} onClick={toggleFormL}>Đăng Nhập</button></li>
                   <li><button className={`${styles.hover} ${styles.listaccount}`} onClick={toggleFormR}>Đăng Ký</button></li>
                 </ul>
