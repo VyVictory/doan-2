@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import UserBar from '../user/Navbar'
+import UserBar from '../user/navbar/Navbar'
 import Sellerbar from '../seller/sellerbar'
 import Sellercenter from '../seller/sellercenter';
 import Themsanpham from '../seller/themsanpham';

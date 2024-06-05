@@ -24,7 +24,7 @@ function Home() {
     return (
         <div className="Home">
             <div className="d-flex" >
-                <div className="container mt-1 mb-1 bg-light border p-2 shadow-sm mb-5 bg-body rounded">
+                <div className="container mt-1 bg-light border p-2 shadow-sm mb-5 bg-body rounded">
                     <div>
                         cac event
                     </div>

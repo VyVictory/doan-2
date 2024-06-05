@@ -1,6 +1,5 @@
-import { NavLink, Link, useLocation } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+
+import React from 'react';
 import Spliturl from '../../module/spliturl';
 import { } from 'react-router-dom';
 import CustomerAccount from './CustomerAccount';
@@ -17,7 +16,7 @@ function CustomerCentter() {
                                     afterCustomer === 'notification' ? 'Thông báo của tôi' : afterCustomer
                 }
             </h4>
-            <div className="container mt-1 mb-1 bg-light p-2 shadow-sm mb-5 bg-body rounded" style={{minHeight:'450px'}}>
+            <div className="container mt-1 bg-light p-2 shadow-sm mb-5 bg-body rounded" style={{minHeight:'450px'}}>
                 {
                     afterCustomer === 'wishlist' ? 'Sản phẩm yêu thích' :
                         afterCustomer === 'return-tracking' ? 'Quản lý đổi trả' :
