@@ -16,6 +16,7 @@ const useProfile = () => {
   });
 
   useEffect(() => {
+    let isMounted = true; // To avoid setting state on unmounted component
     const fetchData = async () => {
       const token = localStorage.getItem('token');
       if (token) {
@@ -23,7 +24,9 @@ const useProfile = () => {
         setCookie('jwt', token, 7);
         try {
           const response = await axios.get('http://localhost:5000/api/users/profile', { withCredentials: true });
-          setProfile(response.data); // Set profile data
+          if (isMounted) { // Check if component is still mounted
+            setProfile(response.data);
+          }
         } catch (error) {
           console.error('Error: ', error);
           throw error;
@@ -32,6 +35,10 @@ const useProfile = () => {
     };
 
     fetchData();
+
+    return () => {
+      isMounted = false; // Cleanup function to set isMounted to false when component unmounts
+    };
   }, []); // Empty dependency array to run effect only once
 
   return { profile };
