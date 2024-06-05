@@ -65,3 +65,5 @@ localhost:5000/api/upload/product
 
 localhost:5000/api/upload/avatar
 
+//update or Get User(Current)
+localhost:5000/api/users/profile
