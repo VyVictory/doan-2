@@ -41,6 +41,11 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
 
+    born:{
+      type: String,
+      require: true,
+    },
+
     phone: {
       type: String,
       required: true,
