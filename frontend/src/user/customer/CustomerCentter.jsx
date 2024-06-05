@@ -16,7 +16,7 @@ function CustomerCentter() {
                                     afterCustomer === 'notification' ? 'Thông báo của tôi' : afterCustomer
                 }
             </h4>
-            <div className="container mt-1 bg-light p-2 shadow-sm mb-5 bg-body rounded" style={{minHeight:'450px'}}>
+            <div className="container bg-light shadow-sm mb-5 bg-body rounded p-0" style={{minHeight:'450px'}}>
                 {
                     afterCustomer === 'wishlist' ? 'Sản phẩm yêu thích' :
                         afterCustomer === 'return-tracking' ? 'Quản lý đổi trả' :
