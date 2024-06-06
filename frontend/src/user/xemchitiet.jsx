@@ -42,10 +42,12 @@ function Xemchitiet() {
                             <div style={{ backgroundColor: 'lightblue' }} className="bg-light border p-4 shadow-sm rounded    ">
                                 {/* Nội dung dài để tạo ra thanh cuộn */}
                                 {/* <h5>Chính Hãng,...</h5> */}
-                                <h3>{sanpham.name}</h3>
                                 <div className='d-flex flex-row align-items-center' style={{ marginLeft: '5px' }}>
-                                    {renderRatingStars(sanpham.rating, 15, 15)}
+                                    <div className='d-flex flex-row'>{renderRatingStars(sanpham.rating, 20, 20)}</div>(369)
                                 </div>
+                                <h3>{sanpham.name}</h3>
+                                <div style={{color:'gray'}}>mô tả sản phẩm:</div>
+                                <div>{sanpham.description}</div>
                             </div>
                         </div>
                         <div style={{ flex: 1.5 }}>

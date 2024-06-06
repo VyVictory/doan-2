@@ -63,7 +63,7 @@ export default function Listproduct() {
                                                         <span>{e.price}</span>
                                                     </td>
                                                     <td className="align-middle">
-                                                        <CategoryName categoryId={e.category} /> {/* Pass categoryId as prop */}
+                                                    {e.category.name}{/* <CategoryName categoryId={e.category} /> */}
                                                     </td>
                                                     <td className="align-middle">
                                                         <span>{e.quantity}</span>
