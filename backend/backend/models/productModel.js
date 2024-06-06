@@ -25,12 +25,15 @@ const productSchema = mongoose.Schema(
     description: { type: String, required: true },
     hidden : { type: Boolean, require: true, default: false },
     Approve  : {type: Boolean, default:false},
+    ApproveStatus: {type: String, default: " "},
     isDelete: { type: Boolean, default: false },
     reviews: [reviewSchema],
     rating: { type: Number, required: true, default: 0 },
     numReviews: { type: Number, required: true, default: 0 },
     price: { type: Number, required: true, default: 0 },
     countInStock: { type: Number, required: true, default: 0 },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+
   },
   { timestamps: true }
 );

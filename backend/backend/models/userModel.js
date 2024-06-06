@@ -63,6 +63,17 @@ const userSchema = new mongoose.Schema(
       default: "/uploads\\avatar\\avatarDefault.jpg"
     },
 
+    nameShop: {
+      type: String,
+      required: true,
+      default: ""
+    },
+
+    avatarShop: {
+      type: String,
+      default: ""
+    },
+
     address: [addressSchema],
 
     isAdmin: {

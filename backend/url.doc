@@ -46,7 +46,9 @@ quantity :number
 brand : ""
 image: [file]
 
+//get id 
 
+localhost:5000/api/products/:id
 
 
 //catergory

@@ -90,6 +90,43 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+
+const getShop = asyncHandler(async  (req, res) => {
+  const shop = await User.findById(req.params.id).select("-password");
+  if (user) {
+    res.json({
+      nameShop: shop.nameShop,
+      avatarShop: shop.avatarShop
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+const updateShop = asyncHandler(async (req, res) => {
+  const shop = await User.findById(req.params.id).select("-password");
+  if (shop) {
+    shop.nameShop = req.body.nameShop || shop.nameShop;
+    shop.avatarShop = req.body.avatarShop || shop.avatarShop;
+
+    const updatedShop = await shop.save();
+
+    res.json({
+      nameShop: updatedShop.nameShop,
+      avatarShop: updatedShop.avatarShop
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+//forgot password 
+// client gửi email
+//server kiểm tra email hợp lệ -> gửi mail + link(password change)
+
+
+
 const logoutCurrentUser = asyncHandler(async (req, res) => {
   res.cookie("jwt", "", {
     httyOnly: true,
@@ -259,4 +296,6 @@ export {
   deleteUserById,
   getUserById,
   updateUserById,
+  getShop,
+  updateShop,
 };

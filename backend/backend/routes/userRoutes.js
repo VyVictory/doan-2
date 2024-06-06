@@ -10,6 +10,9 @@ import {
   getUserById,
   updateUserById,
   updateUserActiveStatus,
+  getShop,
+  updateShop,
+  
 } from "../controllers/userController.js";
 
 import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
@@ -23,6 +26,8 @@ router
 
 router.post("/auth", loginUser);
 router.post("/logout", logoutCurrentUser);
+router.get("/shop", authenticate ,getShop);
+router.put("/shop", authenticate,updateShop)
 
 router
   .route("/profile")

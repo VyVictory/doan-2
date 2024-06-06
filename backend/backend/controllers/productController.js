@@ -5,31 +5,99 @@ const addProduct = asyncHandler(async (req, res) => {
   try {
     const { name, description, price, category, quantity, brand, image } = req.fields;
 
-
     // Validation
     switch (true) {
       case !name:
-        return res.json({ error: "Name is required" });
+        return res.json({ error: 'Name is required' });
       case !brand:
-        return res.json({ error: "Brand is required" });
+        return res.json({ error: 'Brand is required' });
       case !description:
-        return res.json({ error: "Description is required" });
-      case !price:  
-        return res.json({ error: "Price is required" });
+        return res.json({ error: 'Description is required' });
+      case !price:
+        return res.json({ error: 'Price is required' });
       case !category:
-        return res.json({ error: "Category is required" });
+        return res.json({ error: 'Category is required' });
       case !quantity:
-        return res.json({ error: "Quantity is required" });
+        return res.json({ error: 'Quantity is required' });
       case !image:
-      return res.status(400).json({ error: "Image is required" });
+        return res.status(400).json({ error: 'Image is required' });
     }
 
-    const product = new Product({ ...req.fields });
+    // Thêm _id của người dùng vào sản phẩm mới
+    const product = new Product({
+      ...req.fields,
+      user: req.user._id,
+    });
+
     await product.save();
     res.json(product);
   } catch (error) {
     console.error(error);
     res.status(400).json(error.message);
+  }
+});
+
+const configApprove = asyncHandler(async (req, res) => {
+  try {
+    const { Approve, ApproveStatus } = req.fields;
+
+    // Validate
+    if (Approve === undefined) {
+      return res.status(400).json({ error: "Approve is required" });
+    }
+    if (ApproveStatus === undefined) {
+      return res.status(400).json({ error: "ApproveStatus is required" });
+    }
+
+    // Tìm và cập nhật sản phẩm
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      { Approve, ApproveStatus },
+      { new: true, runValidators: true }
+    );
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    res.json(product);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+const getProductShopCurrent = asyncHandler(async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const products = await Product.find({ user: userId });
+
+    if (!products) {
+      return res.status(404).json({ error: 'No products found for this user' });
+    }
+
+    res.json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+const getProductShopById = asyncHandler(async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const products = await Product.find({ user: userId });
+
+    if (!products || products.length === 0) {
+      return res.status(404).json({ error: 'No products found for this user' });
+    }
+
+    res.json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -215,6 +283,9 @@ const filterProducts = asyncHandler(async (req, res) => {
   }
 });
 
+
+
+
 export {
   addProduct,
   updateProductDetails,
@@ -226,4 +297,7 @@ export {
   fetchTopProducts,
   fetchNewProducts,
   filterProducts,
+  configApprove,
+  getProductShopCurrent,
+  getProductShopById,
 };
