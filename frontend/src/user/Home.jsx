@@ -4,7 +4,7 @@ import styles from './css/Home.module.css'; // Import CSS module
 import axios from 'axios';
 import GetProducts from '../module/getProducts';
 import renderRatingStars from '../allview/renderRatingStart';
-
+import TopProduct from './topProduct';
 function Home() {
     const [urlpicture, setUrlpicture] = useState('http://localhost:5000');
     const [sanphams, setSanphams] = useState([]);
@@ -15,7 +15,7 @@ function Home() {
         };
         fetchProductList();
     }, []);
-    console.log(sanphams)
+    //console.log(sanphams)
     const webpage = (a, b, c) => {
         // Chuyển hướng ở đây
         window.location.href = '/xemchitiet?' + 'chitietproduct=' + a;
@@ -27,7 +27,7 @@ function Home() {
                     <div>
                         cac event
                     </div>
-
+                    <TopProduct />
                     <div className="container">
                         <label htmlFor="cardTitle"><h2>Gợi ý hôm nay</h2></label>
                         <div className="container d-flex flex-wrap">

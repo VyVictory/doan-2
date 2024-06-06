@@ -22,7 +22,7 @@ const Qldonhang = () => {
         <div className="shadow p-3 mb-5 bg-body rounded" style={{ marginTop: "20px", marginLeft: "10px", marginRight: "10px" }}>
             <Container fluid className='border'>
                 {/* Header */}
-                <Row className="text-white d-flex bg-slate-200" style={{ height: "40px", paddingTop: "4px" }}>
+                <Row className="text-white d-flex bg-slate-200" style={{ height: "40px"}}>
                     <Col className={`${list === 'tatca' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase small fw-bold`}>
                         <NavLink onClick={() => handleSetList("tatca")} className={`${list === 'tatca' ? styles.navlinkactive : styles.navlink}`}>
                             <div className={`${styles.hovertext}`}>Tất Cả</div>
