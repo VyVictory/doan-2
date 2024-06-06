@@ -166,6 +166,7 @@ const removeProduct = asyncHandler(async (req, res) => {
 const fetchProducts = asyncHandler(async (req, res) => {
   try {
     const pageSize = 6;
+    const pageNumber = req.query.pageNumber || 1; 
 
     const keyword = req.query.keyword
       ? {
@@ -177,13 +178,14 @@ const fetchProducts = asyncHandler(async (req, res) => {
       : {};
 
     const count = await Product.countDocuments({ ...keyword });
-    const products = await Product.find({ ...keyword }).limit(pageSize);
+    const skip = pageSize * (pageNumber - 1); // Bỏ qua bao nhiêu sản phẩm tùy thuộc vào trang hiện tại
+    const products = await Product.find({ ...keyword }).skip(skip).limit(pageSize);
 
     res.json({
       products,
-      page: 1,
+      page: pageNumber,
       pages: Math.ceil(count / pageSize),
-      hasMore: false,
+      hasMore: pageNumber < Math.ceil(count / pageSize), // Kiểm tra xem còn trang tiếp theo không
     });
   } catch (error) {
     console.error(error);
