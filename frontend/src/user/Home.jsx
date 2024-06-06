@@ -6,7 +6,7 @@ import GetProduct from '../module/getproduct';
 
 function Home() {
     const [sanpham, setSanpham] = useState([]); // Initialize sanpham as an empty array
-    const [urlpicture, setUrlpicture] = useState('http://localhost:5000/uploads/');
+    const [urlpicture, setUrlpicture] = useState('http://localhost:upload/product/');
     const { sanphams } = GetProduct();
     const webpage = (a, b, c) => {
         // Chuyển hướng ở đây
