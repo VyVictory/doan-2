@@ -17,6 +17,7 @@ import {
   configApprove,
   getProductShopCurrent,
   getProductShopById,
+  getProductByIdWithApproval,
 
 } from "../controllers/productController.js";
 import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
@@ -35,6 +36,7 @@ router.put("/approve/:id", authenticate, authorizeAdmin, formidable(), configApp
 router.route("/shop").get(authenticate,getProductShopCurrent);
 router.get('/shop/:id', getProductShopById);
 
+router.get('/approve/:id', authenticate, authorizeAdmin, getProductByIdWithApproval);
 
 router.get("/top", fetchTopProducts);
 router.get("/new", fetchNewProducts);
