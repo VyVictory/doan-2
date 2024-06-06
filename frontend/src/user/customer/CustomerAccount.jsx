@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import avt_img from '../imguser/bar/user.png';
 import Authmodule from '../../module/authmodule';
 import useProfile from '../../module/profile.module';
+
 function CustomerAccount() {
   const [previewSrc, setPreviewSrc] = useState(null);
   const [profileUpdate, setProfileUpdate] = useState({
@@ -13,23 +14,21 @@ function CustomerAccount() {
   });
   const [img, setImg] = useState(null);
   const { profile } = useProfile();
-  const { message, errors, data, changeAvatar,updateProfile } = Authmodule();
+  const { message, errors, data, changeAvatar, updateProfile } = Authmodule();
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (!loaded && profile.username) {
-      setProfileUpdate(prevProfile => ({
-        ...prevProfile,
+      setProfileUpdate({
         username: profile.username,
         fullname: profile.fullname,
         born: profile.born,
         gender: profile.gender,
         avatar: profile.avatar,
-      }));
+      });
       setLoaded(true);
     }
   }, [profile, loaded]);
-
 
   const previewImage = (event) => {
     const file = event.target.files[0];
@@ -45,19 +44,22 @@ function CustomerAccount() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (img) {
+    
+    if (!img) {
       await changeAvatar(img);
       console.log(message, errors, data);
+      
+      if (data.image) {
+        setProfileUpdate((prevProfile) => ({
+          ...prevProfile,
+          avatar: data.image,
+        }));
+      }
     } else {
       console.log("No image selected");
     }
-    if (profileUpdate, data.image) {
-      setProfileUpdate(prevProfile => ({
-        ...prevProfile,
-        avatar: data.image,
-      }));
-    }
-    updateProfile(profileUpdate);
+    await updateProfile(profileUpdate);
+    console.log(message);
   };
   // Get today's date in YYYY-MM-DD format
   const today = new Date();

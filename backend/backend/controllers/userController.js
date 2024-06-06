@@ -17,6 +17,11 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400).send("User already exists");
     return; // Thêm return để dừng hàm tại đây
   }
+  const usernameExists = await User.findOne({ username });
+  if (usernameExists) {
+    res.status(400).send("User already exists");
+    return; // Thêm return để dừng hàm tại đây
+  }
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -224,7 +229,6 @@ const getUserById = asyncHandler(async (req, res) => {
 
 const updateUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
-
   if (user) {
     user.username = req.body.username || user.username;
     user.email = req.body.email || user.email;

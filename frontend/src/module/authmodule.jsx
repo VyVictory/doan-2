@@ -39,6 +39,7 @@ const Authmodule = () => {
         },
       });
       setData(response.data);
+      setMessage(response.data.message || 'Avatar upload successful!');
     } catch (error) {
       if (error.response) {
         if (error.response.data.errors) {
@@ -52,24 +53,25 @@ const Authmodule = () => {
       }
     }
   };
+
   const updateProfile = async (formdata) => {
     try {
-        const response = await axios.put(`http://localhost:5000/api/users/profile`, formdata, { withCredentials: true });
-        setMessage(response.data.message || 'update successful!');
+      const response = await axios.put('http://localhost:5000/api/users/profile', formdata, { withCredentials: true });
+      setMessage(response.data.message || 'Update successful!');
     } catch (error) {
-        if (error.response) {
-            if (error.response.data.errors) {
-                setErrors(error.response.data.errors);
-            } else {
-                setMessage(error.response.data.message || 'update failed. Please try again.');
-            }
+      if (error.response) {
+        if (error.response.data.errors) {
+          setErrors(error.response.data.errors);
         } else {
-            setMessage('An error occurred. Please try again later.');
+          setMessage(error.response.data.message || 'Update failed. Please try again.');
         }
+      } else {
+        setMessage('An error occurred. Please try again later.');
+      }
     }
-};
+  };
 
-  return { isTokenExist, message, errors,data, handleLogout, changeAvatar ,updateProfile};
+  return { isTokenExist, message, errors, data, handleLogout, changeAvatar, updateProfile };
 };
 
 export default Authmodule;
