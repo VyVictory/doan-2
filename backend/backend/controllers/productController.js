@@ -66,10 +66,12 @@ const configApprove = asyncHandler(async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-
 const getProductByIdWithApproval = asyncHandler(async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).select("name description price category quantity brand image Approve ApproveStatus");
+    const product = await Product.findOne({
+      _id: req.params.id,
+      Approve: true
+    }).select("name description price category quantity brand image Approve ApproveStatus");
 
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
