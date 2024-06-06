@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Navbar, Container, Nav, Dropdown } from 'react-bootstrap';
 import { FaBars, FaShoppingCart, FaBell } from 'react-icons/fa';
 import ProfileAdmin from './ProfileAdmin';
+import useProfile from '../module/profile.module';
+import Authmodule from '../module/authmodule';
 
 function AppNavbar() {
   const [showprofile, setShowprofile] = useState(false);
+  const {profile}= useProfile()
+  const {handleLogout}= Authmodule()
   const submitshowprofile = async (e) => {
     e.preventDefault();
     setShowprofile(!showprofile);
@@ -39,12 +43,12 @@ function AppNavbar() {
             </Dropdown> */}
             <Dropdown>
               <Dropdown.Toggle className="dropdown-toggle d-flex align-items-center hidden-arrow" id="navbarDropdownMenuAvatar">
-                <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" className="rounded-circle h-12 aspect-squre" alt="Avatar" loading="lazy" />
+                <img src={'http://localhost:5000'+profile.avatar} style={{}} className="rounded-circle h-12 aspect-square" alt="Avatar" loading="lazy" />
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={submitshowprofile} href="#">My profile</Dropdown.Item>
-                <Dropdown.Item href="#">Settings</Dropdown.Item>
-                <Dropdown.Item >Logout</Dropdown.Item>
+                {/* <Dropdown.Item href="#">Settings</Dropdown.Item> */}
+                <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>
@@ -55,7 +59,7 @@ function AppNavbar() {
           <div
             className="d-flex justify-content-center align-items-center"
             style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 9999, background:'none', padding: '0px'}}
-          ><ProfileAdmin offprofile={submitshowprofile} />
+          ><ProfileAdmin offprofile={submitshowprofile} profile={profile}/>
 
           </div>
           : ''

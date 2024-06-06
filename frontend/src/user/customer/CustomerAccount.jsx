@@ -85,7 +85,7 @@ function CustomerAccount() {
                 <input type="file" id="fileInput" className='d-none' onChange={previewImage} />
                 <label htmlFor="fileInput">
                   <img
-                    src={previewSrc || avt_img}
+                    src={previewSrc || 'http://localhost:5000'+profile.avatar ||'avt_img'}
                     style={{ height: '100px', width: '100px', cursor: 'pointer', border: '3px solid rgb(194, 225, 255)', borderRadius: '50%' }}
                     alt="Avatar Preview"
                   />

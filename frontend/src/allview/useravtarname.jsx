@@ -21,7 +21,7 @@ const UserAvatarName = ({ profile }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <img src={img_avt} style={{ "height": "30px", "marginLeft": "-4px" }} alt="Avatar" />
+      <img src={'http://localhost:5000'+profile.avatar||img_avt} style={{ "height": "40px",width:'40px', "marginLeft": "-4px",border: '3px solid rgb(194, 225, 255)', borderRadius: '50%'  }} alt="Avatar" />
       <div style={{ "minWidth": "100px" ,padding:'0px'}}>
       {profile.fullname}
       </div>

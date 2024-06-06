@@ -9,7 +9,7 @@ function Customerleftbar() {
         <div >
             <div className='d-flex flex-column'>
                 <div className='d-flex flex-row'>
-                    <img src={img_avt} style={{ "height": "50px", marginRight: '5px' }} alt="Car Icon" />
+                    <img src={'http://localhost:5000'+profile.avatar||img_avt} style={{ "height": "50px", marginRight: '5px' }} alt="Car Icon" />
                     <div className='d-flex align-items-center' style={{ marginLeft: '1%' }}>
                         <div className='d-block'>
                             <div className='form-label m-0' style={{ fontSize: '13px' }}>Tài Khoản Của</div>

@@ -1,28 +1,27 @@
 import React from 'react';
 import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon, MDBBtn, MDBTooltip } from 'mdb-react-ui-kit';
 
-function ProfileAdmin({ offprofile }) {
+function ProfileAdmin({ offprofile ,profile}) {
     return (
         <section style={{ backgroundColor: 'none', padding: '0', background: 'none', }}>
             <MDBContainer >
                 <MDBRow className="justify-content-center align-items-center">
                     <MDBCol style={{ backgroundColor: 'none', minWidth: '1000px', padding: '0' }} lg="6">
                         <MDBCard className="mb-3" style={{ borderRadius: '.5rem', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }}>
-                            <div style={{ width: '100%' }}>
+                            <div style={{ width: '100%',position:'absolute' }}>
                                 <MDBBtn className="btn-close d-flex justify-content-end" color="none" aria-label="Close" onClick={offprofile} style={{ float: 'right' }} />
                             </div>
                             <MDBRow className="g-0">
-                                <MDBCol md="4" className="gradient-custom text-center text-white"
+                                <MDBCol md="4" className="gradient-custom text-center text-white d-flex justify-center items-center"
                                     style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
-                                    <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                                        alt="Avatar" className="my-5" style={{ width: '80px' }} fluid />
-                                    <MDBTypography tag="h5">Marie Horwitz</MDBTypography>
+                                    <MDBCardImage src={'http://localhost:5000'+profile.avatar} style={{height:'80%',border: '3px solid rgb(194, 225, 255)', borderRadius: '50%' }} className="rounded-circle aspect-square" alt="Avatar" loading="lazy"/>
+                                    {/* <MDBTypography tag="h5">Marie Horwitz</MDBTypography>
                                     <MDBCardText>Web Designer</MDBCardText>
-                                    <MDBIcon far icon="edit mb-5" />
+                                    <MDBIcon far icon="edit mb-5" /> */}
                                 </MDBCol>
                                 <MDBCol md="8">
                                     <MDBCardBody className="p-4">
-                                        <MDBTypography tag="h6">Information</MDBTypography>
+                                        <MDBTypography tag="h-6">Thông tin cá nhân</MDBTypography>
                                         <hr className="mt-0 mb-4" />
                                         <MDBRow className="pt-1">
                                             <MDBCol size="6" className="mb-3">
