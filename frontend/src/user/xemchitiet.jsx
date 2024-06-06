@@ -4,44 +4,20 @@ import axios from 'axios';
 import imguser from './imguser/bar/user.png'
 import useProductData from '../module/Productmodule';
 import GetProduct from '../module/getproduct';
+import renderRatingStars from '../allview/renderRatingStart';
 function Xemchitiet() {
-    const [urlpicture, setUrlpicture] = useState('http://localhost:5000/uploads/');
-/*note get sanpham and get sanphams
-    const [sanphams, setSanphams] = useState([]); // Initialize sanpham as an empty array
-    const [sanpham, setSanpham] = useState([])
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const chitietproduct = urlParams.get('chitietproduct');
-        if (chitietproduct) {
-            // Xử lý logic với giá trị chitietproduct ở đây
-            axios.get('http://localhost:3000/product/' + chitietproduct)
-                .then(response => {
-                    if (response.data) {
-                        setSanpham(response.data);
-                    } else {
-                        alert('No data found');
-                    }
-                })
-                .catch(err => console.log(err));
-
-            console.log(chitietproduct);
-        }
-    }, []);
-    useEffect(() => {
-        axios.get('http://localhost:3000/product/')
-            .then(response => {
-                if (response.data) {
-                    setSanphams(response.data);
-                } else {
-                    alert('No data found');
-                }
-            })
-            .catch(err => console.log(err));
-    }, []); // Empty dependency array to run once on component mount*/
+    const [urlpicture, setUrlpicture] = useState('http://localhost:5000');
     const urlParams = new URLSearchParams(window.location.search);
     const chitietproduct = urlParams.get('chitietproduct');
-    const {sanpham } = GetProduct(chitietproduct);
-
+    const [sanpham, setSanpham] = useState([]);
+    useEffect(() => {
+        const fetchProductList = async () => {
+            const { sanpham } = await GetProduct();
+            setSanpham(sanpham);
+        };
+        fetchProductList();
+    }, []);
+    console.log(sanpham)
     const webpage = (a, b, c) => {
         // Chuyển hướng ở đây
         window.location.href = '/xemchitiet?' + 'chitietproduct=' + a;
@@ -56,7 +32,7 @@ function Xemchitiet() {
                         <div style={{ flex: 2 }}>
                             <div style={{ backgroundColor: 'lightgray' }} className="bg-light border p-2 shadow-sm rounded">
                                 <div className='d-flex justify-content-center'>
-                                    <img style={{ maxWidth: '400px', minWidth: '400px', maxHeight: '400px' }} src={urlpicture + sanpham.hinh} className="p-1 border" alt={urlpicture + sanpham.hinh} />
+                                    <img style={{ maxWidth: '400px', minWidth: '400px', maxHeight: '400px' }} src={urlpicture + sanpham.image} className="p-1 border" alt={urlpicture + sanpham.image} />
                                 </div>
                             </div>
                         </div>
@@ -65,8 +41,11 @@ function Xemchitiet() {
                             {/* Phần thẻ div có thể cuộn */}
                             <div style={{ backgroundColor: 'lightblue' }} className="bg-light border p-4 shadow-sm rounded    ">
                                 {/* Nội dung dài để tạo ra thanh cuộn */}
-                                <h5>Chính Hãng,...</h5>
-                                <h3>{sanpham.ten}</h3>
+                                {/* <h5>Chính Hãng,...</h5> */}
+                                <h3>{sanpham.name}</h3>
+                                <div className='d-flex flex-row align-items-center' style={{ marginLeft: '5px' }}>
+                                    {renderRatingStars(sanpham.rating, 15, 15)}
+                                </div>
                             </div>
                         </div>
                         <div style={{ flex: 1.5 }}>
@@ -79,13 +58,11 @@ function Xemchitiet() {
                                         <div>
                                             Shop Name
                                         </div>
-                                        <div className='d-flex flex-row ' style={{ fontSize: '14px' }}>
+                                        <div className='d-flex flex-row align-items-center' style={{ fontSize: '14px' }}>
                                             <div>
                                                 Offical
                                             </div>
-                                            <div style={{ marginLeft: '5px' }}>
-                                                start
-                                            </div>
+
                                             <div className='' style={{ marginLeft: '5px' }}>
                                                 Đánh Giá
                                             </div>

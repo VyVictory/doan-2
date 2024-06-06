@@ -1,4 +1,4 @@
-import styles from './css/seller.module.css'; // Import CSS modu
+import styles from './css/seller.module.css'; // Import CSS modules
 import stylecenter from './css/sellercenter.module.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -100,7 +100,7 @@ const Qlsp = () => {
                                         <input type="search" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Search Mockups, Logos, Design Templates..." required />
                                         <button type="submit" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                             </svg>
                                             <span class="sr-only">Search</span>
                                         </button>
@@ -128,43 +128,37 @@ const Qlsp = () => {
                                                 <th>Phân Loại Hàng</th>
                                                 <th>Giá</th>
                                                 <th>Kho</th>
-                                                <th>Doanh Số</th>
-                                                <th>Thao Tác</th>
+                                                <th>Đã Bán</th>
+                                                <th>Trạng Thái</th>
+                                                <th style={{ minWidth: "60px" }}>Hành Động</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            {
-                                                sanpham.map(e => (
-                                                    <tr key={e.id} style={{ fontSize: '12px' }}>
-                                                        <td style={cellStyle}>{e.ten}<div style={{ fontSize: '10px', color: 'gray' }}>{e.mota}</div></td>
-                                                        <td style={cellStyle}>objectid:{e.loai}</td>
-                                                        <td style={cellStyle}>{e.gia.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span></td>
-                                                        <td style={cellStyle}>{e.soluong}</td>
-                                                        <td style={cellStyle}>chưa cộng</td>
-                                                        <td className='text-center' style={{ cellStyle, width: "180px" }}>
-                                                            <button type="button" class="btn btn-outline-success" style={getButtonStyle(e.hidden)}> {/* onClick={updatesanphamhidden(e._id)} */}
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
-                                                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"></path>
-                                                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"></path>
+                                        <tbody className='text-center' style={{ wordBreak: 'break-all' }}>
+                                            {sanpham.map((product, index) => (
+                                                <tr key={index}>
+                                                    <td style={cellStyle}>{product.ten}</td>
+                                                    <td>{product.danhmuc}</td>
+                                                    <td>{product.gia}</td>
+                                                    <td>{product.soluongton}</td>
+                                                    <td>{product.soluongban}</td>
+                                                    <td>
+                                                        <button style={getButtonStyle(product.hidden)}>{product.hidden == "" ? "Còn Hàng" : "Hết Hàng"}</button>
+                                                    </td>
+                                                    <td>
+                                                        <button style={{ "border": "none" }}>
+                                                            <NavLink to={`/kenhnguoiban/quanlysanpham/thaydoisanpham/${product._id}`}>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l2.65 2.651-10.5 10.5H6.3v-2.651l10.5-10.5z" />
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.487 7.137 17.862 5.512a2.25 2.25 0 0 0-3.181 0l-10.5 10.5a2.25 2.25 0 0 0-.659 1.591V18.75a.75.75 0 0 0 .75.75h2.147a2.25 2.25 0 0 0 1.591-.659l10.5-10.5a2.25 2.25 0 0 0 0-3.181z" />
                                                                 </svg>
-                                                            </button>
-                                                            <button type="button" class="btn btn-outline-success" style={{ "margin-right": "10px" }}>
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
-                                                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"></path>
-                                                                </svg>
-                                                            </button>
-                                                            <button type="button" class="btn btn-outline-danger" >
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"></path>
-                                                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"></path>
-                                                                </svg>
-                                                            </button>
-                                                        </td>
-
-                                                    </tr>
-                                                ))
-                                            }
+                                                            </NavLink>
+                                                        </button>
+                                                        <button style={{ "border": "none" }}>
+                                                            <img src={trash_0} alt="Trash" style={{ width: '24px', height: '24px' }} />
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
                                         </tbody>
                                     </Table>
                                 </Col>
@@ -173,8 +167,8 @@ const Qlsp = () => {
                     </Col>
                 </Row>
             </Container>
-        </div >
-    );
+        </div>
+    )
 }
 
 export default Qlsp;
