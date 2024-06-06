@@ -39,7 +39,7 @@ export default function Listproduct() {
                             <MDBCardBody className="p-4 text-black">
                                 <div className="text-center pt-3 pb-2 d-flex flex-row align-items-center justify-content-center">
                                     <img style={{ marginRight: '20px' }} src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp" alt="Check" height="50" width="50" />
-                                    <h2 className="my-4 align-middle">Danh Sách Tài Khoản</h2>
+                                    <h2 className="my-4 align-middle">Danh Sách Sản Phẩm Chưa Duyệt</h2>
                                 </div>
                                 <MDBTable className="text-white mb-0">
                                     <MDBTableHead>
