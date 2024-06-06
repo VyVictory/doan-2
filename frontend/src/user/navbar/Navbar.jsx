@@ -58,10 +58,10 @@ const NavigationBar = () => {
     imgSrc: "path/to/your/image"
   };
   return (
-    <div style={{ "marginLeft": "0", "marginRight": "0", "width": "99.236438799999999%" }}>
+    <div style={{ "marginLeft": "0", "marginRight": "0", "width": "99.236438799999999%" }} className='border-bottom'>
       <div className={`${styles.barcustom, styles.barcontainer} row shadow-sm p-3  bg-body rounded`}>
         {/* left bar*/}
-        <div className={`${styles.barcustom} col-sm-2 `}>
+        <div onClick={(e) => { handleClick('home') }} className={`${styles.barcustom} col-sm-2 `}>
           <img src={logo} alt="Logo" className={`${styles.logo}`} />
         </div>
         {/* content bar*/}

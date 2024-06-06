@@ -31,9 +31,24 @@ function RegistrationPage({ onClose, onL }) {
       gender: gender,
       born: born,
     });
+    console.log(formData);
     await registerfunction(formData);
   };
+  const today = new Date();
+  const maxDate = new Date(today.setDate(today.getDate() - 1)).toISOString().split('T')[0];
 
+  const handleDateChange = (e) => {
+    const selectedDate = new Date(e.target.value);
+    const currentDate = new Date();
+
+    if (selectedDate > currentDate) {
+      // If the selected date is in the future, set it to the current date
+      e.target.value = maxDate;
+      setBorn(maxDate);
+    } else {
+      setBorn(e.target.value);
+    }
+  };
 
   return (
     <div style={{
@@ -131,7 +146,7 @@ function RegistrationPage({ onClose, onL }) {
                     <div className="form-group mb-2 bd-highlight">
                       <label htmlFor="phone">Số Điện Thoại:</label>
                       <input
-                        type="text"
+                        type="number"
                         className="form-control"
                         id="phone"
                         placeholder="nhập số điện thoại"
@@ -162,9 +177,14 @@ function RegistrationPage({ onClose, onL }) {
                         id="born"
                         placeholder="nhập ngày sinh"
                         value={born}
-                        onChange={(e) => setBorn(e.target.value)}
+                        onChange={(e) => {
+                          setBorn(e.target.value); // Set the born state
+                          handleDateChange(e); // Invoke handleDateChange function
+                        }}
+                        max={maxDate}
                       />
                     </div>
+
                   </div>
                   <div className='d-flex flex-column p-3 pb-0'>
                     <button onClick={handleSubmit} type="submit" className="btn btn-success btn-block">Đăng Ký</button>
