@@ -23,10 +23,10 @@ function Home() {
     return (
         <div className="Home">
             <div className="d-flex">
-                <div className="container mt-1 bg-light border p-2 shadow-sm mb-5 bg-body rounded">
-                    <div>
+                <div className="container mt-1 bg-transparent  p-2 mb-5 bg-body rounded">
+                    {/* <div>
                         cac event
-                    </div>
+                    </div> */}
                     <TopProduct />
                     <div className="container">
                         <label htmlFor="cardTitle"><h2>Gợi ý hôm nay</h2></label>
@@ -36,8 +36,8 @@ function Home() {
                                     <button
                                         key={e._id}
                                         onClick={() => webpage(e._id, e.name, 0)}
-                                        className={`${styles.hoversp} container card m-2 d-flex justify-center`}
-                                        style={{ width: "12rem", maxWidth: "12rem", overflow: 'hidden' }}
+                                        className={`${styles.hoversp} container card m-2 d-flex justify-center `}
+                                        style={{ width: "12rem", maxWidth: "12rem",maxHeight:'360px', overflow: 'hidden' ,backgroundColor:'white'}}
                                     >
                                         <div className='card-img-top d-flex justify-center h-140' style={{ height: '140px' }}>
                                             <img

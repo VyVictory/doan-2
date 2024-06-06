@@ -31,7 +31,7 @@ export default function Listproduct() {
         await window.location.reload();
     };
     return (
-        <section className="gradient-custom-2 vh-100">
+        <section className="gradient-custom-2">
             <MDBContainer className="py-5 h-100">
                 <MDBRow className="d-flex justify-content-center align-items-center">
                     <MDBCol md="12" xl="10">

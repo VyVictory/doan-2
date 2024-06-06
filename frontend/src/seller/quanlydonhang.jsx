@@ -33,11 +33,11 @@ const Qldonhang = () => {
                             <div className={`${styles.hovertext}`}>Chờ Xác Nhận</div>
                         </NavLink>
                     </Col>
-                    <Col className={`${list === 'cholayhang' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase small fw-bold`}>
+                    {/* <Col className={`${list === 'cholayhang' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase small fw-bold`}>
                         <NavLink onClick={() => handleSetList("cholayhang")} className={`${list === 'cholayhang' ? styles.navlinkactive : styles.navlink}`}>
                             <div className={`${styles.hovertext}`}>Chờ Lấy Hàng</div>
                         </NavLink>
-                    </Col>
+                    </Col> */}
                     <Col className={`${list === 'danggiao' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase small fw-bold`}>
                         <NavLink onClick={() => handleSetList("danggiao")} className={`${list === 'danggiao' ? styles.navlinkactive : styles.navlink}`}>
                             <div className={`${styles.hovertext}`}>Đang Giao</div>
