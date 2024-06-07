@@ -6,6 +6,7 @@ import {
   removeFromCart,
   updateCart,
   getUserCart,
+  checkoutCart,
 
 } from "../controllers/cartController.js";
 
@@ -23,5 +24,6 @@ router.put("/update", authenticate, updateCart);
 // Lấy giỏ hàng của người dùng
 router.get("/get", authenticate, getUserCart);
 
+router.post("/checkout", authenticate, checkoutCart);
 
 export default router;
