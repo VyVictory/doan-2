@@ -50,7 +50,6 @@ const NavigationBar = () => {
     } else if (a == 'thongbao') {
       window.location.href = '/customer/notification';
     } else {
-
     }
   }
   const profiles = {

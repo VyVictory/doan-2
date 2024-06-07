@@ -66,7 +66,7 @@ function EventProductNew() {
                                 <NavLink
 
                                     to={`/xemchitiet?chitietproduct=${e._id}`}
-                                    className={`${styles.hoversp} container  card m-2 d-flex p-0 no-underline`}
+                                    className={`${styles.hoversp} container  card m-2 d-flex justify-center  p-0 no-underline`}
                                     style={{ width: `${100 / sanphams.length}%`, overflow: 'hidden', backgroundColor: 'white' }}
                                 >
                                     <div className='card-img-top d-flex justify-center h-140' style={{ height: '140px', width: '11.5rem' }}>
@@ -109,7 +109,7 @@ function EventProductNew() {
                                         <div className='d-flex flex-row justify-center mt-1'>
                                             {renderRatingStars(e.rating, 15, 15)}
                                         </div>
-                                        <h5 className="card-text mb-2 text-truncate" style={{ maxWidth: '130px' }}>
+                                        <h5 className="card-text mb-2 text-truncate text-center" style={{ maxWidth: '130px' }}>
                                             {e.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span>
                                         </h5>
                                     </div>

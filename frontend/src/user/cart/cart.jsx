@@ -1,9 +1,73 @@
 import React, { useEffect, useState, useRef } from 'react';
 import img_search from '../imguser/bar/magnifying-glass.png';
 import img_voucher from '../../seller/imgseller/voucher.png';
+import { GetCart } from '../../module/getCart';
+import { deleteProductCartById } from '../../module/deleteProductCartById';
+import EventProductNew from '../eventProductNew';
+
+import styles from '../css/Navber.module.css'
 function Cart() {
+    const [urlpicture, setUrlpicture] = useState('http://localhost:5000');
     const [isFixed, setIsFixed] = useState(true);
     const YcheckRef = useRef(null);
+    const [cart, setCart] = useState(null);
+    const [selectedIds, setSelectedIds] = useState([]);
+    const [selectAllChecked, setSelectAllChecked] = useState(false);
+    const handleChange = (id) => {
+        setSelectedIds(prevIds => {
+            if (prevIds.includes(id)) {
+                // Nếu id đã tồn tại trong mảng, loại bỏ nó
+                return prevIds.filter(itemId => itemId !== id);
+            } else {
+                // Nếu id chưa tồn tại trong mảng, thêm vào
+                return [...prevIds, id];
+            }
+        });
+    };
+
+    useEffect(() => {
+        const fetchCart = async () => {
+            const cartData = await GetCart();
+            setCart(cartData);
+        };
+
+        fetchCart();
+    }, []);
+    function handleClickLink(a) {
+        window.location.href = '/xemchitiet?chitietproduct=' + a;
+    }
+    ///
+
+    const handleSelectAll = () => {
+        setSelectAllChecked(prevState => !prevState);
+        setSelectedIds(prevIds => {
+            if (!selectAllChecked) {
+                return cart.cartItems.map(item => item.product._id);
+            } else {
+                return [];
+            }
+        });
+    };
+    const handleDeleteProductCartByid = async (id) => {
+        try {
+            await deleteProductCartById({ idproduct: id });
+            window.alert('Xóa sản phẩm khỏi giỏ thành công!');
+            window.location.href = '/cart';
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleDeleteProductCartSelect = async () => {
+        try {
+            for (const id of selectedIds) {
+                await handleDeleteProductCartByid(id);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+        window.alert('Xóa sản phẩm khỏi giỏ thành công!');
+    };
     useEffect(() => {
         const handleScroll = () => {
             if (YcheckRef.current) {
@@ -26,7 +90,7 @@ function Cart() {
             position: 'fixed', bottom: '0', left: '50%', transform: 'translateX(-50%)', zIndex: '1000', width: '80%', height: '150px',
         } : { width: '100%', };
     return (
-        <div>
+        <div className='pb-5'>
             <div className="p-3 border d-flex flex-row justify-content-center align-items-center" style={{ height: '6%' }}>
                 <div style={{ fontSize: '30px', marginRight: '15%' }}>
                     Giỏ Hàng
@@ -41,12 +105,71 @@ function Cart() {
                 </div>
             </div>
             <div className="container p-0" style={{ width: '80%', height: 'auto', marginBottom: '20px' }}>
-                <div className="d-flex flex-column bd-highlight" style={{ backgroundColor: 'white', width: '100%', height: '80%' }}>
-                    {/* Placeholder content for demonstration */}
-                    {Array.from({ length: 15 }).map((_, index) => (
-                        <div key={index} style={{ marginTop: '20px' }}>Cart Items</div>
-                    ))}
+                <div className=" mt-2 mb-2 rounded d-flex flex-row bd-highlight items-center" style={{ backgroundColor: 'white', width: '100%', height: '40px' }}>
+                    <div className='d-flex justify-center' style={{ width: '40%' }}>
+                        Sản phẩm
+                    </div>
+                    <div className='d-flex justify-center' style={{ width: '15%' }}>
+                        Đơn giá
+                    </div>
+                    <div className='d-flex justify-center' style={{ width: '15%' }}>
+                        Số lượng
+                    </div>
+                    <div className='d-flex justify-center' style={{ width: '15%' }}>
+                        Thành tiền
+                    </div>
+                    <div className='d-flex justify-center' style={{ width: '15%' }}>
+                        Thao tác
+                    </div>
                 </div>
+                {cart && cart.cartItems && cart.cartItems.map((item, index) => (
+                    <div key={index} className=" mt-2 mb-2 rounded d-flex flex-row bd-highlight items-center p-2" style={{ backgroundColor: 'white', width: '100%', height: 'auto' }}>
+
+                        <div className='d-flex flex-row items-center' style={{ width: '40%' }}>
+                            <input
+                                style={{ width: '30px', height: '30px' }}
+                                class="form-check-input ml-2 mr-2"
+                                type="checkbox"
+                                id={"checkbox" + index}
+                                checked={selectedIds.includes(item.product._id)}
+                                onChange={() => handleChange(item.product._id)} // Truyền ID của sản phẩm vào hàm handleChange
+                            />
+                            <div className='h-140' style={{ height: '140px' }}>
+                                <img
+                                    style={{ maxHeight: '140px' }}
+                                    src={urlpicture + item.product.image}
+                                    className="p-1"
+                                />
+                            </div>
+                        </div>
+                        <div className='d-flex justify-center' style={{ width: '15%' }}>
+                            {(item.product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span>
+                        </div>
+                        <div className='d-flex justify-center' style={{ width: '15%' }}>
+                            {item.quantity}
+                        </div>
+                        <div className='d-flex justify-center' style={{ width: '15%' }}>
+
+                            {(item.quantity * item.product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span>
+                        </div>
+                        <div className='d-flex justify-center' style={{ width: '15%' }}>
+                            <button
+                                onClick={() => {
+                                    handleDeleteProductCartByid(item.product._id);
+                                }}
+                                title="Xóa khỏi giỏ hàng " className='border rounded w-10 h-10 d-flex items-center justify-center mr-2'>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="size-6">
+                                    <path d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+                                </svg>
+                            </button>
+                            <button onClick={(e) => { handleClickLink(item.product._id) }} title="Xem Chi tiết" className='border rounded w-10 h-10 d-flex items-center justify-center'>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="size-6">
+                                    <path d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
             <div style={{ width: '100%', height: '150px' }}>
                 <div className="container p-0 " style={{ width: '80%', height: 'auto' }}>
@@ -70,14 +193,23 @@ function Cart() {
                                     </div> */}
                                         <div className='d-flex flex-row align-items-center p-1' style={{ height: '100%' }}>
                                             <div className='' style={{ width: '90%', height: '100%', paddingLeft: '2%', display: 'flex', flex: 'row', alignItems: 'center' }}>
-                                                <div style={{ marginRight: '1%' }} class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" style={{ width: '30px', height: '30px' }} id="flexCheckDefault"></input>
-                                                </div>
-                                                <label style={{ marginRight: '10px' }} class="form-check-label text-nowrap" for="flexCheckDefault">
+                                                <input
+                                                    style={{ width: '30px', height: '30px' }}
+                                                    type="checkbox"
+                                                    class="form-check-input mr-2"
+                                                    id="selectAll"
+                                                    checked={selectAllChecked}
+                                                    onChange={handleSelectAll}
+                                                />
+                                                <label className="form-check-label mr-2" htmlFor="selectAll">
                                                     Chọn tất cả
                                                 </label>
                                                 <div style={{ marginRight: '10px' }}>
-                                                    <button type="button" class="btn btn-outline-danger">Xóa</button>
+                                                    <button
+                                                        onClick={() => {
+                                                            handleDeleteProductCartSelect();
+                                                        }}
+                                                        type="button" class="btn btn-outline-danger">Xóa</button>
                                                 </div>
                                             </div>
 
@@ -106,8 +238,8 @@ function Cart() {
             </div>
             <div ref={YcheckRef} className="Ycheck" >
             </div>
-            <div className='pt-3' style={{ height: '500px', backgroundColor: 'transparent' }}>
-                CÓ THỂ BẠN CŨNG THÍCH
+            <div className="container mt-4 pl-0 pb-1 bg-white rounded" style={{ width: '80%' }}>
+                <EventProductNew />
             </div>
 
 
