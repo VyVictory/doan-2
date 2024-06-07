@@ -35,7 +35,7 @@ function Routerr() {
         }
     }, []);
     return (
-        <div style={{ backgroundColor: '#F7F7F7', minHeight: '729px' }}>
+        <div  style={{ backgroundColor: '#F1F1F1', minHeight: '729px' }}>
             {
                 adminpage && isTokenExist ?
                     <RouterAdmin/>

@@ -167,7 +167,7 @@ const removeProduct = asyncHandler(async (req, res) => {
 
 const fetchProducts = asyncHandler(async (req, res) => {
   try {
-    const pageSize = 6;
+    const pageSize =30;
     const pageNumber = req.query.pageNumber || 1; 
 
     const keyword = req.query.keyword
@@ -214,9 +214,8 @@ const fetchAllProducts = asyncHandler(async (req, res) => {
   try {
     const products = await Product.find({})
       .populate("category")
-      .limit(12)
+      .limit()
       .sort({ createAt: -1 });
-
     res.json(products);
   } catch (error) {
     console.error(error);
@@ -268,7 +267,7 @@ const addProductReview = asyncHandler(async (req, res) => {
 
 const fetchTopProducts = asyncHandler(async (req, res) => {
   try {
-    const products = await Product.find({}).sort({ rating: -1 }).limit(4);
+    const products = await Product.find({}).sort({ rating: -1 }).limit(6);
     res.json(products);
   } catch (error) {
     console.error(error);
