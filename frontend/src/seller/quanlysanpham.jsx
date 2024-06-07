@@ -20,7 +20,7 @@ const Qlsp = () => {
         maxWidth: '200px',
         wordWrap: 'break-word',
     };
-    const [sanpham, setSanpham] = useState([]); // Initialize sanpham as an empty array
+    const [sanpham, setSanpham] = useState([]); // Initialize sanpham as an empty arrayy
     useEffect(() => {
         axios.get('http://localhost:5000/product')
             .then(response => {

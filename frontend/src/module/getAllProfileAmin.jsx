@@ -20,7 +20,7 @@ const GetAllProfileAmin = () => {
             }
         };
         fetchListUser();
-    }, []); // Empty dependency array to run effect only once
+    }, []); // Empty dependency array to run effect only onceee
 
     return { message, listUser };
 };

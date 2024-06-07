@@ -91,7 +91,7 @@ function Cart() {
                     setIsFixed(false);
                 } else {
                     setIsFixed(true);
-                }
+                } 
             }
         };
         window.addEventListener('scroll', handleScroll);

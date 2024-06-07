@@ -14,7 +14,7 @@ function RegistrationPage({ onClose, onL }) {
   const [gender, setGender] = useState('male');
   const [phone, setPhone] = useState('');
   const [born, setBorn] = useState('');
-  //form data************************************************
+  //form data***********************************************
 
   const { registerfunction, message } = axioslogin(); // Corrected from axioslogin to Authmodule
   const [messageregister, setMessageregister] = useState('');
