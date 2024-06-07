@@ -11,6 +11,7 @@ import {
   findOrderById,
   markOrderAsPaid,
   markOrderAsDelivered,
+
 } from "../controllers/orderController.js";
 
 import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
@@ -29,5 +30,6 @@ router.route("/:id/pay").put(authenticate, markOrderAsPaid);
 router
   .route("/:id/deliver")
   .put(authenticate, authorizeAdmin, markOrderAsDelivered);
+
 
 export default router;
