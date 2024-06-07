@@ -3,33 +3,41 @@ import React, { useState, useEffect } from 'react';
 import styles from './css/Home.module.css'; // Import CSS module
 import axios from 'axios';
 import renderRatingStars from '../allview/renderRatingStart';
-import GetProductsTop from '../module/getProductsTop';
+import { GetProductsTop } from '../module/getProductsTop'; // Correct the import statement
+
 function TopProduct() {
     const [urlpicture, setUrlpicture] = useState('http://localhost:5000');
     const [sanphams, setSanphams] = useState([]);
+
     useEffect(() => {
         const fetchProductList = async () => {
-            const { sanphams } = await GetProductsTop();
-            setSanphams(sanphams);
+            try {
+                const { sanphams } = await GetProductsTop(); // Call the GetProductsTop function
+                setSanphams(sanphams);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
         };
+
         fetchProductList();
     }, []);
-    console.log(sanphams)
-    const webpage = (a, b, c) => {
-        // Chuyển hướng ở đây
-        window.location.href = '/xemchitiet?' + 'chitietproduct=' + a;
+
+    const webpage = (id, name, index) => {
+        // Navigate here
+        window.location.href = `/xemchitiet?chitietproduct=${id}`;
     };
+
     return (
         <div className="container">
             <label htmlFor="cardTitle"><h2>Sản Phẩm Hot</h2></label>
-            <div className="container d-flex flex-wrap">
+            <div className="container d-flex flex-wrap d-flex justify-center items-center">
                 {sanphams.length > 0 ? (
                     sanphams.map((e) => (
                         <button
                             key={e._id}
                             onClick={() => webpage(e._id, e.name, 0)}
                             className={`${styles.hoversp} container card m-2 d-flex justify-center`}
-                            style={{ width: "12rem", maxWidth: "12rem", overflow: 'hidden' }}
+                            style={{ width: "12rem", maxWidth: "12rem", overflow: 'hidden',backgroundColor:'white' }}
                         >
                             <div className='card-img-top d-flex justify-center h-140' style={{ height: '140px' }}>
                                 <img
@@ -82,10 +90,7 @@ function TopProduct() {
                 )}
             </div>
         </div>
-
     );
 }
 
 export default TopProduct;
-
-

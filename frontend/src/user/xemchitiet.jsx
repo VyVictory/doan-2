@@ -5,7 +5,7 @@ import imguser from './imguser/bar/user.png'
 import useProductData from '../module/Productmodule';
 import GetProduct from '../module/getproduct';
 import renderRatingStars from '../allview/renderRatingStart';
-import { Border } from 'react-bootstrap-icons';
+import TopProduct from './topProduct';
 function Xemchitiet() {
     const [urlpicture, setUrlpicture] = useState('http://localhost:5000');
     const urlParams = new URLSearchParams(window.location.search);
@@ -73,10 +73,8 @@ function Xemchitiet() {
                                                 <div style={{ color: 'gray' }}>Mô tả sản phẩm:</div>
                                                 <div>{sanpham.description}</div>
                                             </div>
-                                            <div className=' p-3 bg-white rounded'>
-                                                {Array.from({ length: 15 }).map((_, index) => (
-                                                    <div key={index} style={{ marginTop: '20px' }}>Cart Items</div>
-                                                ))}
+                                            <div className=' p-3 bg-white rounded '>
+                                                <TopProduct />
                                             </div>
                                             {/* Placeholder content for demonstration */}
 
@@ -114,7 +112,7 @@ function Xemchitiet() {
                                         đã mua hàng
                                     </div>
                                     <div className='mt-2 ml-1 mb-1'>
-                                        Đây có thể là một sản phẩm tuyệt vời dành cho bạn 
+                                        Đây có thể là một sản phẩm tuyệt vời dành cho bạn
                                     </div>
                                 </div>
                                 {/* <div>Tổng quan</div> */}
