@@ -27,47 +27,67 @@ function calcPrices(orderItems) {
       totalPrice,
     };
   }
-  
+
+
   const checkoutCart = asyncHandler(async (req, res) => {
     try {
-        const { shippingAddress, paymentMethod, items, totalPrice, taxPrice, shippingPrice } = req.body;
-
-        // Tạo một mảng các đối tượng đặt hàng từ các thông tin được cung cấp
-        const dbOrderItems = items.map((item) => {
-            return {
-                product: item._id, // ID của sản phẩm
-                name: item.name,
-                qty: item.quantity,
-                price: item.price,
-                image: item.image
-            };
+      const { shippingAddress, paymentMethod, items } = req.body;
+  
+      // Lấy giỏ hàng của người dùng
+      const cart = await Cart.findOne({ user: req.user._id });
+  
+      if (!cart || items.length === 0) {
+        return res.status(400).json({ error: "No items in the cart" });
+      }
+  
+      // Tạo một mảng các đối tượng đặt hàng từ các thông tin được cung cấp
+      const dbOrderItems = [];
+  
+      // Duyệt qua mỗi sản phẩm trong mảng items và tìm thông tin từ cơ sở dữ liệu
+      for (const item of items) {
+        const product = await Product.findById(item._id);
+        if (!product) {
+          return res.status(404).json({ error: `Product not found: ${item._id}` });
+        }
+  
+        // Thêm thông tin sản phẩm vào mảng đặt hàng
+        dbOrderItems.push({
+          product: product._id, // ID của sản phẩm
+          name: product.name,
+          price: product.price,
+          quantity: item.quantity,
+          image: product.image
         });
-
-        // Tạo một đơn hàng mới từ thông tin được cung cấp và tính toán
-        const order = new Order({
-            orderItems: dbOrderItems,
-            user: req.user._id,
-            shippingAddress,
-            paymentMethod,
-            itemsPrice: totalPrice - taxPrice - shippingPrice, // Tính toán giá sản phẩm từ tổng tiền, thuế và phí vận chuyển
-            taxPrice,
-            shippingPrice,
-            totalPrice,
-        });
-
-        // Lưu đơn hàng vào cơ sở dữ liệu
-        const createdOrder = await order.save();
-
-        // Xóa giỏ hàng sau khi tạo đơn hàng
-        await Cart.deleteOne({ user: req.user._id });
-
-        // Trả về đơn hàng được tạo
-        res.status(201).json(createdOrder);
+      }
+  
+      // Tính toán tổng số tiền, thuế, và phí vận chuyển
+      const { itemsPrice, taxPrice, shippingPrice, totalPrice } = calcPrices(dbOrderItems);
+  
+      // Tạo một đơn hàng mới từ thông tin được cung cấp và tính toán
+      const order = new Order({
+        items: dbOrderItems,
+        user: req.user._id,
+        shippingAddress,
+        paymentMethod,
+        itemsPrice,
+        taxPrice,
+        shippingPrice,
+        totalPrice,
+      });
+  
+      // Lưu đơn hàng vào cơ sở dữ liệu
+      const createdOrder = await order.save();
+  
+      // Xóa giỏ hàng sau khi tạo đơn hàng
+      await Cart.deleteOne({ user: req.user._id });
+  
+      // Trả về đơn hàng được tạo
+      res.status(201).json(createdOrder);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
-});
-
+  });
+  
 
 const addToCart = asyncHandler(async (req, res) => {
     const { productId, quantity } = req.body;

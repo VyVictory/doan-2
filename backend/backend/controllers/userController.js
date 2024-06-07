@@ -285,6 +285,33 @@ const updateUserById = asyncHandler(async (req, res) => {
   }
 });
 
+const changePassword = asyncHandler(async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const userId = req.user._id;
+
+  try {
+    // Tìm người dùng trong cơ sở dữ liệu
+    const user = await User.findById(userId);
+
+    // Kiểm tra xem mật khẩu hiện tại có đúng không
+    const isPasswordMatched = await bcrypt.compare(currentPassword, user.password);
+    if (!isPasswordMatched) {
+      return res.status(400).json({ error: "Current password is incorrect" });
+    }
+
+    // Mã hóa mật khẩu mới
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Cập nhật mật khẩu mới cho người dùng
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ message: "Password updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export {
   registerUser,
   loginUser,
@@ -298,4 +325,5 @@ export {
   updateUserById,
   getShop,
   updateShop,
+  changePassword,
 };

@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  
   registerUser,
   loginUser,
   logoutCurrentUser,
@@ -12,6 +13,7 @@ import {
   updateUserActiveStatus,
   getShop,
   updateShop,
+  changePassword,
   
 } from "../controllers/userController.js";
 
@@ -26,6 +28,7 @@ router
 
 router.post("/auth", loginUser);
 router.post("/logout", logoutCurrentUser);
+router.post("/auth/changepassword", authenticate, changePassword);
 router.get("/shop", authenticate ,getShop);
 router.put("/shop", authenticate,updateShop)
 
