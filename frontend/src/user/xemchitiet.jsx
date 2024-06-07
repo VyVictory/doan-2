@@ -58,7 +58,7 @@ function Xemchitiet() {
 
                                 <div className='container p-0' style={{ flex: 3 }}>
                                     {/* Phần thẻ div có thể cuộn */}
-                                    <div style={{ backgroundColor: 'lightblue', height: '570px', overflow: 'hidden' }} className="bg-transparent pl-2 pr-2 ">
+                                    <div style={{ backgroundColor: 'lightblue', height: '570px', overflow: 'hidden' }} className=" bg-transparent pl-2 pr-2 ">
                                         <div style={{ height: '100%', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }} className="scrollable-content ">
                                             {/* Nội dung dài để tạo ra thanh cuộn */}
                                             <div className=' p-3 bg-white rounded mb-3 mt-4'>
@@ -93,7 +93,7 @@ function Xemchitiet() {
                                 }
                                 `}
                         </style> */}
-                            <div className='mt-4 p-3 bg-white rounded ml-5 mr-5 ' >
+                            <div className='mt-4 p-3 bg-white rounded ml-5 mr-2 ' >
                                 <h5>
                                     Khách hàng và đánh giá
                                 </h5>
