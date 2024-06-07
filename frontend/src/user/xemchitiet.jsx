@@ -6,6 +6,8 @@ import useProductData from '../module/Productmodule';
 import GetProduct from '../module/getproduct';
 import renderRatingStars from '../allview/renderRatingStart';
 import TopProduct from './topProduct';
+import { PostCar } from '../module/postcart';
+
 function Xemchitiet() {
     const [urlpicture, setUrlpicture] = useState('http://localhost:5000');
     const urlParams = new URLSearchParams(window.location.search);
@@ -28,6 +30,14 @@ function Xemchitiet() {
     const webpage = (a, b, c) => {
         // Chuyển hướng ở đây
         window.location.href = '/xemchitiet?' + 'chitietproduct=' + a;
+    };
+    const handleClick = async (id, number) => {
+        try {
+            await PostCar({ idproduct: id, numberproduct: number });
+            window.alert('Thêm vào giỏ thành công!');
+        } catch (error) {
+            console.error(error);
+        }
     };
     return (
         <div className="Xemchitiet">
@@ -187,10 +197,17 @@ function Xemchitiet() {
                                     </div>
 
                                     <div className='mb-1 d-flex items-center flex-column'>
-                                        Tạm tính:<h5>{numberProduct * sanpham.price}</h5>
+                                        Tạm tính:
+                                        <h5>
+                                            {(numberProduct * sanpham.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span>
+                                        </h5>
                                     </div>
                                     <div className='d-flex flex-row items-center '>
-                                        <button className='btn btn btn-info' type='button'>
+                                        <button
+                                            onClick={() => {
+                                                handleClick(sanpham._id,numberProduct );
+                                            }}
+                                            className='btn btn btn-info' type='button'>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                                             </svg>

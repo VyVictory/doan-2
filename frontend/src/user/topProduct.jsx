@@ -48,7 +48,7 @@ function TopProduct() {
                                     alt={e.name}
                                 />
                             </div>
-                            <div className="card-body pt-2 pb-0 pl-1 pr-1  d-flex justify-center flex-column w-full">
+                            <div className="card-body pt-2 pb-0 pl-1 pr-1  d-flex justify-center  flex-column w-full">
                                 <div
                                     className="card-text h-8"
                                     style={{
@@ -80,7 +80,7 @@ function TopProduct() {
                                 <div className='d-flex flex-row justify-center mt-1'>
                                     {renderRatingStars(e.rating, 15, 15)}
                                 </div>
-                                <h5 className="card-text mb-2 text-truncate" style={{ maxWidth: '130px' }}>
+                                <h5 className="card-text mb-2 text-truncate text-center" style={{ maxWidth: '130px' }}>
                                     {e.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span>
                                 </h5>
                             </div>
