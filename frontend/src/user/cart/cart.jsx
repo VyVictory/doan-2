@@ -13,6 +13,7 @@ function Cart() {
     const [cart, setCart] = useState(null);
     const [selectedIds, setSelectedIds] = useState([]);
     const [selectAllChecked, setSelectAllChecked] = useState(false);
+    const [summoney, setSummoney] = useState(0);
     const handleChange = (id) => {
         setSelectedIds(prevIds => {
             if (prevIds.includes(id)) {
@@ -66,8 +67,21 @@ function Cart() {
         } catch (error) {
             console.error(error);
         }
+        console.log(selectedIds);
         window.alert('Xóa sản phẩm khỏi giỏ thành công!');
     };
+
+    useEffect(() => {
+        let sum = 0;
+        if (cart && cart.cartItems) {
+            cart.cartItems.forEach((item) => {
+                if (selectedIds.includes(item.product._id)) {
+                    sum += item.quantity * item.product.price;
+                }
+            });
+        }
+        setSummoney(sum);
+    }, [selectedIds, cart]);
     useEffect(() => {
         const handleScroll = () => {
             if (YcheckRef.current) {
@@ -217,7 +231,7 @@ function Cart() {
                                                 Tổng thanh toán:
                                             </h4>
                                             <h4 className='text-nowrap' style={{ color: 'red' }}>
-                                                1000000000000 VND
+                                                {summoney} VND
                                             </h4>
                                             <div className='d-block ' style={{ marginRight: '2%', marginLeft: '2%' }}>
                                                 <button className=' btn btn-info border' >
