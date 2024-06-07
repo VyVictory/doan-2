@@ -30,7 +30,7 @@ function TopProduct() {
     return (
         <div className=" pb-2">
             <label htmlFor="cardTitle " className='d-flex justify-center' >
-                <h2 className='m-2 mb-1 text-red-400'  >Sản Phẩm Hot</h2></label>
+                <h5 className='m-2 mb-1 text-red-400'  >Sản Phẩm Hot</h5></label>
             <div className="  d-flex flex-wrap d-flex justify-center items-center">
                 {sanphams.length > 0 ? (
                     sanphams.map((e) => (
@@ -42,13 +42,13 @@ function TopProduct() {
                         >
                             <div className='card-img-top d-flex justify-center h-140' style={{ height: '140px' }}>
                                 <img
-                                    style={{ maxWidth: '140px', minWidth: '140px', maxHeight: '140px' }}
+                                    style={{ maxHeight: '140px' }}
                                     src={urlpicture + e.image}
                                     className="p-1"
                                     alt={e.name}
                                 />
                             </div>
-                            <div className="card-body  pb-0 pl-1 pr-1  d-flex justify-center flex-column w-full">
+                            <div className="card-body pt-2 pb-0 pl-1 pr-1  d-flex justify-center flex-column w-full">
                                 <div
                                     className="card-text h-8"
                                     style={{

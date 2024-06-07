@@ -5,6 +5,7 @@ import axios from 'axios';
 import GetProducts from '../module/getProducts';
 import renderRatingStars from '../allview/renderRatingStart';
 import TopProduct from './topProduct';
+import EventProductNew from './eventProductNew';
 function Home() {
     const [urlpicture, setUrlpicture] = useState('http://localhost:5000');
     const [sanphams, setSanphams] = useState([]);
@@ -28,11 +29,14 @@ function Home() {
                         cac event
                     </div> */}
                     <div className=" mt-4 pl-0 pb-1 bg-white rounded">
+                        <EventProductNew />
+                    </div>
+                    <div className=" mt-4 pl-0 pb-1 bg-white rounded">
                         <TopProduct />
                     </div>
 
                     <div className="d-flex flex-column  mt-4 pb-2 bg-white rounded">
-                        <label htmlFor="cardTitle" className='d-flex justify-center mt-1'><h2 className='text-red-400'>Gợi ý hôm nay</h2></label>
+                        <label htmlFor="cardTitle" className='d-flex justify-center mt-1'><h5 className='text-red-400'>Gợi ý hôm nay</h5></label>
                         <div className="container d-flex flex-wrap justify-center">
                             {sanphams.length > 0 ? (
                                 sanphams.map((e) => (
@@ -44,13 +48,13 @@ function Home() {
                                     >
                                         <div className='card-img-top d-flex justify-center h-140' style={{ height: '140px' }}>
                                             <img
-                                                style={{ maxWidth: '140px', minWidth: '140px', maxHeight: '140px' }}
+                                                style={{  maxHeight: '140px' }}
                                                 src={urlpicture + e.image}
                                                 className="p-1"
                                                 alt={e.name}
                                             />
                                         </div>
-                                        <div className="card-body pb-0 pl-1 pr-1 d-flex justify-center flex-column w-full">
+                                        <div className="card-body pt-2 pb-0 pl-1 pr-1 d-flex justify-center flex-column w-full">
                                             <div
                                                 className="card-text h-8"
                                                 style={{
