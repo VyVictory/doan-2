@@ -32,14 +32,14 @@ function Home() {
                     </div>
 
                     <div className="d-flex flex-column  mt-4 pb-2 bg-white rounded">
-                        <label htmlFor="cardTitle" className='d-flex justify-center '><h2>Gợi ý hôm nay</h2></label>
+                        <label htmlFor="cardTitle" className='d-flex justify-center mt-1'><h2 className='text-red-400'>Gợi ý hôm nay</h2></label>
                         <div className="container d-flex flex-wrap justify-center">
                             {sanphams.length > 0 ? (
                                 sanphams.map((e) => (
                                     <button
                                         key={e._id}
                                         onClick={() => webpage(e._id, e.name, 0)}
-                                        className={`${styles.hoversp} container card m-2 d-flex justify-center `}
+                                        className={`${styles.hoversp} container p-0 card m-2 d-flex justify-center `}
                                         style={{ width: "12rem", maxWidth: "12rem", maxHeight: '360px', overflow: 'hidden', backgroundColor: 'white' }}
                                     >
                                         <div className='card-img-top d-flex justify-center h-140' style={{ height: '140px' }}>
@@ -50,7 +50,7 @@ function Home() {
                                                 alt={e.name}
                                             />
                                         </div>
-                                        <div className="card-body d-flex justify-center flex-column w-full">
+                                        <div className="card-body pb-0 pl-1 pr-1 d-flex justify-center flex-column w-full">
                                             <div
                                                 className="card-text h-8"
                                                 style={{
