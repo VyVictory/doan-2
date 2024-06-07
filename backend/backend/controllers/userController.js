@@ -5,42 +5,52 @@ import createToken from "../utils/createToken.js";
 import jwt from "jsonwebtoken";
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, gender, fullname,  password, phone, email,born,avatar} = req.body;
+  const { username, gender, fullname, password, phone, email, born,  } = req.body;
 
+  // Kiểm tra xem tất cả các trường bắt buộc đã được điền chưa
   if (!username || !email || !password || !fullname) {
     res.status(400);
     throw new Error("Please fill all the inputs.");
   }
 
+  // Kiểm tra xem email đã tồn tại chưa
   const userExists = await User.findOne({ email });
   if (userExists) {
-    res.status(400).send("User already exists");
-    return; // Thêm return để dừng hàm tại đây
-  }
-  const usernameExists = await User.findOne({ username });
-  if (usernameExists) {
-    res.status(400).send("User already exists");
-    return; // Thêm return để dừng hàm tại đây
+    res.status(400).json({ message: "User with this email already exists." });
+    return;
   }
 
+  // Kiểm tra xem username đã tồn tại chưa
+  const usernameExists = await User.findOne({ username });
+  if (usernameExists) {
+    res.status(400).json({ message: "User with this username already exists." });
+    return;
+  }
+
+  // Mã hóa mật khẩu
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
-  const newUser = new User({ 
-    
-    username, 
+
+  // Tạo người dùng mới
+  const newUser = new User({
+    username,
     gender,
     fullname,
-    email, 
+    email,
     password: hashedPassword,
     phone,
     born,
-    avatar
+    
   });
 
   try {
+    // Lưu người dùng vào cơ sở dữ liệu
     await newUser.save();
+
+    // Tạo token và gửi kèm theo phản hồi
     createToken(res, newUser._id);
-    
+
+    // Trả về phản hồi thành công
     res.status(201).json({
       _id: newUser._id,
       username: newUser.username,
@@ -49,9 +59,8 @@ const registerUser = asyncHandler(async (req, res) => {
       isAdmin: newUser.isAdmin,
     });
   } catch (error) {
-    res.status(400);
-    console.log(Error);
-    throw new Error("Invalid user data");
+    res.status(400).json({ message: "Invalid user data" });
+    console.error(error); // In lỗi ra console để dễ dàng debug
   }
 });
 

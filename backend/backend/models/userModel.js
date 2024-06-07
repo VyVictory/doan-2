@@ -65,7 +65,6 @@ const userSchema = new mongoose.Schema(
 
     nameShop: {
       type: String,
-      required: true,
       default: ""
     },
 
