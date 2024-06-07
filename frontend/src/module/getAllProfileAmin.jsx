@@ -1,4 +1,3 @@
-//axios.get('http://localhost:5000/api/products/shop', { withCredentials: true })
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -20,7 +19,7 @@ const GetAllProfileAmin = () => {
             }
         };
         fetchListUser();
-    }, []); // Empty dependency array to run effect only onceee
+    }, []); // Empty dependency array to run effect only once
 
     return { message, listUser };
 };

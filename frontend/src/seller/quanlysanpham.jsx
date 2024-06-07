@@ -22,12 +22,12 @@ const Qlsp = () => {
     };
     const [sanpham, setSanpham] = useState([]); // Initialize sanpham as an empty arrayy
     useEffect(() => {
-        axios.get('http://localhost:5000/product')
+        axios.get('http://localhost:5000/api/products/shop', { withCredentials: true })
             .then(response => {
                 if (response.data) {
                     const sortedSanpham = response.data.sort((a, b) => {
-                        const nameA = a.ten.toUpperCase(); // Chuyển tên sản phẩm thành chữ hoa để so sánh không phân biệt hoa thường
-                        const nameB = b.ten.toUpperCase();
+                        const nameA = a.name.toUpperCase(); // Chuyển tên sản phẩm thành chữ hoa để so sánh không phân biệt hoa thường
+                        const nameB = b.name.toUpperCase();
                         if (nameA < nameB) {
                             return -1;
                         }
@@ -136,8 +136,8 @@ const Qlsp = () => {
                                         <tbody className='text-center' style={{ wordBreak: 'break-all' }}>
                                             {sanpham.map((product, index) => (
                                                 <tr key={index}>
-                                                    <td style={cellStyle}>{product.ten}</td>
-                                                    <td>{product.danhmuc}</td>
+                                                    <td style={cellStyle}>{product.name }</td>
+                                                    <td>{product.name}</td>
                                                     <td>{product.gia}</td>
                                                     <td>{product.soluongton}</td>
                                                     <td>{product.soluongban}</td>
