@@ -7,9 +7,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { Container, Row, Col, Table } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import trash_0 from './imgseller/recycle-bin.png'
-
+import useProfile from '../module/profile.module';
 const Qlsp = () => {
-
+    const { profile } = useProfile();
     const [list, setList] = useState('tatca'); // Initialize list as 'tatca'
 
     const handleSetList = (value) => {
@@ -21,9 +21,11 @@ const Qlsp = () => {
         wordWrap: 'break-word',
     };
     const [sanpham, setSanpham] = useState([]); // Initialize sanpham as an empty arrayy
+    console.log(profile._id)
     useEffect(() => {
-        axios.get('http://localhost:5000/api/products/shop', { withCredentials: true })
-            .then(response => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/api/products/shop/${profile._id}`, { withCredentials: true });
                 if (response.data) {
                     const sortedSanpham = response.data.sort((a, b) => {
                         const nameA = a.name.toUpperCase(); // Chuyển tên sản phẩm thành chữ hoa để so sánh không phân biệt hoa thường
@@ -34,15 +36,21 @@ const Qlsp = () => {
                         if (nameA > nameB) {
                             return 1;
                         }
-                        return a.gia - b.gia; // Tên bằng nhau
+                        return a.price - b.price; // Tên bằng nhau thì so sánh giá
                     });
                     setSanpham(sortedSanpham);
                 } else {
                     alert('No data found');
                 }
-            })
-            .catch(err => console.log(err));
-    }, []); // Empty dependency array to run once on component mount
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        if (profile && profile._id) {
+            fetchData();
+        }
+    }, [profile]); // Dependency array with profile to refetch if profile changes
     const getButtonStyle = (e) => {
         return {
             marginRight: '10px',
@@ -107,10 +115,10 @@ const Qlsp = () => {
                                     </div>
                                 </div>
                             </nav>
-                                <div >
-                                    <NavLink type="submit" className={`${styles.hover} btn btn-outline-success`} style={{ height: "40px", marginRight: "24px", paddingTop: "10px" }} to="/kenhnguoiban/quanlysanpham/themsanpham"><h6 class="mb-0">Thêm Sản Phẩm</h6></NavLink>
-                                </div>
-                 
+                            <div >
+                                <NavLink type="submit" className={`${styles.hover} btn btn-outline-success`} style={{ height: "40px", marginRight: "24px", paddingTop: "10px" }} to="/kenhnguoiban/quanlysanpham/themsanpham"><h6 class="mb-0">Thêm Sản Phẩm</h6></NavLink>
+                            </div>
+
                         </div>
                     </nav>
                 </Row>
@@ -134,31 +142,38 @@ const Qlsp = () => {
                                             </tr>
                                         </thead>
                                         <tbody className='text-center' style={{ wordBreak: 'break-all' }}>
-                                            {sanpham.map((product, index) => (
-                                                <tr key={index}>
-                                                    <td style={cellStyle}>{product.name }</td>
-                                                    <td>{product.name}</td>
-                                                    <td>{product.gia}</td>
-                                                    <td>{product.soluongton}</td>
-                                                    <td>{product.soluongban}</td>
-                                                    <td>
-                                                        <button style={getButtonStyle(product.hidden)}>{product.hidden == "" ? "Còn Hàng" : "Hết Hàng"}</button>
-                                                    </td>
-                                                    <td>
-                                                        <button style={{ "border": "none" }}>
-                                                            <NavLink to={`/kenhnguoiban/quanlysanpham/thaydoisanpham/${product._id}`}>
-                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l2.65 2.651-10.5 10.5H6.3v-2.651l10.5-10.5z" />
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.487 7.137 17.862 5.512a2.25 2.25 0 0 0-3.181 0l-10.5 10.5a2.25 2.25 0 0 0-.659 1.591V18.75a.75.75 0 0 0 .75.75h2.147a2.25 2.25 0 0 0 1.591-.659l10.5-10.5a2.25 2.25 0 0 0 0-3.181z" />
-                                                                </svg>
-                                                            </NavLink>
-                                                        </button>
-                                                        <button style={{ "border": "none" }}>
-                                                            <img src={trash_0} alt="Trash" style={{ width: '24px', height: '24px' }} />
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))}
+
+                                            {
+                                                sanpham.length > 0 ? (
+                                                    sanpham.map((product, index) => (
+                                                        <tr key={index}>
+                                                            <td style={cellStyle}>{product.name}</td>
+                                                            <td>{product.category.name}</td>
+                                                            <td>{product.price}</td>
+                                                            <td>{product.countInStock}</td>
+                                                            <td>{product.quantity-product.countInStock}</td>
+                                                            <td>
+                                                            {product.countInStock==0?(<div className='text-red-500'>Hết Hàng</div>):(<div className='text-green-500'>Còn Hàng</div>)}
+                                                                
+                                                            </td>
+                                                            <td>
+                                                                <button style={{ "border": "none" }}>
+                                                                    <NavLink to={`/kenhnguoiban/quanlysanpham/thaydoisanpham/${product._id}`}>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l2.65 2.651-10.5 10.5H6.3v-2.651l10.5-10.5z" />
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.487 7.137 17.862 5.512a2.25 2.25 0 0 0-3.181 0l-10.5 10.5a2.25 2.25 0 0 0-.659 1.591V18.75a.75.75 0 0 0 .75.75h2.147a2.25 2.25 0 0 0 1.591-.659l10.5-10.5a2.25 2.25 0 0 0 0-3.181z" />
+                                                                        </svg>
+                                                                    </NavLink>
+                                                                </button>
+                                                                <button style={{ "border": "none" }}>
+                                                                    <img src={trash_0} alt="Trash" style={{ width: '24px', height: '24px' }} />
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                ) : (
+                                                    <p>No products available.</p>
+                                                )}
                                         </tbody>
                                     </Table>
                                 </Col>
