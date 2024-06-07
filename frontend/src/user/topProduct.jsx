@@ -28,8 +28,9 @@ function TopProduct() {
     };
 
     return (
-        <div className="container">
-            <label htmlFor="cardTitle"><h2>Sản Phẩm Hot</h2></label>
+        <div className="container p-0">
+            <label htmlFor="cardTitle">
+                <h2 className='m-3 mb-1'>Sản Phẩm Hot</h2></label>
             <div className="container d-flex flex-wrap d-flex justify-center items-center">
                 {sanphams.length > 0 ? (
                     sanphams.map((e) => (

@@ -56,7 +56,7 @@ function Xemchitiet() {
 
                                 </div>
 
-                                <div className='container ' style={{ flex: 2.5 }}>
+                                <div className='container p-0' style={{ flex: 3 }}>
                                     {/* Phần thẻ div có thể cuộn */}
                                     <div style={{ backgroundColor: 'lightblue', height: '570px', overflow: 'hidden' }} className="bg-transparent pl-2 pr-2 ">
                                         <div style={{ height: '100%', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }} className="scrollable-content ">
@@ -73,7 +73,7 @@ function Xemchitiet() {
                                                 <div style={{ color: 'gray' }}>Mô tả sản phẩm:</div>
                                                 <div>{sanpham.description}</div>
                                             </div>
-                                            <div className=' p-3 bg-white rounded '>
+                                            <div className=' bg-white rounded '>
                                                 <TopProduct />
                                             </div>
                                             {/* Placeholder content for demonstration */}
