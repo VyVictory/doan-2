@@ -8,6 +8,8 @@ import { Container, Row, Col, Table } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import trash_0 from './imgseller/recycle-bin.png'
 import useProfile from '../module/profile.module';
+import { DeleteProductById } from '../module/deleteproductById';
+
 const Qlsp = () => {
     const { profile } = useProfile();
     const [list, setList] = useState('tatca'); // Initialize list as 'tatca'
@@ -15,7 +17,15 @@ const Qlsp = () => {
     const handleSetList = (value) => {
         setList(value);
     };
-
+    const handleDeleteProductByid = async (id) => {
+        try {
+            await DeleteProductById({ idproduct: id });
+            window.alert('Xóa sản phẩm thành công!');
+            // window.location.href = '/kenhnguoiban/quanlysanpham';
+        } catch (error) {
+            console.error(error);
+        }
+    };
     const cellStyle = {
         maxWidth: '200px',
         wordWrap: 'break-word',
@@ -166,7 +176,7 @@ const Qlsp = () => {
                                                                         </svg>
                                                                     </NavLink>
                                                                 </button>
-                                                                <button style={{ "border": "none" }}>
+                                                                <button onClick={handleDeleteProductByid} style={{ "border": "none" }}>
                                                                     <img src={trash_0} alt="Trash" style={{ width: '24px', height: '24px' }} />
                                                                 </button>
                                                             </td>
