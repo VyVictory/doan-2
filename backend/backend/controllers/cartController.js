@@ -28,67 +28,76 @@ function calcPrices(orderItems) {
     };
   }
 
-  const checkoutCart = asyncHandler(async (req, res) => {
-    try {
-      const { shippingAddress, paymentMethod, items } = req.body;
-  
-      // Lấy giỏ hàng của người dùng
-      const cart = await Cart.findOne({ user: req.user._id });
-  
-      if (!cart || items.length === 0) {
-        return res.status(400).json({ error: "No items in the cart" });
-      }
-  
-      // Mảng chứa các đơn hàng đã tạo
-      const createdOrders = [];
-  
-      // Duyệt qua mỗi sản phẩm trong mảng items và tạo đơn hàng riêng biệt
-      for (const item of items) {
-        const product = await Product.findById(item._id);
-        if (!product) {
-          return res.status(404).json({ error: `Product not found: ${item._id}` });
-        }
-  
-        // Thêm thông tin sản phẩm vào mảng đặt hàng
-        const dbOrderItem = {
-          product: product._id, // ID của sản phẩm
-          name: product.name,
-          price: product.price,
-          quantity: item.quantity,
-          image: product.image
-        };
-  
-        // Tính toán tổng số tiền, thuế, và phí vận chuyển cho từng đơn hàng
-        const { itemsPrice, taxPrice, shippingPrice, totalPrice } = calcPrices([dbOrderItem]);
-  
-        // Tạo một đơn hàng mới từ thông tin được cung cấp và tính toán
-        const order = new Order({
-          items: [dbOrderItem],
-          user: req.user._id,
-          shippingAddress,
-          paymentMethod,
-          itemsPrice,
-          taxPrice,
-          shippingPrice,
-          totalPrice,
-        });
-  
-        // Lưu đơn hàng vào cơ sở dữ liệu
-        const createdOrder = await order.save();
-        createdOrders.push(createdOrder);
-      }
-  
-      // Xóa giỏ hàng sau khi tạo đơn hàng
-      await Cart.deleteOne({ user: req.user._id });
-  
-      // Trả về các đơn hàng được tạo
-      res.status(201).json(createdOrders);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+
+const checkoutCart = asyncHandler(async (req, res) => {
+  try {
+    const { shippingAddress, paymentMethod, items } = req.body;
+
+    // Lấy giỏ hàng của người dùng
+    const cart = await Cart.findOne({ user: req.user._id });
+
+    if (!cart || items.length === 0) {
+      return res.status(400).json({ error: "No items in the cart" });
     }
-  });
-  
-  
+
+    // Mảng chứa ID của các sản phẩm trong đơn hàng
+    const orderedProductIds = items.map(item => item._id);
+
+    // Duyệt qua mỗi sản phẩm trong giỏ hàng
+    for (const productId of orderedProductIds) {
+      // Xóa sản phẩm có ID tương tự trong giỏ hàng
+      cart.cartItems = cart.cartItems.filter(item => item.product.toString() !== productId);
+    }
+
+    // Lưu lại giỏ hàng đã cập nhật
+    await cart.save();
+
+    // Mảng chứa các đơn hàng đã tạo
+    const createdOrders = [];
+
+    // Duyệt qua mỗi sản phẩm trong mảng items và tạo đơn hàng riêng biệt
+    for (const item of items) {
+      const product = await Product.findById(item._id);
+      if (!product) {
+        return res.status(404).json({ error: `Product not found: ${item._id}` });
+      }
+
+      // Thêm thông tin sản phẩm vào mảng đặt hàng
+      const dbOrderItem = {
+        product: product._id, // ID của sản phẩm
+        name: product.name,
+        price: product.price,
+        quantity: item.quantity,
+        image: product.image
+      };
+
+      // Tính toán tổng số tiền, thuế, và phí vận chuyển cho từng đơn hàng
+      const { itemsPrice, taxPrice, shippingPrice, totalPrice } = calcPrices([dbOrderItem]);
+
+      // Tạo một đơn hàng mới từ thông tin được cung cấp và tính toán
+      const order = new Order({
+        items: [dbOrderItem],
+        user: req.user._id,
+        shippingAddress,
+        paymentMethod,
+        itemsPrice,
+        taxPrice,
+        shippingPrice,
+        totalPrice,
+      });
+
+      // Lưu đơn hàng vào cơ sở dữ liệu
+      const createdOrder = await order.save();
+      createdOrders.push(createdOrder);
+    }
+
+    // Trả về các đơn hàng được tạo
+    res.status(201).json(createdOrders);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
   
 
 const addToCart = asyncHandler(async (req, res) => {
