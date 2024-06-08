@@ -4,9 +4,13 @@ import img_voucher from '../../seller/imgseller/voucher.png';
 import { GetCart } from '../../module/getCart';
 import { deleteProductCartById } from '../../module/deleteProductCartById';
 import EventProductNew from '../eventProductNew';
+import Order from '../order';
+
 
 import styles from '../css/Navber.module.css'
 function Cart() {
+    const [showdorder, setShoworder] = useState(false);
+
     const [urlpicture, setUrlpicture] = useState('http://localhost:5000');
     const [isFixed, setIsFixed] = useState(true);
     const YcheckRef = useRef(null);
@@ -14,6 +18,10 @@ function Cart() {
     const [selectedIds, setSelectedIds] = useState([]);
     const [selectAllChecked, setSelectAllChecked] = useState(false);
     const [summoney, setSummoney] = useState(0);
+    const submitshoworder = async (e) => {
+        e.preventDefault();
+        setShoworder(!showdorder);
+    }
     const handleChange = (id) => {
         setSelectedIds(prevIds => {
             if (prevIds.includes(id)) {
@@ -91,7 +99,7 @@ function Cart() {
                     setIsFixed(false);
                 } else {
                     setIsFixed(true);
-                } 
+                }
             }
         };
         window.addEventListener('scroll', handleScroll);
@@ -105,6 +113,16 @@ function Cart() {
         } : { width: '100%', };
     return (
         <div className='pb-5'>
+            {
+                showdorder ?
+                    <div
+                        className="d-flex justify-content-center align-items-center"
+                        style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 9999, background: 'none', padding: '0px' }}
+                    ><Order offorder={submitshoworder} />
+
+                    </div>
+                    : ''
+            }
             <div className="p-3 border d-flex flex-row justify-content-center align-items-center" style={{ height: '6%' }}>
                 <div style={{ fontSize: '30px', marginRight: '15%' }}>
                     Giỏ Hàng
@@ -112,7 +130,7 @@ function Cart() {
                 <div style={{ width: '40%' }}>
                     <nav className="navbar navbar-light bg-none">
                         <div className="container-fluid flex-row-reverse">
-                            <input className="form-control me-2" style={{ width: '100%' }} type="search" placeholder="Search" aria-label="Search" />
+                            <input className="form-control me-2 " style={{ width: '100%',paddingRight:'40px',paddingBottom: '10px'}} type="search" placeholder="Search" aria-label="Search" />
                             <img type="submit" src={img_search} style={{ height: '30px', position: 'absolute', marginRight: '15px' }} className="border-left-2" alt="Search Icon" />
                         </div>
                     </nav>
@@ -148,7 +166,7 @@ function Cart() {
                                 checked={selectedIds.includes(item.product._id)}
                                 onChange={() => handleChange(item.product._id)} // Truyền ID của sản phẩm vào hàm handleChange
                             />
-                            <div className='h-140' style={{ height: '140px' }}>
+                            <div onClick={(e) => { handleClickLink(item.product._id) }} className='h-140' style={{ height: '140px' }}>
                                 <img
                                     style={{ maxHeight: '140px' }}
                                     src={urlpicture + item.product.image}
@@ -198,7 +216,7 @@ function Cart() {
                                             <span className='text-nowrap'>
                                                 Tổng Giảm:
                                                 <span className='text-nowrap' style={{ float: 'right', color: 'red' }}>
-                                                    9999999VND
+                                                    0 VND
                                                 </span>
                                             </span>
                                         </div>
@@ -234,7 +252,7 @@ function Cart() {
                                                 {summoney} VND
                                             </h4>
                                             <div className='d-block ' style={{ marginRight: '2%', marginLeft: '2%' }}>
-                                                <button className=' btn btn-info border' >
+                                                <button onClick={submitshoworder} className=' btn btn-info border' >
                                                     Mua Hàng
                                                 </button>
                                             </div>

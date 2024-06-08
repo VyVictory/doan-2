@@ -8,5 +8,4 @@ const deleteProductCartById = async ({idproduct}) => {
         console.error('Error:', err);  
     }
 };
-
 export { deleteProductCartById };

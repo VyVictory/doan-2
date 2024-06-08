@@ -13,12 +13,18 @@ import img_home from '../imguser/bar/home.png';
 import authmodule from '../../module/authmodule';
 import profileModule from '../../module/profile.module';
 import UserAvatarName from '../../allview/useravtarname';
+import Address from '../address';
 
 const NavigationBar = () => {
+  const [showaddress, setAddress] = useState(false);
   const [showFormL, setShowFormL] = useState(false);
   const [showFormR, setShowFormR] = useState(false);
   const { isTokenExist, handleLogout } = authmodule();
   const { profile } = profileModule();
+  const submitshowaddress = async (e) => {
+    e.preventDefault();
+    setAddress(!showaddress);
+  }
   /*
   const [isTokenExist, setIsTokenExist] = useState(false);
   useEffect(() => {
@@ -135,7 +141,7 @@ const NavigationBar = () => {
 
           </div>
           <div style={{ "height": "40%" }} className={`justify-content-center  align-items-center d-flex`}>
-            <button style={{ "height": "30px" }} type='submit' className={`${styles.hover} ${styles.button} border-0 d-flex align-items-center justify-content-center bg-transparent`}>
+            <button onClick={submitshowaddress} style={{ "height": "30px" }} type='submit' className={`${styles.hover} ${styles.button} border-0 d-flex align-items-center justify-content-center bg-transparent`}>
               <img src={img_local} style={{ "height": "60%" }} alt="Location Icon" />
               <div>
                 Giao Đến:
@@ -146,6 +152,16 @@ const NavigationBar = () => {
       </div>
       {showFormL && <FormL onClose={toggleFormL} onR={toggleFormR} />}
       {showFormR && <FormR onClose={toggleFormR} onL={toggleFormL} />}
+      {
+        showaddress ?
+          <div
+            className="d-flex justify-content-center align-items-center"
+            style={{ position: 'fixed', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 9999, background: 'none', padding: '0px' }}
+          ><Address offaddress={submitshowaddress} />
+
+          </div>
+          : ''
+      }
     </div>
   );
 };
