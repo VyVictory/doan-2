@@ -2,7 +2,9 @@ import User from "../models/userModel.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
-import jwt from "jsonwebtoken";
+import sendMail from "../utils/sendMail.js";
+
+
 
 const registerUser = asyncHandler(async (req, res) => {
   const { username, gender, fullname, password, phone, email, born,  } = req.body;
@@ -294,6 +296,43 @@ const updateUserById = asyncHandler(async (req, res) => {
   }
 });
 
+const addUserAddress = asyncHandler(async (req, res) => {
+  const userId = req.params.userId;
+  const { countries, city, street, apartment } = req.body;
+
+  const user = await User.findById(userId);
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  const address = new Address({
+    countries,
+    city,
+    street,
+    apartment,
+    user: userId,
+  });
+
+  const createdAddress = await address.save();
+
+  // Push the newly created address to the user's addresses array
+  user.addresses.push(createdAddress);
+  await user.save();
+
+  res.status(201).json(createdAddress);
+});
+
+const getUserAddresses = asyncHandler(async (req, res) => {
+  const userId = req.params.userId;
+  const user = await User.findById(userId).populate("addresses");
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+  res.json(user.addresses);
+});
+
 const changePassword = asyncHandler(async (req, res) => {
   const { currentPassword, newPassword } = req.body;
   const userId = req.user._id;
@@ -321,8 +360,53 @@ const changePassword = asyncHandler(async (req, res) => {
   }
 });
 
+
+
+//client gửi email
+//server kiểm tra email tồn tại -> gửi mail + token đổi pass
+//client check mail + bấm vào link
+//client gửi api kèm token
+//server check token có giống với token đã cung cấp không
+//đổi mật khẩu
+
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body; // Lấy email từ body request
+
+  if (!email) {
+      res.status(400).json({ message: 'Missing email' });
+      return;
+  }
+
+  const user = await User.findOne({ email });
+  if (!user) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+  }
+
+  const resetToken = user.createPasswordChangedToken();
+  await user.save();
+
+  const html = `click vào link dưới dưới đây để đổi mật khẩu link này có thời gian tồn tại 15 phút. <a href=${process.env.URL_SERVER}/${resetToken}>CLICK HERE</a>`;
+
+  const mailData = {
+      email,
+      html
+  };
+
+  const mailResponse = await sendMail(mailData);
+
+  console.log(`Forgot password email sent to: ${email}`); // Ghi log khi email được gửi
+
+  res.status(200).json({
+      success: true,
+      mailResponse
+  });
+});
+
 export {
   registerUser,
+  addUserAddress,
+  getUserAddresses,
   loginUser,
   updateUserActiveStatus,
   logoutCurrentUser,
@@ -335,4 +419,5 @@ export {
   getShop,
   updateShop,
   changePassword,
+  forgotPassword,
 };
