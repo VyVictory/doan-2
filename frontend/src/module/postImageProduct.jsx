@@ -1,3 +1,5 @@
+
+import axios from 'axios';
 const changeImgProduct = async (file) => {
     const formData = new FormData();
     formData.append('image', file);

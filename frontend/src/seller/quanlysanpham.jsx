@@ -149,12 +149,13 @@ const Qlsp = () => {
                                                         <tr key={index}>
                                                             <td style={cellStyle}>{product.name}</td>
                                                             <td>{product.category.name}</td>
-                                                            <td>{product.price}</td>
+                                                            <td>{(product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span></td>
+
                                                             <td>{product.countInStock}</td>
-                                                            <td>{product.quantity-product.countInStock}</td>
+                                                            <td>{product.quantity - product.countInStock}</td>
                                                             <td>
-                                                            {product.countInStock==0?(<div className='text-red-500'>Hết Hàng</div>):(<div className='text-green-500'>Còn Hàng</div>)}
-                                                                
+                                                                {product.countInStock == 0 ? (<div className='text-red-500'>Hết Hàng</div>) : (<div className='text-green-500'>Còn Hàng</div>)}
+
                                                             </td>
                                                             <td>
                                                                 <button style={{ "border": "none" }}>
