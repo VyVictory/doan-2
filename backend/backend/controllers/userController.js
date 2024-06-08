@@ -353,7 +353,7 @@ const updateUserAddress = asyncHandler(async (req, res) => {
 
 const deleteUserAddress = asyncHandler(async (req, res) => {
   const { addressId } = req.params;
-
+  
   const user = await User.findById(req.user._id);
   if (!user) {
     res.status(404);

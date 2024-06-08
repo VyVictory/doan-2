@@ -25,6 +25,13 @@ const NavigationBar = () => {
     e.preventDefault();
     setAddress(!showaddress);
   }
+  const handleAddAddress = () => {
+    setAddress(false); // Tắt hiển thị phần địa chỉ
+    // Sau một khoảng thời gian nhất định, mở lại phần địa chỉ
+    setTimeout(() => {
+      setAddress(true);
+    }, 1); // Thời gian đợi 1000ms (1 giây) trước khi hiển thị lại
+  }
   /*
   const [isTokenExist, setIsTokenExist] = useState(false);
   useEffect(() => {
@@ -157,7 +164,7 @@ const NavigationBar = () => {
           <div
             className="d-flex justify-content-center align-items-center"
             style={{ position: 'fixed', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 9999, background: 'none', padding: '0px' }}
-          ><Address offaddress={submitshowaddress} />
+          ><Address offaddress={submitshowaddress} onAddAddress={handleAddAddress} />
 
           </div>
           : ''

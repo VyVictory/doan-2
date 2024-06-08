@@ -6,7 +6,7 @@ import { PostAddress } from '../module/postaddress';
 import GetAddressShip from '../module/getAddressShip';
 import { DeleteAddress } from '../module/deleteAddress';
 
-function Address({ offaddress }) {
+function Address({ offaddress ,onAddAddress }) {
     const [countries, setCountries] = useState([]);
     const [showaddaddress, setShowaddaddress] = useState(true);
     const [address, setAddress] = useState('');
@@ -40,23 +40,22 @@ function Address({ offaddress }) {
                     city: city,
                     postalCode: postalCode,
                     country: country
-                });
-                // After adding a new address, refresh the address list
-                setListaddressship(await GetAddressShip());
+                }); 
+                onAddAddress();
             } else {
                 console.error('Missing address information');
             }
         } catch (error) {
             console.error(error);
-        }
-    };
-    
-    useEffect(() => {
-        const fetchCountries = async () => {
-            const countryData = await getapicountry();
-            setCountries(countryData);
-            setListaddressship(addressship);
         };
+        
+    };
+    const fetchCountries = async () => {
+        const countryData = await getapicountry();
+        setCountries(countryData);
+        setListaddressship(addressship);
+    };
+    useEffect(() => {
         fetchCountries();
     }, [addressship]);
 
@@ -168,7 +167,7 @@ function Address({ offaddress }) {
                                                 </div>
 
                                             </div>
-                                            <button onClick={(e) => { submitaddaddress(e); handlePostAddress(); }} className='btn btn-success mb-3'>Thêm</button>
+                                            <button onClick={(e) => { handlePostAddress()}} className='btn btn-success mb-3'>Thêm</button>
                                         </MDBCardBody>
                                     </MDBCol>
                                     : <></>}
