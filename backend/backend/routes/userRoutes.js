@@ -1,6 +1,5 @@
 import express from "express";
 import {
-  
   registerUser,
   loginUser,
   logoutCurrentUser,
@@ -20,7 +19,6 @@ import {
   updateUserAddress,
   deleteUserAddress,
   resetPassword,
-  
 } from "../controllers/userController.js";
 
 import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
@@ -37,16 +35,18 @@ router.post("/auth/resetPassword", resetPassword);
 router.post("/logout", logoutCurrentUser);
 router.post("/auth/changepassword", authenticate, changePassword);
 router.get("/auth/forgotpassword", forgotPassword);
-router.get("/shop", authenticate ,getShop);
-router.put("/shop", authenticate,updateShop);
+router.get("/shop", authenticate, getShop);
+router.put("/shop", authenticate, updateShop);
 
-router 
-.route("/address")
-  .post(authenticate,addUserAddress)
-  .get(authenticate,getUserAddresses)
-  .put(authenticate,updateUserAddress)
-  .delete(authenticate,deleteUserAddress)
+router
+  .route("/address")
+  .post(authenticate, addUserAddress)
+  .get(authenticate, getUserAddresses);
 
+router
+  .route("/address/:id")
+  .put(authenticate, updateUserAddress)
+  .delete(authenticate, deleteUserAddress);
 
 router
   .route("/profile")
