@@ -44,7 +44,7 @@ const Sellercenter = () => {
         setLocationState(newState);
     }, [location.pathname]);
 
-    // Sử dụng locationState.showFormHome, locationState.showQlsp, locationState.showQldh ở đây
+    // Sử dụng locationState.showFormHome, locationState.showQlsp, locationState.showQldh ở đâyy
 
     const isActive = location.pathname === '/kenhnguoiban/quanlysanpham';
     return (
