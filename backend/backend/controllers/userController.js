@@ -1,8 +1,10 @@
 import User from "../models/userModel.js";
+import Address from "../models/addressModel.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
 import sendMail from "../utils/sendMail.js";
+
 
 
 
@@ -297,7 +299,7 @@ const updateUserById = asyncHandler(async (req, res) => {
 });
 
 const addUserAddress = asyncHandler(async (req, res) => {
-  const userId = req.params.userId;
+  const userId = req.user._id;
   const { countries, city, street, apartment } = req.body;
 
   const user = await User.findById(userId);
@@ -324,7 +326,7 @@ const addUserAddress = asyncHandler(async (req, res) => {
 });
 
 const getUserAddresses = asyncHandler(async (req, res) => {
-  const userId = req.params.userId;
+  const userId = req.user._id;
   const user = await User.findById(userId).populate("addresses");
   if (!user) {
     res.status(404);
@@ -384,24 +386,29 @@ const forgotPassword = asyncHandler(async (req, res) => {
   }
 
   const resetToken = user.createPasswordChangedToken();
+  
   await user.save();
 
-  const html = `click vào link dưới dưới đây để đổi mật khẩu link này có thời gian tồn tại 15 phút. <a href=${process.env.URL_SERVER}/${resetToken}>CLICK HERE</a>`;
+  const html = `click vào link dưới dưới đây để đổi mật khẩu link này có thời gian tồn tại 15 phút. <a href="${process.env.URL_SERVER}/${resetToken}">CLICK HERE</a>`;
 
   const mailData = {
       email,
       html
+      
   };
-
+   await console.log(mailData);
+  
   const mailResponse = await sendMail(mailData);
 
-  console.log(`Forgot password email sent to: ${email}`); // Ghi log khi email được gửi
-
+  console.log(`Forgot password email sent to: ${email}`); 
   res.status(200).json({
       success: true,
       mailResponse
   });
 });
+
+
+
 
 export {
   registerUser,

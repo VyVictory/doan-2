@@ -7,7 +7,7 @@ const sendMail = asyncHandler(async ({email, html}) => {
         port: 587,
         secure: false, // Use `true` for port 465, `false` for all other ports
         auth: {
-          user: process.env.EMAIL, 
+          user: "tienyeuai2200@gmail.com", 
           pass: "wnaxqjumsnrwkhfj",
         },
       });
@@ -25,6 +25,15 @@ const sendMail = asyncHandler(async ({email, html}) => {
         console.log(`Message sent: ${info.messageId}`);
         return info;
       }
+
+    try {
+      const mailInfo = await main();
+      console.log(`Email sent successfully to: ${email}`);
+      return mailInfo;
+    } catch (error) {
+      console.error(`Error sending email to ${email}: ${error}`);
+      throw new Error(`Error sending email to ${email}: ${error}`);
+    }
 }) 
 
 export default sendMail

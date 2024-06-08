@@ -2,16 +2,6 @@ import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 
-const addressSchema = mongoose.Schema(
-  {
-    countries: { type: String, required: true },
-    city: { type: Number, required: true },
-    street: { type: String, required: true },
-    apartment: { type: String, required: true }
-  },
-  { timestamps: true }
-);
-
 
 // Định nghĩa schema cho User
 const userSchema = new mongoose.Schema(
@@ -100,7 +90,6 @@ userSchema.methods.createPasswordChangedToken = function () {
   return resetPassword; // Sửa 'resetToken' thành 'resetPassword'
 };
 
-const Address = mongoose.model("Address", addressSchema);
 const User = mongoose.model("User", userSchema);
 
 export default User;
