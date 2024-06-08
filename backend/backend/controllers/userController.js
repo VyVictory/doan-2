@@ -4,6 +4,7 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
 import sendMail from "../utils/sendMail.js";
+import crypto from 'crypto';
 
 
 

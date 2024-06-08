@@ -19,6 +19,7 @@ import {
   addUserAddress,
   updateUserAddress,
   deleteUserAddress,
+  resetPassword,
   
 } from "../controllers/userController.js";
 
@@ -32,6 +33,7 @@ router
   .get(authenticate, authorizeAdmin, getAllUsers);
 
 router.post("/auth", loginUser);
+router.post("/auth/resetPassword", resetPassword);
 router.post("/logout", logoutCurrentUser);
 router.post("/auth/changepassword", authenticate, changePassword);
 router.get("/auth/forgotpassword", forgotPassword);
