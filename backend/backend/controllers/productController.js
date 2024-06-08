@@ -199,30 +199,35 @@ const fetchProducts = asyncHandler(async (req, res) => {
 const fetchProductById = asyncHandler(async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-    if (product) {
+
+    // Kiểm tra xem sản phẩm tồn tại và trường isDelete có giá trị là false không
+    if (product && !product.isDelete) {
       return res.json(product);
-    } else {
+    } else if (!product) {
       res.status(404);
       throw new Error("Product not found");
+    } else {
+      res.status(404);
+      throw new Error("Product is marked as deleted");
     }
   } catch (error) {
     console.error(error);
-    res.status(404).json({ error: "Product not found" });
+    res.status(404).json({ error: error.message });
   }
 });
 
 const fetchAllProducts = asyncHandler(async (req, res) => {
   try {
-    const products = await Product.find({})
+    const products = await Product.find({ isDelete: false })
       .populate("category")
-      .limit()
-      .sort({ createAt: -1 });
+      .sort({ createdAt: -1 });
     res.json(products);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server Error" });
   }
 });
+
 
 const addProductReview = asyncHandler(async (req, res) => {
   try {
@@ -266,9 +271,10 @@ const addProductReview = asyncHandler(async (req, res) => {
   }
 });
 
+
 const fetchTopProducts = asyncHandler(async (req, res) => {
   try {
-    const products = await Product.find({}).sort({ rating: -1 }).limit(6);
+    const products = await Product.find({ isDelete: false }).sort({ rating: -1 }).limit(6);
     res.json(products);
   } catch (error) {
     console.error(error);
@@ -276,9 +282,10 @@ const fetchTopProducts = asyncHandler(async (req, res) => {
   }
 });
 
+
 const fetchNewProducts = asyncHandler(async (req, res) => {
   try {
-    const products = await Product.find().sort({ _id: -1 }).limit(5);
+    const products = await Product.find({ isDelete: false }).sort({ _id: -1 }).limit(5);
     res.json(products);
   } catch (error) {
     console.error(error);
@@ -290,7 +297,7 @@ const filterProducts = asyncHandler(async (req, res) => {
   try {
     const { checked, radio } = req.body;
 
-    let args = {};
+    let args = { isDelete: false }; // Thêm điều kiện không bị xóa vào đây
     if (checked.length > 0) args.category = checked;
     if (radio.length) args.price = { $gte: radio[0], $lte: radio[1] };
 
@@ -302,12 +309,29 @@ const filterProducts = asyncHandler(async (req, res) => {
   }
 });
 
+const fakeDelete = asyncHandler(async (req, res) => {
+  const { id } = req.body; // Giả sử bạn đã truyền id qua param từ URL
 
+  // Tìm và cập nhật product có id tương ứng
+  const product = await Product.findByIdAndUpdate(
+    id,
+    { isDelete: true }, // Cập nhật trường isDeleted thành true
+    { new: true } // Trả về product đã được cập nhật
+  );
+
+  if (!product) {
+    res.status(404).json({ message: "Product not found" });
+    return;
+  }
+
+  res.status(200).json({ message: "Product successfully marked as deleted", product });
+});
 
 
 export {
   addProduct,
   updateProductDetails,
+  fakeDelete,
   removeProduct,
   fetchProducts,
   fetchProductById,

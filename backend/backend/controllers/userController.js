@@ -4,6 +4,7 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
 import sendMail from "../utils/sendMail.js";
+import crypto from 'crypto';
 
 
 
@@ -325,6 +326,55 @@ const addUserAddress = asyncHandler(async (req, res) => {
   res.status(201).json(createdAddress);
 });
 
+const updateUserAddress = asyncHandler(async (req, res) => {
+  const { addressId } = req.params;
+  const { countries, city, street, apartment } = req.body;
+
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  const address = await Address.findById(addressId);
+  if (!address) {
+    res.status(404);
+    throw new Error("Address not found");
+  }
+
+  address.countries = countries;
+  address.city = city;
+  address.street = street;
+  address.apartment = apartment;
+
+  const updatedAddress = await address.save();
+  res.json(updatedAddress);
+});
+
+const deleteUserAddress = asyncHandler(async (req, res) => {
+  const { addressId } = req.params;
+
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  const address = await Address.findById(addressId);
+  if (!address) {
+    res.status(404);
+    throw new Error("Address not found");
+  }
+
+  await address.remove();
+
+  // Xóa địa chỉ khỏi mảng địa chỉ của người dùng
+  user.addresses = user.addresses.filter((addr) => addr.toString() !== addressId);
+  await user.save();
+
+  res.json({ message: "Address deleted successfully" });
+});
+
 const getUserAddresses = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId).populate("addresses");
@@ -407,8 +457,21 @@ const forgotPassword = asyncHandler(async (req, res) => {
   });
 });
 
-
-
+const resetPassword = asyncHandler(async(req, res) => {
+  const {password, token} = req.body
+  const passwordResetToken = crypto.createHash('sha256').update(token).digest('hex')
+  const user =  await User.findOne({passwordResetToken, passwordRestExpires: {$gt:Date.now() } } )
+  if(!user) throw new Error('invalid reset token')
+    user.password = password
+    user.passwordResetToken = undefined
+    user.passwordChangeAt = Date.now()
+    user.passwordRestExpires = undefined
+    await user.save() 
+    return res.status(200).json({
+      success: user ? true : false,
+      mes: user ? 'update password': 'something went wrong'
+    })
+})
 
 export {
   registerUser,
@@ -427,4 +490,7 @@ export {
   updateShop,
   changePassword,
   forgotPassword,
+  resetPassword,
+  updateUserAddress,
+  deleteUserAddress,
 };

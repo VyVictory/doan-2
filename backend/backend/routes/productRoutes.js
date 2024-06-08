@@ -18,6 +18,7 @@ import {
   getProductShopCurrent,
   getProductShopById,
   getProductByIdWithApproval,
+  fakeDelete,
 
 } from "../controllers/productController.js";
 import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
@@ -41,11 +42,12 @@ router.get('/approve/:id', authenticate, authorizeAdmin, getProductByIdWithAppro
 router.get("/top", fetchTopProducts);
 router.get("/new", fetchNewProducts);
 
+router.route("fakedelete",authenticate,fakeDelete);
+
 router
   .route("/:id")
   .get(fetchProductById)
   .put(authenticate, authorizeAdmin, formidable(), updateProductDetails)
-  
   .delete(authenticate, authorizeAdmin, removeProduct);
 
 router.route("/filtered-products").post(filterProducts);

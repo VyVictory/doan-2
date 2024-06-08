@@ -7,6 +7,7 @@ import {
   updateCart,
   getUserCart,
   checkoutCart,
+  getCartIdByProductId, 
 
 } from "../controllers/cartController.js";
 
@@ -25,5 +26,7 @@ router.put("/update", authenticate, updateCart);
 router.get("/get", authenticate, getUserCart);
 
 router.post("/checkout", authenticate, checkoutCart);
+
+router.get('/product/:productId', authenticate, getCartIdByProductId);
 
 export default router;
