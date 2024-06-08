@@ -17,6 +17,8 @@ import {
   forgotPassword,
   getUserAddresses,
   addUserAddress,
+  updateUserAddress,
+  deleteUserAddress,
   
 } from "../controllers/userController.js";
 
@@ -40,6 +42,8 @@ router
 .route("/address")
   .post(authenticate,addUserAddress)
   .get(authenticate,getUserAddresses)
+  .put(authenticate,updateUserAddress)
+  .delete(authenticate,deleteUserAddress)
 
 
 router
