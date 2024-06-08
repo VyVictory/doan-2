@@ -6,7 +6,7 @@ import { PostAddress } from '../module/postaddress';
 import GetAddressShip from '../module/getAddressShip';
 import { DeleteAddress } from '../module/deleteAddress';
 
-function Address({ offaddress }) {
+function Address({ offaddress ,onAddAddress }) {
     const [countries, setCountries] = useState([]);
     const [showaddaddress, setShowaddaddress] = useState(true);
     const [address, setAddress] = useState('');
@@ -20,7 +20,8 @@ function Address({ offaddress }) {
         try {
             await DeleteAddress({ idaddress: idaddress });
             // Update the list of addresses after deletion
-            setListaddressship(addressship.filter(item => item._id !== idaddress));
+            // setListaddressship(addressship.filter(item => item._id !== idaddress));
+            onAddAddress();
         } catch (error) {
             console.error(error);
         }
@@ -40,23 +41,22 @@ function Address({ offaddress }) {
                     city: city,
                     postalCode: postalCode,
                     country: country
-                });
-                // After adding a new address, refresh the address list
-                setListaddressship(await GetAddressShip());
+                }); 
+                onAddAddress();
             } else {
                 console.error('Missing address information');
             }
         } catch (error) {
             console.error(error);
-        }
-    };
-    
-    useEffect(() => {
-        const fetchCountries = async () => {
-            const countryData = await getapicountry();
-            setCountries(countryData);
-            setListaddressship(addressship);
         };
+        
+    };
+    const fetchCountries = async () => {
+        const countryData = await getapicountry();
+        setCountries(countryData);
+        setListaddressship(addressship);
+    };
+    useEffect(() => {
         fetchCountries();
     }, [addressship]);
 
@@ -69,7 +69,7 @@ function Address({ offaddress }) {
                             <div style={{ width: '100%', position: 'absolute' }}>
                                 <MDBBtn className="btn-close d-flex justify-content-end mr-4" color="none" aria-label="Close" onClick={offaddress} style={{ float: 'right' }} />
                             </div>
-                            <MDBRow className="g-0 d-flex justify-center items-center">
+                            <MDBRow className="g-0 d-flex ">
                                 <MDBCol style={{ maxWidth: '800px' }}>
                                     <MDBCardBody className="p-0 d-flex flex-column items-center justify-center">
                                         <MDBTypography tag="h5" className='pt-3 pb-2 text-gray-600 border-bottom w-full text-center'>Danh Sách địa chỉ giao hàng</MDBTypography>
@@ -168,7 +168,7 @@ function Address({ offaddress }) {
                                                 </div>
 
                                             </div>
-                                            <button onClick={(e) => { submitaddaddress(e); handlePostAddress(); }} className='btn btn-success mb-3'>Thêm</button>
+                                            <button onClick={(e) => { handlePostAddress()}} className='btn btn-success mb-3'>Thêm</button>
                                         </MDBCardBody>
                                     </MDBCol>
                                     : <></>}

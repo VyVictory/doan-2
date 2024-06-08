@@ -357,12 +357,19 @@ const updateUserAddress = asyncHandler(async (req, res) => {
   }
 });
 
+// <<<<<<< HEAD
+// const deleteUserAddress = asyncHandler(async (req, res) => {
+//   const { addressId } = req.params;
+  
+//   const user = await User.findById(req.user._id);
+// =======
 
 const deleteUserAddress = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const addressId = req.params.id; 
 
   const user = await User.findById(userId);
+// >>>>>>> 6707ef6e0a11c7624fd0208f12775ac8f6d1d603
   if (!user) {
     res.status(404);
     throw new Error("User not found");

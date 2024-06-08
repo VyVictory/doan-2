@@ -13,8 +13,12 @@ function Order({ offorder, listproduct }) {
         }
         fetchData();
     }, [listproduct]);
-    // Di chuyển console.log ra ngoài useEffect
-    console.log(listproducts);
+    // if (!Array.isArray(addressship)) {
+    //     console.error("addressship is not an array:", addressship);
+    //     return null; // hoặc thực hiện xử lý phù hợp ở đây
+    // }
+    // // Di chuyển console.log ra ngoài useEffect
+    // console.log(listproducts);
     return (
         <section style={{ backgroundColor: 'none', padding: '0', background: 'none' }}>
             <MDBContainer>

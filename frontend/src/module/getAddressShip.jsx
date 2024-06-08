@@ -6,15 +6,14 @@ const GetAddressShip = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/users/address', { withCredentials: true });
-        setAddressship(response.data); // Set addressship data
-      } catch (error) {
-        console.error('Error: ', error);
-        throw error;
-      }
+        try {
+          const response = await axios.get('http://localhost:5000/api/users/address', { withCredentials: true });
+          setAddressship(response.data); // Set address data as an array
+        } catch (error) {
+          console.error('Error: ', error);  
+          throw error;
+        }
     };
-
     fetchData();
   }, []); // Empty dependency array to run effect only once
 
