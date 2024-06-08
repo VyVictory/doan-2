@@ -1,13 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import img_search from '../imguser/bar/magnifying-glass.png';
 import img_voucher from '../../seller/imgseller/voucher.png';
-import { GetCart } from '../../module/getCart';
 import { deleteProductCartById } from '../../module/deleteProductCartById';
 import EventProductNew from '../eventProductNew';
 import Order from '../order';
+import { GetCart } from '../../module/getCart';
 
-
-import styles from '../css/Navber.module.css'
 function Cart() {
     const [showdorder, setShoworder] = useState(false);
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -21,7 +19,6 @@ function Cart() {
     const submitshoworder = async (e) => {
         e.preventDefault();
         setShoworder(!showdorder);
-
     }
     const handleChange = (id) => {
         setSelectedIds(prevIds => {
@@ -179,6 +176,7 @@ function Cart() {
                                         src={urlpicture + item.product.image}
                                         className="p-1"
                                     />
+                                    
                                 </div>
 
                                 <div

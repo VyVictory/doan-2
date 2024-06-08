@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from './css/LoginForm.module.css'; // Import CSS module
 import axioslogin from '../module/axioslogin'
 import CloseButton from 'react-bootstrap/CloseButton';
-function LoginForm({ onClose, onR ,onF}) {
+function ForgetPassword({ onClose, onR ,onF}) {
   const [email, setEmail] = useState('email@email.com');
   const [password, setPassword] = useState('password');
   const { loginfunction, message } = axioslogin(); // Corrected from axioslogin to Authmodule
@@ -36,7 +36,7 @@ function LoginForm({ onClose, onR ,onF}) {
       <div className={styles.modal} style={{ backgroundColor: 'white', opacity: '1' }}>
         <div className={styles.modalContent} style={{ width: '100%' }}>
           <div className='d-flex justify-content-center'>
-            <h2 className='sans-serif' style={{ position: 'absolute', }}>Đăng Nhập</h2>
+            <h2 className='sans-serif' style={{ position: 'absolute', }}>Quên mật khẩu</h2>
           </div>
           <div className='d-flex justify-content-end'>
             <div>
@@ -74,10 +74,10 @@ function LoginForm({ onClose, onR ,onF}) {
                   <div className='text-sm mr-1 text-gray-400'>
                     chưa có tài khoản!
                   </div>
-                  <a href='#' onClick={onR}>Đăng Ký Mới</a>
+                  <a href='#' >Đăng Ký Mới</a>
 
                 </div>
-                <a style={{ float: "right" }} href='#' onClick={onF}>Quên mật khẩu</a>
+                <a style={{ float: "right" }} href='#' >Quên mật khẩu</a>
                 {message && <p className='text-red-600' style={{ marginBottom: '-10px' }}>{message}</p>}
               </div>
 
@@ -89,4 +89,4 @@ function LoginForm({ onClose, onR ,onF}) {
   );
 }
 
-export default LoginForm;
+export default ForgetPassword;

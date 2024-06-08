@@ -1,24 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardBody, MDBTypography, MDBBtn } from 'mdb-react-ui-kit';
 import Select from 'react-select';
+import axios from 'axios';
 import GetAddressShip from '../module/getAddressShip';
+import GetProductByIdCart from '../module/getProductByIdCart';
 
 function Order({ offorder, listproduct }) {
     const [address, setAddress] = useState('');
     const { addressship } = GetAddressShip();
-    const [listproducts, setListproducts] = useState([]);
-    useEffect(() => {
-        function fetchData() {
-            setListproducts(listproduct);
-        }
-        fetchData();
-    }, [listproduct]);
-    // if (!Array.isArray(addressship)) {
-    //     console.error("addressship is not an array:", addressship);
-    //     return null; // hoặc thực hiện xử lý phù hợp ở đây
-    // }
-    // // Di chuyển console.log ra ngoài useEffect
-    // console.log(listproducts);
+
     return (
         <section style={{ backgroundColor: 'none', padding: '0', background: 'none' }}>
             <MDBContainer>
@@ -32,9 +22,16 @@ function Order({ offorder, listproduct }) {
                                 <MDBCol md="8">
                                     <MDBCardBody className="p-0 d-flex flex-column items-center justify-center">
                                         <MDBTypography tag="h5" className='pt-3 pb-2 text-gray-600'>Danh sách sản phẩm</MDBTypography>
+
                                         <div className='w-full p-5 pt-2 pb-2'>
-                                            {/* {nơi showw danh sách} */}
+                                            {listproduct.map((productId) => (
+                                                <div key={productId}>
+                                                    {productId}
+                                                    {/* <GetProductByIdCart idproduct={productId} /> */}
+                                                </div>
+                                            ))}
                                         </div>
+
                                     </MDBCardBody>
                                 </MDBCol>
                                 <MDBCol md="4" className='border-start'>
@@ -69,7 +66,7 @@ function Order({ offorder, listproduct }) {
                                                     id="phone"
                                                     placeholder="Nhập số điện thoại"
                                                 />
-                                            </div> 
+                                            </div>
                                         </div>
                                         <button className='btn btn-success mb-4'>Xác Nhận</button>
                                     </MDBCardBody>

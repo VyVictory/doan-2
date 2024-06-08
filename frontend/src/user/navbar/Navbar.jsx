@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '../css/Navber.module.css'; // Import CSS module
 import FormL from '../LoginForm';
 import FormR from '../RegistrationPage';
-
+import ForgetPassword from '../forgetPassword';
 import logo from '../imguser/bar/logo.png';
 import img_search from '../imguser/bar/magnifying-glass.png';
 import img_local from '../imguser/bar/place.png';
@@ -19,6 +19,7 @@ const NavigationBar = () => {
   const [showaddress, setAddress] = useState(false);
   const [showFormL, setShowFormL] = useState(false);
   const [showFormR, setShowFormR] = useState(false);
+  const [showFormF ,setShowFormF] = useState(false);
   const { isTokenExist, handleLogout } = authmodule();
   const { profile } = profileModule();
   const submitshowaddress = async (e) => {
@@ -49,7 +50,10 @@ const NavigationBar = () => {
       setShowFormR(false);
     }
   };
-
+  const toggleFormF = () => {
+    setShowFormL(false);
+    setShowFormF(!showFormF);
+  };
   const toggleFormR = () => {
     setShowFormR(!showFormR);
     if (showFormR === true) {
@@ -157,8 +161,9 @@ const NavigationBar = () => {
           </div>
         </div>
       </div>
-      {showFormL && <FormL onClose={toggleFormL} onR={toggleFormR} />}
+      {showFormL && <FormL onClose={toggleFormL} onR={toggleFormR} onF={toggleFormF}/>}
       {showFormR && <FormR onClose={toggleFormR} onL={toggleFormL} />}
+      {showFormF && <ForgetPassword onClose={toggleFormF} />}
       {
         showaddress ?
           <div

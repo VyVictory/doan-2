@@ -19,5 +19,4 @@ const GetAddressShip = () => {
 
   return { addressship };
 };
-
 export default GetAddressShip;
