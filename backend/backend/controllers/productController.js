@@ -297,7 +297,7 @@ const filterProducts = asyncHandler(async (req, res) => {
   try {
     const { checked, radio } = req.body;
 
-    let args = {};
+    let args = { isDelete: false }; // Thêm điều kiện không bị xóa vào đây
     if (checked.length > 0) args.category = checked;
     if (radio.length) args.price = { $gte: radio[0], $lte: radio[1] };
 
