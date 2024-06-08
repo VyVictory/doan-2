@@ -21,6 +21,7 @@ function Cart() {
     const submitshoworder = async (e) => {
         e.preventDefault();
         setShoworder(!showdorder);
+
     }
     const handleChange = (id) => {
         setSelectedIds(prevIds => {
@@ -121,8 +122,7 @@ function Cart() {
                     <div
                         className="d-flex justify-content-center align-items-center"
                         style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 9999, background: 'none', padding: '0px' }}
-                    ><Order offorder={submitshoworder} />
-
+                    ><Order offorder={submitshoworder} listproduct={selectedIds} />
                     </div>
                     : ''
             }

@@ -1,40 +1,50 @@
-import React from 'react';
-import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon, MDBBtn, MDBTooltip } from 'mdb-react-ui-kit';
-function Order({ offorder,listproduct,  }) {
+import React, { useState, useEffect } from 'react';
+import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardBody, MDBTypography, MDBBtn } from 'mdb-react-ui-kit';
+import Select from 'react-select';
+import GetAddressShip from '../module/getAddressShip';
+
+function Order({ offorder, listproduct }) {
+    const [address, setAddress] = useState('');
+    const { addressship } = GetAddressShip();
+    const [listproducts, setListproducts] = useState([]);
+    useEffect(() => {
+        function fetchData() {
+            setListproducts(listproduct);
+        }
+        fetchData();
+    }, [listproduct]);
+    // Di chuyển console.log ra ngoài useEffect
+    console.log(listproducts);
     return (
-        <section style={{ backgroundColor: 'none', padding: '0', background: 'none', }}>
-            <MDBContainer >
+        <section style={{ backgroundColor: 'none', padding: '0', background: 'none' }}>
+            <MDBContainer>
                 <MDBRow className="justify-content-center align-items-center">
-                    <MDBCol style={{ backgroundColor: 'none', minWidth: '500px', padding: '0' }} lg="6">
-                        <MDBCard className="mb-3 p-2" style={{ borderRadius: '.5rem', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', border:'black solid 1px' }}>
+                    <MDBCol style={{ backgroundColor: 'none', minWidth: '1000px', padding: '0' }} lg="6">
+                        <MDBCard className="mb-3 p-2" style={{ borderRadius: '.5rem', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', border: 'black solid 1px' }}>
                             <div style={{ width: '100%', position: 'absolute' }}>
                                 <MDBBtn className="btn-close d-flex justify-content-end mr-4" color="none" aria-label="Close" onClick={offorder} style={{ float: 'right' }} />
                             </div>
                             <MDBRow className="g-0">
-                                {/* <MDBCol md="7" className='border-start'>
+                                <MDBCol md="8">
                                     <MDBCardBody className="p-0 d-flex flex-column items-center justify-center">
-                                        <MDBTypography tag="h5" className='pt-3 pb-2 text-gray-600'>Thông tin sản phẩm</MDBTypography>
-                                        <hr className="mt-0 mb-2 w-full" />
+                                        <MDBTypography tag="h5" className='pt-3 pb-2 text-gray-600'>Danh sách sản phẩm</MDBTypography>
                                         <div className='w-full p-5 pt-2 pb-2'>
-                                           
+                                            {/* {nơi showw danh sách} */}
                                         </div>
-                                      
                                     </MDBCardBody>
-                                </MDBCol> */}
-                                <MDBCol md="12">
+                                </MDBCol>
+                                <MDBCol md="4" className='border-start'>
                                     <MDBCardBody className="p-0 d-flex flex-column items-center justify-center">
                                         <MDBTypography tag="h5" className='pt-3 pb-2 text-gray-600'>Thông tin thanh toán</MDBTypography>
-                                        {/* <hr className="mt-0 mb-2 w-full" /> */}
                                         <div className='w-full p-5 pt-2 pb-2'>
                                             <div className="form-group mb-2 bd-highlight">
                                                 <MDBTypography tag="h6">Địa chỉ giao hàng:</MDBTypography>
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="address"
-                                                    placeholder="nhập địa chỉ giao hàng"
-                                                //   value={phone}
-                                                //   onChange={(e) => setPhone(e.target.value)}
+                                                <Select
+                                                    options={addressship.map(a => ({ value: a._id, label: a.street }))}
+                                                    id="street"
+                                                    placeholder="Chọn đường"
+                                                    value={{ label: address, value: address }}
+                                                    onChange={(selectedOption) => setAddress(selectedOption.label)}
                                                 />
                                             </div>
                                             <div className="form-group mb-2 me-auto">
@@ -42,25 +52,20 @@ function Order({ offorder,listproduct,  }) {
                                                 <select
                                                     className="form-control"
                                                     id="payment"
-                                                // value={gender}
-                                                //  onChange={(e) => setGender(e.target.value)}
                                                 >
-                                                    <option value="Offline">Thanh toán khi nhận hàng: </option>
-                                                    <option value="PaymentCard">Thanh toán bằng thẻ: </option>
+                                                    <option value="Thanh toán khi nhận hàng">Thanh toán khi nhận hàng</option>
+                                                    {/* <option value="PaymentCard">Thanh toán bằng thẻ</option> */}
                                                 </select>
                                             </div>
-                                            {/* <MDBTypography tag="h6">Information</MDBTypography> */}
                                             <div className="form-group mb-2 me-auto">
-                                                <MDBTypography tag="h6">Phương thức liên hệ</MDBTypography>
+                                                <MDBTypography tag="h6">Số điện thoại liên hệ</MDBTypography>
                                                 <input
                                                     type="number"
                                                     className="form-control"
                                                     id="phone"
-                                                    placeholder="nhập số điện thoại"
-                                                // value={email}
-                                                // onChange={(e) => setEmail(e.target.value)}
+                                                    placeholder="Nhập số điện thoại"
                                                 />
-                                            </div>
+                                            </div> 
                                         </div>
                                         <button className='btn btn-success mb-4'>Xác Nhận</button>
                                     </MDBCardBody>
@@ -73,4 +78,5 @@ function Order({ offorder,listproduct,  }) {
         </section>
     );
 };
+
 export default Order;
