@@ -327,53 +327,67 @@ const addUserAddress = asyncHandler(async (req, res) => {
 });
 
 const updateUserAddress = asyncHandler(async (req, res) => {
-  const { addressId } = req.params;
-  const { countries, city, street, apartment } = req.body;
+  const userId = req.user._id; // ID của người dùng
+  const addressId = req.params.id; // ID của địa chỉ cần cập nhật
+  const { countries, city, street, apartment } = req.body; // Thông tin mới của địa chỉ
 
-  const user = await User.findById(req.user._id);
-  if (!user) {
-    res.status(404);
-    throw new Error("User not found");
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+
+    // Cập nhật thông tin của địa chỉ
+    const updatedAddress = await Address.findByIdAndUpdate(addressId, {
+      countries,
+      city,
+      street,
+      apartment
+    }, { new: true }); // { new: true } để trả về đối tượng đã được cập nhật
+
+    if (!updatedAddress) {
+      res.status(404);
+      throw new Error("Address not found");
+    }
+
+    res.json({ message: "Address updated successfully", updatedAddress });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  const address = await Address.findById(addressId);
-  if (!address) {
-    res.status(404);
-    throw new Error("Address not found");
-  }
-
-  address.countries = countries;
-  address.city = city;
-  address.street = street;
-  address.apartment = apartment;
-
-  const updatedAddress = await address.save();
-  res.json(updatedAddress);
 });
 
-const deleteUserAddress = asyncHandler(async (req, res) => {
-  const { addressId } = req.params;
+// <<<<<<< HEAD
+// const deleteUserAddress = asyncHandler(async (req, res) => {
+//   const { addressId } = req.params;
   
-  const user = await User.findById(req.user._id);
+//   const user = await User.findById(req.user._id);
+// =======
+
+const deleteUserAddress = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const addressId = req.params.id; 
+
+  const user = await User.findById(userId);
+// >>>>>>> 6707ef6e0a11c7624fd0208f12775ac8f6d1d603
   if (!user) {
     res.status(404);
     throw new Error("User not found");
   }
+  const addressIndex = user.addresses.findIndex(addr => addr._id.toString() === addressId);
 
-  const address = await Address.findById(addressId);
-  if (!address) {
+  if (addressIndex === -1) {
     res.status(404);
     throw new Error("Address not found");
   }
-
-  await address.remove();
-
-  // Xóa địa chỉ khỏi mảng địa chỉ của người dùng
-  user.addresses = user.addresses.filter((addr) => addr.toString() !== addressId);
+  user.addresses.splice(addressIndex, 1);
   await user.save();
+
+  await Address.findByIdAndDelete(addressId);
 
   res.json({ message: "Address deleted successfully" });
 });
+
 
 const getUserAddresses = asyncHandler(async (req, res) => {
   const userId = req.user._id;
@@ -390,22 +404,14 @@ const changePassword = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
   try {
-    // Tìm người dùng trong cơ sở dữ liệu
     const user = await User.findById(userId);
-
-    // Kiểm tra xem mật khẩu hiện tại có đúng không
     const isPasswordMatched = await bcrypt.compare(currentPassword, user.password);
     if (!isPasswordMatched) {
       return res.status(400).json({ error: "Current password is incorrect" });
     }
-
-    // Mã hóa mật khẩu mới
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-    // Cập nhật mật khẩu mới cho người dùng
     user.password = hashedPassword;
     await user.save();
-
     res.json({ message: "Password updated successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
