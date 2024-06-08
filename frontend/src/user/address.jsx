@@ -20,7 +20,8 @@ function Address({ offaddress ,onAddAddress }) {
         try {
             await DeleteAddress({ idaddress: idaddress });
             // Update the list of addresses after deletion
-            setListaddressship(addressship.filter(item => item._id !== idaddress));
+            // setListaddressship(addressship.filter(item => item._id !== idaddress));
+            onAddAddress();
         } catch (error) {
             console.error(error);
         }
@@ -68,7 +69,7 @@ function Address({ offaddress ,onAddAddress }) {
                             <div style={{ width: '100%', position: 'absolute' }}>
                                 <MDBBtn className="btn-close d-flex justify-content-end mr-4" color="none" aria-label="Close" onClick={offaddress} style={{ float: 'right' }} />
                             </div>
-                            <MDBRow className="g-0 d-flex justify-center items-center">
+                            <MDBRow className="g-0 d-flex ">
                                 <MDBCol style={{ maxWidth: '800px' }}>
                                     <MDBCardBody className="p-0 d-flex flex-column items-center justify-center">
                                         <MDBTypography tag="h5" className='pt-3 pb-2 text-gray-600 border-bottom w-full text-center'>Danh Sách địa chỉ giao hàng</MDBTypography>
