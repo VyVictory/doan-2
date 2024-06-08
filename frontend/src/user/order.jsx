@@ -4,11 +4,31 @@ import Select from 'react-select';
 import axios from 'axios';
 import GetAddressShip from '../module/getAddressShip';
 import GetProductByIdCart from '../module/getProductByIdCart';
-
 function Order({ offorder, listproduct }) {
     const [address, setAddress] = useState('');
+    const [products, setProducts] = useState([]);
     const { addressship } = GetAddressShip();
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                let productsData = [];
+                for (let index = 0; index < listproduct.length; index++) {
+                    // const response = await axios.get(`http://localhost:5000/api/carts/product/${listproduct[index]}`, { withCredentials: true });
+                    const response = await GetProductByIdCart({ idproduct: listproduct[index] });
+                    productsData.push(response);
+                }
+                setProducts(productsData);
+            } catch (error) {
+                console.error('Error fetching products: ', error);
+            }
+        };
 
+        if (listproduct.length > 0) {
+            fetchProducts();
+        }
+    }, [listproduct]); // Run the effect whenever listproduct changes
+
+    console.log(products);
     return (
         <section style={{ backgroundColor: 'none', padding: '0', background: 'none' }}>
             <MDBContainer>
@@ -22,15 +42,19 @@ function Order({ offorder, listproduct }) {
                                 <MDBCol md="8">
                                     <MDBCardBody className="p-0 d-flex flex-column items-center justify-center">
                                         <MDBTypography tag="h5" className='pt-3 pb-2 text-gray-600'>Danh sách sản phẩm</MDBTypography>
-
                                         <div className='w-full p-5 pt-2 pb-2'>
-                                            {listproduct.map((productId) => (
-                                                <div key={productId}>
-                                                    {productId}
-                                                    {/* <GetProductByIdCart idproduct={productId} /> */}
+                                            {products.map((item, index) => (
+                                                <div key={index}>
+                                                    <p>Product ID: {item.productId}</p>
+                                                    <p>Quantity: {item.quantity}</p>
+                                                    {/* Add more information about the product here */}
                                                 </div>
                                             ))}
+
+
                                         </div>
+
+
 
                                     </MDBCardBody>
                                 </MDBCol>
