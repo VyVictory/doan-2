@@ -8,6 +8,7 @@ import {
   getUserCart,
   checkoutCart,
   getCartIdByProductId, 
+  getCartIdByProductIdRT,
 
 } from "../controllers/cartController.js";
 
@@ -28,5 +29,7 @@ router.get("/get", authenticate, getUserCart);
 router.post("/checkout", authenticate, checkoutCart);
 
 router.get('/product/:productId', authenticate, getCartIdByProductId);
+
+router.get('/Productcartdetails/:productId', authenticate, getCartIdByProductIdRT);
 
 export default router;
