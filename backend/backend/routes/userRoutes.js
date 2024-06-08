@@ -14,6 +14,9 @@ import {
   getShop,
   updateShop,
   changePassword,
+  forgotPassword,
+  getUserAddresses,
+  addUserAddress,
   
 } from "../controllers/userController.js";
 
@@ -29,8 +32,12 @@ router
 router.post("/auth", loginUser);
 router.post("/logout", logoutCurrentUser);
 router.post("/auth/changepassword", authenticate, changePassword);
+router.get("/auth/forgotpassword", forgotPassword);
 router.get("/shop", authenticate ,getShop);
-router.put("/shop", authenticate,updateShop)
+router.put("/shop", authenticate,updateShop);
+router.post("address",authenticate,addUserAddress)
+router.get("address",authenticate,getUserAddresses)
+
 
 router
   .route("/profile")
