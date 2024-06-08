@@ -10,7 +10,7 @@ import Order from '../order';
 import styles from '../css/Navber.module.css'
 function Cart() {
     const [showdorder, setShoworder] = useState(false);
-
+    const [searchKeyword, setSearchKeyword] = useState('');
     const [urlpicture, setUrlpicture] = useState('http://localhost:5000');
     const [isFixed, setIsFixed] = useState(true);
     const YcheckRef = useRef(null);
@@ -111,6 +111,9 @@ function Cart() {
         ? {
             position: 'fixed', bottom: '0', left: '50%', transform: 'translateX(-50%)', zIndex: '1000', width: '80%', height: '150px',
         } : { width: '100%', };
+    const filteredCartItems = cart && cart.cartItems ? cart.cartItems.filter(item =>
+        item.product.name.toLowerCase().includes(searchKeyword.toLowerCase())
+    ) : [];
     return (
         <div className='pb-5'>
             {
@@ -130,7 +133,10 @@ function Cart() {
                 <div style={{ width: '40%' }}>
                     <nav className="navbar navbar-light bg-none">
                         <div className="container-fluid flex-row-reverse">
-                            <input className="form-control me-2 " style={{ width: '100%',paddingRight:'40px',paddingBottom: '10px'}} type="search" placeholder="Search" aria-label="Search" />
+                            <input className="form-control me-2 " style={{ width: '100%', paddingRight: '40px', paddingBottom: '10px' }}
+                                type="search" placeholder="Search" aria-label="Search"
+                                value={searchKeyword}
+                                onChange={(e) => setSearchKeyword(e.target.value)} />
                             <img type="submit" src={img_search} style={{ height: '30px', position: 'absolute', marginRight: '15px' }} className="border-left-2" alt="Search Icon" />
                         </div>
                     </nav>
@@ -154,7 +160,7 @@ function Cart() {
                         Thao tác
                     </div>
                 </div>
-                {cart && cart.cartItems && cart.cartItems.map((item, index) => (
+                {filteredCartItems.map((item, index) => (
                     <div key={index} className=" mt-2 mb-2 rounded d-flex flex-row bd-highlight items-center p-2" style={{ backgroundColor: 'white', width: '100%', height: 'auto' }}>
 
                         <div className='d-flex flex-row items-center' style={{ width: '40%' }}>
@@ -166,13 +172,33 @@ function Cart() {
                                 checked={selectedIds.includes(item.product._id)}
                                 onChange={() => handleChange(item.product._id)} // Truyền ID của sản phẩm vào hàm handleChange
                             />
-                            <div onClick={(e) => { handleClickLink(item.product._id) }} className='h-140' style={{ height: '140px' }}>
-                                <img
-                                    style={{ maxHeight: '140px' }}
-                                    src={urlpicture + item.product.image}
-                                    className="p-1"
-                                />
+                            <div onClick={(e) => { handleClickLink(item.product._id) }} className='h-140 d-flex flex-row items-center' style={{ height: '140px' }}>
+                                <div className='mr-2 d-block' style={{ width: '160px' }}>
+                                    <img
+                                        style={{ maxHeight: '140px', maxWidth: '160px' }}
+                                        src={urlpicture + item.product.image}
+                                        className="p-1"
+                                    />
+                                </div>
+
+                                <div
+                                    className="card-text h-8 "
+                                    style={{
+                                        width: '200px', // Thêm chiều rộng cho phần chứa văn bản
+                                        fontSize: '12px',
+                                        textAlign: 'left',
+                                        WebkitLineClamp: '2',
+                                        overflow: 'hidden',
+                                        display: '-webkit-box',
+                                        WebkitBoxOrient: 'vertical',
+                                        margin: '0',
+                                        wordWrap: 'break-word'
+                                    }}
+                                >
+                                    {item.product.name}
+                                </div>
                             </div>
+
                         </div>
                         <div className='d-flex justify-center' style={{ width: '15%' }}>
                             {(item.product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span>

@@ -2,17 +2,38 @@ import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardBody, MDBTypography, MDBBtn } from 'mdb-react-ui-kit';
 import getapicountry from '../module/getapicountry';
+import { PostAddress } from '../module/postaddress';
+//import GetAddressShip from '../module/getAddressShip';
 
 function Address({ offaddress }) {
     const [countries, setCountries] = useState([]);
-    const [selectedCountry, setSelectedCountry] = useState('');
-    const [cities, setCities] = useState([]);
-    const [selectedCity, setSelectedCity] = useState('');
     const [showaddaddress, setShowaddaddress] = useState(false);
+    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [postalCode, setPostalCode] = useState('');
+    const [country, setCountry] = useState('');
+    // const {addressship} =GetAddressShip()
+
     const submitaddaddress = async (e) => {
         e.preventDefault();
         setShowaddaddress(!showaddaddress);
     }
+    const handlePostAddress = async () => {
+        try {
+            // Truyền các giá trị state vào hàm PostAddress
+            await PostAddress({
+                address: address,
+                city: city,
+                postalCode: postalCode,
+                country: country
+            });
+          //  window.alert('Thêm địa chỉ thành công!');
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
     useEffect(() => {
         const fetchCountries = async () => {
             const countryData = await getapicountry();
@@ -20,17 +41,6 @@ function Address({ offaddress }) {
         };
         fetchCountries();
     }, []);
-
-    const handleCountryChange = (selectedOption) => {
-        setSelectedCountry(selectedOption);
-        // Fetch cities for the selected country (you need to implement this logic)
-        // For now, I'll just set some dummy cities
-        setCities(['City 1', 'City 2', 'City 3']);
-    };
-
-    const handleCityChange = (selectedOption) => {
-        setSelectedCity(selectedOption);
-    };
 
     return (
         <section style={{ backgroundColor: 'none', padding: '0', background: 'none' }}>
@@ -46,8 +56,20 @@ function Address({ offaddress }) {
                                     <MDBCardBody className="p-0 d-flex flex-column items-center justify-center">
                                         <MDBTypography tag="h5" className='pt-3 pb-2 text-gray-600 border-bottom w-full text-center'>Danh Sách địa chỉ giao hàng</MDBTypography>
                                         <div className='p-2 mb-2 text-green-500'>
-                                            danh sách rỗng
+                                            {/* {addressship.length > 0 ? (
+                                                addressship.map((item, index) => (
+                                                    <div key={index} className='w-full border m-2'>
+                                                        <div>{item.address}</div>
+                                                        <div>{item.city}</div>
+                                                        <div>{item.postalCode}</div>
+                                                        <div>{item.country}</div>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <div>danh sách rỗng</div>
+                                            )} */}
                                         </div>
+
                                         {showaddaddress ? <></> :
                                             <button onClick={submitaddaddress} className='btn btn-success' style={{ width: '40px', height: '40px' }}>+</button>
                                         }
@@ -72,15 +94,18 @@ function Address({ offaddress }) {
                                                         id="address"
                                                         placeholder="nhập địa chỉ giao hàng"
                                                         required
+                                                        value={address}
+                                                        onChange={(e) => setAddress(e.target.value)}
                                                     />
                                                 </div>
                                                 <div className="form-group mb-2 bd-highlight pb-2">
                                                     <MDBTypography tag="h6">Quốc gia:</MDBTypography>
                                                     <Select
-
                                                         options={countries.map(country => ({ value: country.name, label: country.name }))}
-                                                        onChange={handleCountryChange}
+                                                        id="country"
                                                         placeholder="Chọn quốc gia"
+                                                        value={{ label: country, value: country }}
+                                                        onChange={(selectedOption) => setCountry(selectedOption.label)}
                                                     />
                                                 </div>
                                                 <div className="form-group mb-2 bd-highlight">
@@ -91,6 +116,8 @@ function Address({ offaddress }) {
                                                         id="city"
                                                         placeholder="nhập thành phố"
                                                         required
+                                                        value={city}
+                                                        onChange={(e) => setCity(e.target.value)}
                                                     />
                                                 </div>
                                                 <div className="form-group mb-3 bd-highlight">
@@ -98,24 +125,25 @@ function Address({ offaddress }) {
                                                     <input
                                                         type="number"
                                                         className="form-control"
-                                                        id="postcode"
+                                                        id="postalCode"
                                                         placeholder="nhập mã bưu điện"
                                                         required
+                                                        value={postalCode}
+                                                        onChange={(e) => setPostalCode(e.target.value)}
                                                     />
                                                 </div>
 
                                             </div>
-                                            <button onClick={submitaddaddress} className='btn btn-success mb-3'>Thêm</button>
+                                            <button onClick={(e) => { submitaddaddress(e); handlePostAddress(); }} className='btn btn-success mb-3'>Thêm</button>
                                         </MDBCardBody>
                                     </MDBCol>
                                     : <></>}
-
                             </MDBRow>
                         </MDBCard>
                     </MDBCol>
                 </MDBRow>
             </MDBContainer>
-        </section>
+        </section >
     );
 };
 
