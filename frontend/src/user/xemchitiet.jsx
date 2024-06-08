@@ -1,4 +1,6 @@
-import { NavLink } from 'react-router-dom';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import imguser from './imguser/bar/user.png'
@@ -34,13 +36,14 @@ function Xemchitiet() {
     const handleClick = async (id, number) => {
         try {
             await PostCar({ idproduct: id, numberproduct: number });
-            window.alert('Thêm vào giỏ thành công!');
+            toast.success('Thêm vào giỏ hàng thành công!', { autoClose: 2000 });
         } catch (error) {
             console.error(error);
         }
     };
     return (
         <div className="Xemchitiet">
+            <ToastContainer />
             <div className='pl-4 pr-4' style={{}}>
                 <div className='d-flex flex-row'>
                     <div className='rounded' style={{ width: '76%', overflow: 'hidden', height: '600px' }}>

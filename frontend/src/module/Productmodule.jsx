@@ -46,9 +46,32 @@ const useProductData = () => {
       return null; // Trả về null nếu có lỗi
     }
   };
+  const urlParams = new URLSearchParams(window.location.search);
+  const updateProduct = async (formData) => {
 
+    const chitietproduct = urlParams.get('chitietproduct');
+    let productid = chitietproduct;
+    if (!chitietproduct) {
+      productid = urlParams.get('chitietproduct');
+    }
+    try {
+      const response = await axios.put(`http://localhost:5000/api/products/${productid}`, formData, { withCredentials: true });
+      setMessage('Update product successful!', response);
+    } catch (error) {
+      if (error.response) {
+        if (error.response.data.errors) {
+          setErrors(error.response.data.errors);
+          setMessage('Update product failed. Please check your inputs.');
+        } else {
+          setMessage(error.response.data.message || 'Update product failed. Please try again.');
+        }
+      } else {
+        setMessage('An error occurred. Please try again later.');
+      }
+    }
+  };
 
-  return { message, errors, imgProduct, changeImgProduct, postProduct };
+  return { message, errors, imgProduct, changeImgProduct, postProduct, updateProduct };
 };
 
 export default useProductData;

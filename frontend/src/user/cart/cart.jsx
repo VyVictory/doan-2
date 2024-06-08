@@ -1,4 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import img_search from '../imguser/bar/magnifying-glass.png';
 import img_voucher from '../../seller/imgseller/voucher.png';
 import { deleteProductCartById } from '../../module/deleteProductCartById';
@@ -58,8 +61,7 @@ function Cart() {
     const handleDeleteProductCartByid = async (id) => {
         try {
             await deleteProductCartById({ idproduct: id });
-            window.alert('Xóa sản phẩm khỏi giỏ thành công!');
-            window.location.href = '/cart';
+            toast.success('Xóa sản phẩm khỏi giỏ thành công!', { autoClose: 2000 });
         } catch (error) {
             console.error(error);
         }
@@ -114,6 +116,7 @@ function Cart() {
     ) : [];
     return (
         <div className='pb-5'>
+            <ToastContainer />
             {
                 showdorder ?
                     <div
@@ -176,7 +179,7 @@ function Cart() {
                                         src={urlpicture + item.product.image}
                                         className="p-1"
                                     />
-                                    
+
                                 </div>
 
                                 <div
@@ -199,14 +202,14 @@ function Cart() {
 
                         </div>
                         <div className='d-flex justify-center' style={{ width: '15%' }}>
-                            {(item.product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span>
+                            {(item.product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span className=' text-orange-800'  style={{ verticalAlign: "super" }}>đ</span>
                         </div>
                         <div className='d-flex justify-center' style={{ width: '15%' }}>
                             {item.quantity}
                         </div>
                         <div className='d-flex justify-center' style={{ width: '15%' }}>
 
-                            {(item.quantity * item.product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span>
+                            {(item.quantity * item.product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span className=' text-orange-800' style={{ verticalAlign: "super" }}>đ</span>
                         </div>
                         <div className='d-flex justify-center' style={{ width: '15%' }}>
                             <button
@@ -272,9 +275,13 @@ function Cart() {
                                             <h4 className='text-nowrap' style={{ marginRight: '10px' }}>
                                                 Tổng thanh toán:
                                             </h4>
-                                            <h4 className='text-nowrap' style={{ color: 'red' }}>
-                                                {summoney} VND
-                                            </h4>
+                                            <div className='d-flex flex-row'>
+                                                <h4 className='text-nowrap mr-2' style={{ color: 'red' }}>
+                                                    {(summoney).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                                                </h4>
+                                                <h4 > VND</h4>  
+                                            </div>
+
                                             <div className='d-block ' style={{ marginRight: '2%', marginLeft: '2%' }}>
                                                 <button onClick={submitshoworder} className=' btn btn-info border' >
                                                     Mua Hàng

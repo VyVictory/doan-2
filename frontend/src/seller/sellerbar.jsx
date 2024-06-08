@@ -34,7 +34,7 @@ const NavigationBar = () => {
 
   const [showFormL, setShowFormL] = useState(false);
   const [showFormR, setShowFormR] = useState(false);
-  const [notifications, setNotifications] = useState([]);
+  // const [notifications, setNotifications] = useState([]);
 
   const toggleFormL = () => {
     setShowFormL(!showFormL);
@@ -50,23 +50,23 @@ const NavigationBar = () => {
     }
   };
 
-  const fetchNotifications = async () => {
-    try {
-      const response = await fetch('your_api_endpoint');
-      if
-        (!response.ok) {
-        throw new Error('Failed to fetch notifications');
-      }
-      const data = await response.json();
-      setNotifications(data);
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-    }
-  };
+  // const fetchNotifications = async () => {
+  //   try {
+  //     const response = await fetch('your_api_endpoint');
+  //     if
+  //       (!response.ok) {
+  //       throw new Error('Failed to fetch notifications');
+  //     }
+  //     const data = await response.json();
+  //     setNotifications(data);
+  //   } catch (error) {
+  //     console.error('Error fetching notifications:', error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchNotifications();
-  }, []); // Fetch notifications on component mount
+  // useEffect(() => {
+  //   fetchNotifications();
+  // }, []); // Fetch notifications on component mount
 
   return (
     <div>
@@ -131,7 +131,7 @@ const NavigationBar = () => {
       </nav>
       {showFormL && <FormL onClose={toggleFormL} onR={toggleFormR} />}
       {showFormR && <FormR onClose={toggleFormR} onL={toggleFormL} />}
-      <Notification notifications={notifications} />
+      {/* <Notification notifications={notifications} /> */}
     </div>
   );
 };

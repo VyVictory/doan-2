@@ -2,6 +2,8 @@ import styles from './css/seller.module.css'; // Import CSS modules
 import stylecenter from './css/sellercenter.module.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { Container, Row, Col, Table } from 'react-bootstrap';
@@ -17,13 +19,15 @@ const Qlsp = () => {
     const handleSetList = (value) => {
         setList(value);
     };
-    const handleDeleteProductByid = async (id) => {
+    const handleDeleteProductByid = async (id, name) => {
         try {
             await DeleteProductById({ idproduct: id });
-            window.alert('Xóa sản phẩm thành công!');
-            // window.location.href = '/kenhnguoiban/quanlysanpham';
+            toast.success(`Xóa sản phẩm ${name} thành công!`, { autoClose: 2000 });
+            //cap nhat lai danh sach
+            setSanpham(sanpham.filter(product => product._id !== id));
         } catch (error) {
             console.error(error);
+            toast.error(`Xóa sản phẩm ${name} thất bại.`, { autoClose: 2000 });
         }
     };
     const cellStyle = {
@@ -78,6 +82,7 @@ const Qlsp = () => {
 
     return (
         <div className="shadow p-3 mb-5 bg-body rounded" style={{ marginTop: "20px", marginLeft: "10px", marginRight: "10px" }}>
+             <ToastContainer />
             <Container fluid className='border'>
                 {/* Header */}
                 <Row className="text-white d-flex bg-slate-200" style={{ height: "40px", paddingTop: "10px", height: "100%" }}>
@@ -157,8 +162,19 @@ const Qlsp = () => {
                                                 sanpham.length > 0 ? (
                                                     sanpham.map((product, index) => (
                                                         <tr key={index}>
-                                                            <td style={cellStyle}>{product.name}</td>
-                                                            <td>{product.category.name}</td>
+                                                            <td style={cellStyle}>
+                                                                <div className='d-flex flex-column justify-center'>
+                                                                    <div className='d-flex justify-center'>
+                                                                        <img style={{ maxHeight: '100px', maxWidth: '200px' }} src={'http://localhost:5000' + product.image}></img>
+                                                                    </div>
+
+                                                                    {product.name}
+                                                                </div>
+
+                                                            </td>
+                                                            <td >
+                                                                {product.category.name}
+                                                            </td>
                                                             <td>{(product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span></td>
 
                                                             <td>{product.countInStock}</td>
@@ -168,15 +184,14 @@ const Qlsp = () => {
 
                                                             </td>
                                                             <td>
-                                                                <button style={{ "border": "none" }}>
-                                                                    <NavLink to={`/kenhnguoiban/quanlysanpham/thaydoisanpham/${product._id}`}>
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l2.65 2.651-10.5 10.5H6.3v-2.651l10.5-10.5z" />
-                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.487 7.137 17.862 5.512a2.25 2.25 0 0 0-3.181 0l-10.5 10.5a2.25 2.25 0 0 0-.659 1.591V18.75a.75.75 0 0 0 .75.75h2.147a2.25 2.25 0 0 0 1.591-.659l10.5-10.5a2.25 2.25 0 0 0 0-3.181z" />
+                                                                <button className='m-3' style={{ "border": "none" }}>
+                                                                    <NavLink to={`/kenhnguoiban/quanlysanpham/thaydoisanpham?chitietproduct=${product._id}`}>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                                                         </svg>
                                                                     </NavLink>
                                                                 </button>
-                                                                <button onClick={handleDeleteProductByid} style={{ "border": "none" }}>
+                                                                <button  onClick={(e) => { handleDeleteProductByid(product._id,product.name) }} style={{ "border": "none" }}>
                                                                     <img src={trash_0} alt="Trash" style={{ width: '24px', height: '24px' }} />
                                                                 </button>
                                                             </td>

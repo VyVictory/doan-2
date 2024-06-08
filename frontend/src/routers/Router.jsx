@@ -13,6 +13,7 @@ import Authmodule from '../module/authmodule';
 import ChatBubble from '../chat/chat';
 import Cart from '../user/cart/cart.jsx';
 import RouterAdmin from './RouterAdmin.jsx';
+import Editproduct from '../seller/editproduct.jsx';
 
 function Routerr() {
     const [showNavbar, setShowNavbar] = useState(true);
@@ -67,6 +68,7 @@ function Routerr() {
                                     <>
                                         <Route path="/kenhnguoiban/quanlysanpham/themsanpham" element={<Themsanpham />} />
                                         <Route path="/kenhnguoiban/quanlysanpham/themanh" element={<Themanh />} />
+                                        <Route path='/kenhnguoiban/quanlysanpham/thaydoisanpham' element={<Editproduct />} />
                                     </>
                                 ) : (
                                     null

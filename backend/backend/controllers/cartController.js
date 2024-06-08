@@ -256,23 +256,20 @@ const getCartIdByProductId = asyncHandler(async (req, res) => {
 
 
 const getCartIdByProductIdRT = asyncHandler(async (req, res) => {
-  const userId = req.user._id; // Lấy userId từ request
-  const productId = req.params.productId; // Lấy productId từ params
-
+  const userId = req.user._id; 
+  const productId = req.params.productId; 
   try {
     const cart = await Cart.findOne({ user: userId }).populate("cartItems.product");
 
     if (!cart) {
       return res.status(404).json({ error: "Cart not found" });
     }
-
     const productInCart = cart.cartItems.find(item => item.product._id.toString() === productId);
 
     if (!productInCart) {
       return res.status(404).json({ error: "Product not found in cart" });
     }
-
-    res.json(productInCart.product); // Trả về thông tin sản phẩm
+    res.json({ product: productInCart.product, quantity: productInCart.quantity });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
