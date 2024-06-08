@@ -1,0 +1,2 @@
+double click vào file setupAndRun.bat
+nếu đã setupAndRun.bat lần trước rồi thì chỉ cần chọn file run.bat web sẽ khởi độngg nhanh hơn
