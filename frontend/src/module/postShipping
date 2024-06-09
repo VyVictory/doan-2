@@ -1,0 +1,12 @@
+import axios from 'axios';
+
+const PostShipping = async ({ data }) => {
+    try {
+        const response = await axios.post(`http://localhost:5000/api/carts/checkout`, data, { withCredentials: true });
+        return response.data;
+    } catch (error) {
+        throw new Error('Error posting shipping endpoint:');
+    }
+};
+
+export default PostShipping;

@@ -1,4 +1,6 @@
-import { NavLink } from 'react-router-dom';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import imguser from './imguser/bar/user.png'
@@ -7,13 +9,17 @@ import GetProduct from '../module/getproduct';
 import renderRatingStars from '../allview/renderRatingStart';
 import TopProduct from './topProduct';
 import { PostCar } from '../module/postcart';
+import OrderOneProduct from './orderoneproduct';
+
 
 function Xemchitiet() {
     const [urlpicture, setUrlpicture] = useState('http://localhost:5000');
     const urlParams = new URLSearchParams(window.location.search);
     const chitietproduct = urlParams.get('chitietproduct');
     const [sanpham, setSanpham] = useState([]);
+    const [showdorder, setShoworder] = useState(false);
     const [numberProduct, setNumberProduct] = useState(0);
+    const [listproduct,setListproduct] = useState([])
     useEffect(() => {
         const fetchProductList = async () => {
             const { sanpham } = await GetProduct();
@@ -21,6 +27,15 @@ function Xemchitiet() {
         };
         fetchProductList();
     }, []);
+    const submitshoworder = async (e) => {
+        setListproduct([
+            {
+              "_id": sanpham._id,
+              "quantity": numberProduct
+            },]);
+        e.preventDefault();
+        setShoworder(!showdorder);
+    };
     if (numberProduct > sanpham.quantity) {
         setNumberProduct(sanpham.quantity)
     } else if (numberProduct < 1) {
@@ -34,17 +49,27 @@ function Xemchitiet() {
     const handleClick = async (id, number) => {
         try {
             await PostCar({ idproduct: id, numberproduct: number });
-            window.alert('Thêm vào giỏ thành công!');
+            toast.success('Thêm vào giỏ hàng thành công!', { autoClose: 2000 });
         } catch (error) {
             console.error(error);
         }
     };
     return (
         <div className="Xemchitiet">
+            <ToastContainer />
+            {
+                showdorder ?
+                    <div
+                        className="d-flex justify-content-center align-items-center"
+                        style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 9999, background: 'none', padding: '0px' }}
+                    ><OrderOneProduct offorder={submitshoworder} listproduct={listproduct} numberproduct={numberProduct} />
+                    </div>
+                    : ''
+            }
             <div className='pl-4 pr-4' style={{}}>
                 <div className='d-flex flex-row'>
-                    <div className='rounded' style={{ width: '76%', overflow: 'hidden', height: '600px' }}>
-                        <div style={{ height: '100%', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }} className="scrollable-content rounded">
+                    <div className='rounded' style={{ width: '76%', overflow: 'hidden' }}>
+                        <div style={{ height: '100%', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none', minHeight: '600px' }} className="scrollable-content rounded">
                             <div className=' pl-5  pr-0 d-flex flex-row ' style={{}} >
                                 {/* Phần thẻ div thông thường */}
                                 <div className='pt-4' style={{ flex: 2 }}>
@@ -52,6 +77,7 @@ function Xemchitiet() {
                                         <div className='d-flex justify-content-center'>
                                             <img style={{ width: '470px', maxHeight: '400px', borderRadius: '5px' }} src={urlpicture + sanpham.image} className="p-1 border" alt={urlpicture + sanpham.image} />
                                         </div>
+
                                         <div className='p-2 pt-2 text-gray-500'>
                                             <h5>Đặc điểm nổi bật</h5>
                                             <div className='d-flex flex-row text-black'>
@@ -68,7 +94,7 @@ function Xemchitiet() {
 
                                 <div className='container p-0' style={{ flex: 3 }}>
                                     {/* Phần thẻ div có thể cuộn */}
-                                    <div style={{ backgroundColor: 'lightblue', height: '570px', overflow: 'hidden' }} className=" bg-transparent pl-2 pr-2 ">
+                                    <div style={{ backgroundColor: 'lightblue', height: '650px', overflow: 'hidden' }} className=" bg-transparent pl-2 pr-2 ">
                                         <div style={{ height: '100%', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }} className="scrollable-content ">
                                             {/* Nội dung dài để tạo ra thanh cuộn */}
                                             <div className=' p-3 bg-white rounded mb-3 mt-4'>
@@ -79,6 +105,15 @@ function Xemchitiet() {
                                                     {/* <div style={{ color: 'gray' }}>Tên sản phẩm:</div> */}
                                                     <h3> {sanpham.name}</h3>
                                                 </div>
+                                                <h5 className=''>
+                                                    Giá:
+                                                    {sanpham && sanpham.price && (
+                                                        <span className='text-red-600'>
+                                                            {sanpham.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                                                        </span>
+                                                    )}
+                                                    <span style={{ verticalAlign: "super" }}>đ</span>
+                                                </h5>
 
                                                 <div style={{ color: 'gray' }}>Mô tả sản phẩm:</div>
                                                 <div>{sanpham.description}</div>
@@ -205,14 +240,14 @@ function Xemchitiet() {
                                     <div className='d-flex flex-row items-center '>
                                         <button
                                             onClick={() => {
-                                                handleClick(sanpham._id,numberProduct );
+                                                handleClick(sanpham._id, numberProduct);
                                             }}
                                             className='btn btn btn-info' type='button'>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                                             </svg>
                                         </button>
-                                        <button className='btn btn btn-success ml-2' type='button'>
+                                        <button onClick={submitshoworder} className='btn btn btn-success ml-2' type='button'>
                                             Mua ngay
                                         </button>
                                     </div>

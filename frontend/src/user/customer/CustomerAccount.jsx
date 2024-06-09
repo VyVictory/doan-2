@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import avt_img from '../imguser/bar/user.png';
 import Authmodule from '../../module/authmodule';
 import useProfile from '../../module/profile.module';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function CustomerAccount() {
   const [previewSrc, setPreviewSrc] = useState(null);
   const [profileUpdate, setProfileUpdate] = useState({
@@ -59,6 +60,8 @@ function CustomerAccount() {
       console.log("No image selected");
     }
     await updateProfile(profileUpdate);
+    toast.success('Cập nhật thông tin thành công!', { autoClose: 2000 });
+
     console.log(message);
   };
   // Get today's date in YYYY-MM-DD format
@@ -74,6 +77,7 @@ function CustomerAccount() {
   };
   return (
     <div className='d-flex ml-5' style={{ marginLeft: '25px' }}>
+      <ToastContainer />
       <div className='d-flex flex-row' style={{ width: '800px' }}>
         <div className="CustomerAccount pr-3 border-end mt-3 mb-3" style={{ paddingRight: '5%', marginLeft: '5%' }}>
           <div style={{ width: '100%' }}>

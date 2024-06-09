@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import img_search from '../imguser/bar/magnifying-glass.png';
 import img_voucher from '../../seller/imgseller/voucher.png';
 import { deleteProductCartById } from '../../module/deleteProductCartById';
@@ -16,17 +18,17 @@ function Cart() {
     const [selectedIds, setSelectedIds] = useState([]);
     const [selectAllChecked, setSelectAllChecked] = useState(false);
     const [summoney, setSummoney] = useState(0);
+
     const submitshoworder = async (e) => {
         e.preventDefault();
         setShoworder(!showdorder);
-    }
+    };
+
     const handleChange = (id) => {
         setSelectedIds(prevIds => {
             if (prevIds.includes(id)) {
-                // Nếu id đã tồn tại trong mảng, loại bỏ nó
                 return prevIds.filter(itemId => itemId !== id);
             } else {
-                // Nếu id chưa tồn tại trong mảng, thêm vào
                 return [...prevIds, id];
             }
         });
@@ -40,26 +42,27 @@ function Cart() {
 
         fetchCart();
     }, []);
-    function handleClickLink(a) {
+
+    const handleClickLink = (a) => {
         window.location.href = '/xemchitiet?chitietproduct=' + a;
-    }
-    ///
+    };
 
     const handleSelectAll = () => {
         setSelectAllChecked(prevState => !prevState);
         setSelectedIds(prevIds => {
-            if (!selectAllChecked) {
-                return cart.cartItems.map(item => item.product._id);
+            if (!selectAllChecked && cart && cart.cartItems) {
+                return cart.cartItems.map(item => item.product?._id).filter(id => id !== undefined);
             } else {
                 return [];
             }
         });
     };
+
     const handleDeleteProductCartByid = async (id) => {
         try {
             await deleteProductCartById({ idproduct: id });
-            window.alert('Xóa sản phẩm khỏi giỏ thành công!');
-            window.location.href = '/cart';
+            toast.success('Xóa sản phẩm khỏi giỏ thành công!', { autoClose: 2000 });
+             window.location.href = '/cart';
         } catch (error) {
             console.error(error);
         }
@@ -73,7 +76,6 @@ function Cart() {
         } catch (error) {
             console.error(error);
         }
-        console.log(selectedIds);
         window.alert('Xóa sản phẩm khỏi giỏ thành công!');
     };
 
@@ -81,13 +83,14 @@ function Cart() {
         let sum = 0;
         if (cart && cart.cartItems) {
             cart.cartItems.forEach((item) => {
-                if (selectedIds.includes(item.product._id)) {
+                if (item && item.product && selectedIds.includes(item.product._id)) {
                     sum += item.quantity * item.product.price;
                 }
             });
         }
         setSummoney(sum);
     }, [selectedIds, cart]);
+
     useEffect(() => {
         const handleScroll = () => {
             if (YcheckRef.current) {
@@ -105,15 +108,18 @@ function Cart() {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+
     const fixedStyle = isFixed
         ? {
             position: 'fixed', bottom: '0', left: '50%', transform: 'translateX(-50%)', zIndex: '1000', width: '80%', height: '150px',
         } : { width: '100%', };
+
     const filteredCartItems = cart && cart.cartItems ? cart.cartItems.filter(item =>
-        item.product.name.toLowerCase().includes(searchKeyword.toLowerCase())
+        item && item.product && item.product.name && item.product.name.toLowerCase().includes(searchKeyword.toLowerCase())
     ) : [];
     return (
         <div className='pb-5'>
+            <ToastContainer />
             {
                 showdorder ?
                     <div
@@ -176,7 +182,7 @@ function Cart() {
                                         src={urlpicture + item.product.image}
                                         className="p-1"
                                     />
-                                    
+
                                 </div>
 
                                 <div
@@ -199,14 +205,14 @@ function Cart() {
 
                         </div>
                         <div className='d-flex justify-center' style={{ width: '15%' }}>
-                            {(item.product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span>
+                            {(item.product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span className=' text-orange-800' style={{ verticalAlign: "super" }}>đ</span>
                         </div>
                         <div className='d-flex justify-center' style={{ width: '15%' }}>
                             {item.quantity}
                         </div>
                         <div className='d-flex justify-center' style={{ width: '15%' }}>
 
-                            {(item.quantity * item.product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span>
+                            {(item.quantity * item.product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span className=' text-orange-800' style={{ verticalAlign: "super" }}>đ</span>
                         </div>
                         <div className='d-flex justify-center' style={{ width: '15%' }}>
                             <button
@@ -272,9 +278,13 @@ function Cart() {
                                             <h4 className='text-nowrap' style={{ marginRight: '10px' }}>
                                                 Tổng thanh toán:
                                             </h4>
-                                            <h4 className='text-nowrap' style={{ color: 'red' }}>
-                                                {summoney} VND
-                                            </h4>
+                                            <div className='d-flex flex-row'>
+                                                <h4 className='text-nowrap mr-2' style={{ color: 'red' }}>
+                                                    {(summoney).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                                                </h4>
+                                                <h4 > VND</h4>
+                                            </div>
+
                                             <div className='d-block ' style={{ marginRight: '2%', marginLeft: '2%' }}>
                                                 <button onClick={submitshoworder} className=' btn btn-info border' >
                                                     Mua Hàng

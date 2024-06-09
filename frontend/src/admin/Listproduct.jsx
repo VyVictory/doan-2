@@ -5,15 +5,18 @@ import ProfileDetail from './ProfileDetail';
 import GetProductsNotApprove from '../module/getProductsNotApprove';
 import accectproductadmin from '../module/accectproductadmin';
 import CategoryName from '../module/categoryName';
+import img_search from '../user/imguser/bar/magnifying-glass.png'
 //accectproductadmin(id,Approve,ApproveStatus) 
 export default function Listproduct() {
     const [urlImageProduct, setUrlImageProduct] = useState('http://localhost:5000');
     const [showdetail, setShowdetail] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [sanphams, setSanphams] = useState([]);
     const submitshowdetail = async (e) => {
         e.preventDefault();
         setShowdetail(!showdetail);
     }
-    const [sanphams, setSanphams] = useState([]);
+
     useEffect(() => {
         const fetchProductList = async () => {
             const { sanphams } = await GetProductsNotApprove();
@@ -30,6 +33,10 @@ export default function Listproduct() {
         };
         await window.location.reload();
     };
+    // Filter products based on search query
+    const filteredProducts = sanphams.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
     return (
         <section className="gradient-custom-2">
             <MDBContainer className="py-5 h-100">
@@ -37,10 +44,21 @@ export default function Listproduct() {
                     <MDBCol md="12" xl="10">
                         <MDBCard className="mask-custom">
                             <MDBCardBody className="p-4 text-black">
+
+                                
                                 <div className="text-center pt-3 pb-2 d-flex flex-row align-items-center justify-content-center">
                                     <img style={{ marginRight: '20px' }} src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp" alt="Check" height="50" width="50" />
                                     <h2 className="my-4 align-middle">Danh Sách Sản Phẩm Chưa Duyệt</h2>
                                 </div>
+                                <nav className="navbar navbar-light bg-none">
+                                    <div className="container-fluid flex-row-reverse">
+                                        <input className="form-control me-2 " style={{ width: '100%', paddingRight: '40px', paddingBottom: '10px' }}
+                                            type="search" placeholder="Search" aria-label="Search"
+                                            value={searchQuery}
+                                            onChange={e => setSearchQuery(e.target.value)}/>
+                                        <img type="submit" src={img_search} style={{ height: '30px', position: 'absolute', marginRight: '15px' }} className="border-left-2" alt="Search Icon" />
+                                    </div>
+                                </nav>
                                 <MDBTable className="text-white mb-0">
                                     <MDBTableHead>
                                         <tr>
@@ -52,8 +70,8 @@ export default function Listproduct() {
                                         </tr>
                                     </MDBTableHead>
                                     <MDBTableBody>
-                                        {sanphams.length > 0 ? (
-                                            sanphams.map((e) => (
+                                        {filteredProducts.length > 0 ? (
+                                            filteredProducts.map((e) => (
                                                 <tr className="">
                                                     <th className='d-flex flex-column align-items-start'>
                                                         <img src={urlImageProduct + e.image} alt="avatar 1" style={{ width: "aotu", height: "120px" }} />
@@ -63,7 +81,7 @@ export default function Listproduct() {
                                                         <span>{e.price}</span>
                                                     </td>
                                                     <td className="align-middle">
-                                                    {e.category.name}{/* <CategoryName categoryId={e.category} /> */}
+                                                        {e.category.name}{/* <CategoryName categoryId={e.category} /> */}
                                                     </td>
                                                     <td className="align-middle">
                                                         <span>{e.quantity}</span>
@@ -87,14 +105,14 @@ export default function Listproduct() {
                                                             <MDBTooltip tag="a" wrapperProps={{ href: "#!" }} title="Từ chối">
                                                                 <svg onClick={() => {
                                                                     handleClick(e._id, false, 'tuchoi');
-                                                                }} xmlns="http://www.w3.org/2000/svg" fill="none"  style={{ marginRight: '10px' }} viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                                }} xmlns="http://www.w3.org/2000/svg" fill="none" style={{ marginRight: '10px' }} viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                                 </svg>
                                                             </MDBTooltip>
                                                             <MDBTooltip tag="a" wrapperProps={{ href: "#!" }} title="Vi phạm">
                                                                 <svg onClick={() => {
                                                                     handleClick(e._id, false, 'vipham');
-                                                                }} xmlns="http://www.w3.org/2000/svg" fill="none"  style={{ marginRight: '10px' }} viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                                }} xmlns="http://www.w3.org/2000/svg" fill="none" style={{ marginRight: '10px' }} viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
                                                                 </svg>
                                                             </MDBTooltip>

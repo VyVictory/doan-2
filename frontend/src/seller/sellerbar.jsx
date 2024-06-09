@@ -34,7 +34,7 @@ const NavigationBar = () => {
 
   const [showFormL, setShowFormL] = useState(false);
   const [showFormR, setShowFormR] = useState(false);
-  const [notifications, setNotifications] = useState([]);
+  // const [notifications, setNotifications] = useState([]);
 
   const toggleFormL = () => {
     setShowFormL(!showFormL);
@@ -50,23 +50,23 @@ const NavigationBar = () => {
     }
   };
 
-  const fetchNotifications = async () => {
-    try {
-      const response = await fetch('your_api_endpoint');
-      if
-        (!response.ok) {
-        throw new Error('Failed to fetch notifications');
-      }
-      const data = await response.json();
-      setNotifications(data);
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-    }
-  };
+  // const fetchNotifications = async () => {
+  //   try {
+  //     const response = await fetch('your_api_endpoint');
+  //     if
+  //       (!response.ok) {
+  //       throw new Error('Failed to fetch notifications');
+  //     }
+  //     const data = await response.json();
+  //     setNotifications(data);
+  //   } catch (error) {
+  //     console.error('Error fetching notifications:', error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchNotifications();
-  }, []); // Fetch notifications on component mount
+  // useEffect(() => {
+  //   fetchNotifications();
+  // }, []); // Fetch notifications on component mount
 
   return (
     <div>
@@ -83,7 +83,7 @@ const NavigationBar = () => {
               <div className="navbar-nav me-auto mb-2 mb-lg-0">
                 HOME{pageName}
               </div>
-              <div style={{ marginRight: '2%' }}>
+              {/* <div style={{ marginRight: '2%' }}>
                 <button  className={`${styles.hover} ${styles.button} position-relative`} style={{ "height": "40px", "width": "40px", "marginRight": "4%", "marginLeft": "5%", paddingLeft: '5px' }}>
                   <img src={img_thongbao} style={{ "height": "30px" }} alt="Car Icon" />
                   <span class="position-absolute translate-middle badge rounded-pill bg-danger" style={{ marginLeft: '30%', marginTop: '-63%' }}>
@@ -91,7 +91,7 @@ const NavigationBar = () => {
                     <span class="visually-hidden">unread messages</span>
                   </span>
                 </button>
-              </div>
+              </div> */}
 
               <div className="d-flex" style={{ marginRight: "60px" }}>
                 <div className={`${styles.container}`}>
@@ -103,8 +103,9 @@ const NavigationBar = () => {
                         <UserAvatarName profile={profile} />
                       </div>
                       <ul className={styles.list} style={{ zIndex: 10 }}>
-                        <li><button className={`${styles.hover} ${styles.listaccount}`}>Thông Báo</button></li>
-                        <li><button className={`${styles.hover} ${styles.listaccount}`}>Hỗ Trợ</button></li>
+                        {/* <li><button className={`${styles.hover} ${styles.listaccount}`}>Thông Báo</button></li>
+                        <li><button className={`${styles.hover} ${styles.listaccount}`}>Hỗ Trợ</button></li> */}
+                        <li><a href='/'><button className={`${styles.hover} ${styles.listaccount}`}>Trang Mua Hàng</button></a></li>
                         <li><button className={`${styles.hover} ${styles.listaccount}`} onClick={handleLogout}>Đăng Xuất</button></li>
                       </ul>
                     </>
@@ -131,7 +132,7 @@ const NavigationBar = () => {
       </nav>
       {showFormL && <FormL onClose={toggleFormL} onR={toggleFormR} />}
       {showFormR && <FormR onClose={toggleFormR} onL={toggleFormL} />}
-      <Notification notifications={notifications} />
+      {/* <Notification notifications={notifications} /> */}
     </div>
   );
 };

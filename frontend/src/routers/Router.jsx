@@ -14,6 +14,8 @@ import ChatBubble from '../chat/chat';
 import Cart from '../user/cart/cart.jsx';
 import RouterAdmin from './RouterAdmin.jsx';
 import ResetPassword from '../user/resetPassword.jsx';
+import Editproduct from '../seller/editproduct.jsx';
+
 
 function Routerr() {
     const [showNavbar, setShowNavbar] = useState(true);
@@ -57,7 +59,6 @@ function Routerr() {
                                     <Route path="/resetPassword/*" element={<ResetPassword />} />
                                     <Route path="/" element={<Home />} />
                                     <Route path="/xemchitiet" element={<Xemchitiet />} />
-
                                     {isTokenExist && <>
                                         <Route path="/customer/*" element={<Customer />} />
                                         
@@ -71,6 +72,7 @@ function Routerr() {
                                     <>
                                         <Route path="/kenhnguoiban/quanlysanpham/themsanpham" element={<Themsanpham />} />
                                         <Route path="/kenhnguoiban/quanlysanpham/themanh" element={<Themanh />} />
+                                        <Route path='/kenhnguoiban/quanlysanpham/thaydoisanpham' element={<Editproduct />} />
                                     </>
                                 ) : (
                                     null

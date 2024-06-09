@@ -43,28 +43,28 @@ const Sellercenter = () => {
 
         setLocationState(newState);
     }, [location.pathname]);
-
+    const pathsToCheck = ["/kenhnguoiban/quanlysanpham/themsanpham", "/kenhnguoiban/quanlysanpham/thaydoisanpham"];
     // Sử dụng locationState.showFormHome, locationState.showQlsp, locationState.showQldh ở đâyy
 
     const isActive = location.pathname === '/kenhnguoiban/quanlysanpham';
     return (
         <div className="center" style={{ width: "99.136438799999999%" }}>
-            {location.pathname !== "/kenhnguoiban/quanlysanpham/themsanpham" && (
-            <div class="row bg-primary">
-                <div class="col-2 bg-light shadow-sm p-2  bg-body minWidth-100">
-                    <button type="submit" className={`${stylecenter.buttonlist}`} aria-label="Search" style={{ minHeight: "40px", padding: "10px", width: "104%", marginLeft: "6px" }}>
-                        <img src={img_list} style={{ height: "30px", float: "left", paddingRight: '10px' }} alt="User Avatar" />
-                        <span className="" style={{ minWidth: "100px", float: "left" }}>
-                            <NavLink to="/kenhnguoiban/quanlydonhang" className={`${location.pathname === '/kenhnguoiban/quanlydonhang' ? stylecenter.navlinkactive : stylecenter.navlink}`}>Quản Lý Đơn Hàng</NavLink>
-                        </span>
-                    </button>
-                    <button type="submit" className={`${stylecenter.buttonlist}`} aria-label="Search" style={{ minHeight: "40px", padding: "10px", width: "104%", marginLeft: "6px" }}>
-                        <img src={img_sanpham} style={{ height: "30px", float: "left", paddingRight: '10px' }} alt="User Avatar" />
-                        <span className="" style={{ minWidth: "100px", float: "left" }}>
-                            <NavLink to="/kenhnguoiban/quanlysanpham" className={`${location.pathname === '/kenhnguoiban/quanlysanpham' ? stylecenter.navlinkactive : stylecenter.navlink}`}>Quản Lý Sản Phẩm</NavLink>
-                        </span>
-                    </button>
-                    {/* <button type="submit" className={`${stylecenter.buttonlist}`} aria-label="Search" style={{ minHeight: "40px", padding: "10px", width: "104%", marginLeft: "6px" }}>
+            {!pathsToCheck.includes(location.pathname) && (
+                <div class="row bg-primary">
+                    <div class="col-2 bg-light shadow-sm p-2  bg-body minWidth-100">
+                        <button type="submit" className={`${stylecenter.buttonlist}`} aria-label="Search" style={{ minHeight: "40px", padding: "10px", width: "104%", marginLeft: "6px" }}>
+                            <img src={img_list} style={{ height: "30px", float: "left", paddingRight: '10px' }} alt="User Avatar" />
+                            <span className="" style={{ minWidth: "100px", float: "left" }}>
+                                <NavLink to="/kenhnguoiban/quanlydonhang" className={`${location.pathname === '/kenhnguoiban/quanlydonhang' ? stylecenter.navlinkactive : stylecenter.navlink}`}>Quản Lý Đơn Hàng</NavLink>
+                            </span>
+                        </button>
+                        <button type="submit" className={`${stylecenter.buttonlist}`} aria-label="Search" style={{ minHeight: "40px", padding: "10px", width: "104%", marginLeft: "6px" }}>
+                            <img src={img_sanpham} style={{ height: "30px", float: "left", paddingRight: '10px' }} alt="User Avatar" />
+                            <span className="" style={{ minWidth: "100px", float: "left" }}>
+                                <NavLink to="/kenhnguoiban/quanlysanpham" className={`${location.pathname === '/kenhnguoiban/quanlysanpham' ? stylecenter.navlinkactive : stylecenter.navlink}`}>Quản Lý Sản Phẩm</NavLink>
+                            </span>
+                        </button>
+                        {/* <button type="submit" className={`${stylecenter.buttonlist}`} aria-label="Search" style={{ minHeight: "40px", padding: "10px", width: "104%", marginLeft: "6px" }}>
                         <img src={img_voucher} style={{ height: "30px", float: "left", paddingRight: '10px' }} alt="User Avatar" />
                         <span className="" style={{ minWidth: "100px", float: "left" }}>
 
@@ -77,19 +77,19 @@ const Sellercenter = () => {
                             <NavLink to="/kenhnguoiban/quanlytaichinh" className={`${location.pathname === '/kenhnguoiban/quanlytaichinh' ? stylecenter.navlinkactive : stylecenter.navlink}`}>Quản Lý Tài Chính</NavLink>
                         </span>
                     </button> */}
-                    <button type="submit" className={`${stylecenter.buttonlist}`} aria-label="Search" style={{ minHeight: "40px", padding: "10px", width: "104%", marginLeft: "6px" }}>
-                        <img src={img_shop} style={{ height: "30px", float: "left", paddingRight: '10px' }} alt="User Avatar" />
-                        <span className="" style={{ minWidth: "100px", float: "left" }}>
-                            <NavLink to="/kenhnguoiban/quanlyshop" className={`${location.pathname === '/kenhnguoiban/quanlyshop' ? stylecenter.navlinkactive : stylecenter.navlink}`}>Quản Lý Shop</NavLink>
-                        </span>
-                    </button>
+                        <button type="submit" className={`${stylecenter.buttonlist}`} aria-label="Search" style={{ minHeight: "40px", padding: "10px", width: "104%", marginLeft: "6px" }}>
+                            <img src={img_shop} style={{ height: "30px", float: "left", paddingRight: '10px' }} alt="User Avatar" />
+                            <span className="" style={{ minWidth: "100px", float: "left" }}>
+                                <NavLink to="/kenhnguoiban/quanlyshop" className={`${location.pathname === '/kenhnguoiban/quanlyshop' ? stylecenter.navlinkactive : stylecenter.navlink}`}>Quản Lý Shop</NavLink>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="col-10 " style={{ backgroundColor: "#E8D2D2" }}>
+                        {showFormHome && <FormHome />}
+                        {showQlsp && <FormQlsp />}
+                        {showQldh && <FormQldh />}
+                    </div>
                 </div>
-                <div class="col-10 " style={{ backgroundColor: "#E8D2D2" }}>
-                    {showFormHome && <FormHome />}
-                    {showQlsp && <FormQlsp />}
-                    {showQldh && <FormQldh />}
-                </div>
-            </div>
             )}
         </div>
     );
