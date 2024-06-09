@@ -104,7 +104,7 @@ const EditProduct = () => {
       console.error('Error updating product:', error);
       alert('Có lỗi xảy ra khi sửa sản phẩm.');
     }
-    
+
     setProductData({
       coverImage: null,
       images: [],
@@ -116,7 +116,7 @@ const EditProduct = () => {
     <div className="container mt-5 mb-5">
       <div id='thongbao'></div>
       <div className='d-flex justify-center'>
-        <h2>Thêm Sản Phẩm</h2>
+        <h2>Sửa Thông Tin Sản Phẩm</h2>
       </div>
       <div>
         {/* Hiển thị thông điệp thành công hoặc thất bại */}
@@ -137,20 +137,32 @@ const EditProduct = () => {
               <h5 className='text-rose-500'>*</h5><label htmlFor="coverImage" className="form-label">Ảnh Bìa:</label>
             </div>
             <div className='mr-5'>
+
+              <div className="mb-3 d-flex flex-column content-center">
+                <label htmlFor="coverImageInput" style={{ cursor: 'pointer' }}>
+                  <img
+                    className='border'
+                    src={coverImagePreview || 'http://localhost:5000' + imageproduct}
+                    alt="Cover Preview"
+                    style={{ maxWidth: '200px', marginBottom: '10px' }}
+                  />
+                </label>
+                {!coverImagePreview && (
+                  <input
+                    id="coverImageInput"
+                    type="file"
+                    onChange={handleCoverImageChange}
+                    style={{ display: 'none' }}
+                  />
+                )}
+                {/* <button type="button" className="btn btn-danger m-1" onClick={handleRemoveCoverImage}>Xóa Ảnh Bìa</button> */}
+              </div>
               {coverImagePreview && (
                 <div className="mb-3 d-flex flex-column content-center ">
-                  <img className='border' src={coverImagePreview} alt="Cover Preview" style={{ maxWidth: '200px', marginBottom: '10px' }} />
                   <button type="button" className="btn btn-danger m-1" onClick={handleRemoveCoverImage}>Xóa Ảnh Bìa</button>
                 </div>
               )}
-              {!coverImagePreview && (
-                <ImageInput
-                  onChange={handleCoverImageChange}
-                  multiple={false}
 
-                />
-
-              )}
             </div>
           </div>
           <div className="mb-3 ml-4">

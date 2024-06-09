@@ -46,8 +46,8 @@ function Xemchitiet() {
             <ToastContainer />
             <div className='pl-4 pr-4' style={{}}>
                 <div className='d-flex flex-row'>
-                    <div className='rounded' style={{ width: '76%', overflow: 'hidden', height: '600px' }}>
-                        <div style={{ height: '100%', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }} className="scrollable-content rounded">
+                    <div className='rounded' style={{ width: '76%', overflow: 'hidden' }}>
+                        <div style={{ height: '100%', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none', minHeight: '600px' }} className="scrollable-content rounded">
                             <div className=' pl-5  pr-0 d-flex flex-row ' style={{}} >
                                 {/* Phần thẻ div thông thường */}
                                 <div className='pt-4' style={{ flex: 2 }}>
@@ -55,6 +55,7 @@ function Xemchitiet() {
                                         <div className='d-flex justify-content-center'>
                                             <img style={{ width: '470px', maxHeight: '400px', borderRadius: '5px' }} src={urlpicture + sanpham.image} className="p-1 border" alt={urlpicture + sanpham.image} />
                                         </div>
+
                                         <div className='p-2 pt-2 text-gray-500'>
                                             <h5>Đặc điểm nổi bật</h5>
                                             <div className='d-flex flex-row text-black'>
@@ -71,7 +72,7 @@ function Xemchitiet() {
 
                                 <div className='container p-0' style={{ flex: 3 }}>
                                     {/* Phần thẻ div có thể cuộn */}
-                                    <div style={{ backgroundColor: 'lightblue', height: '570px', overflow: 'hidden' }} className=" bg-transparent pl-2 pr-2 ">
+                                    <div style={{ backgroundColor: 'lightblue', height: '650px', overflow: 'hidden' }} className=" bg-transparent pl-2 pr-2 ">
                                         <div style={{ height: '100%', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }} className="scrollable-content ">
                                             {/* Nội dung dài để tạo ra thanh cuộn */}
                                             <div className=' p-3 bg-white rounded mb-3 mt-4'>
@@ -82,6 +83,15 @@ function Xemchitiet() {
                                                     {/* <div style={{ color: 'gray' }}>Tên sản phẩm:</div> */}
                                                     <h3> {sanpham.name}</h3>
                                                 </div>
+                                                <h5 className=''>
+                                                    Giá:
+                                                    {sanpham && sanpham.price && (
+                                                        <span className='text-red-600'>
+                                                            {sanpham.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                                                        </span>
+                                                    )}
+                                                    <span style={{ verticalAlign: "super" }}>đ</span>
+                                                </h5>
 
                                                 <div style={{ color: 'gray' }}>Mô tả sản phẩm:</div>
                                                 <div>{sanpham.description}</div>
@@ -208,7 +218,7 @@ function Xemchitiet() {
                                     <div className='d-flex flex-row items-center '>
                                         <button
                                             onClick={() => {
-                                                handleClick(sanpham._id,numberProduct );
+                                                handleClick(sanpham._id, numberProduct);
                                             }}
                                             className='btn btn btn-info' type='button'>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

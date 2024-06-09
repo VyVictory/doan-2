@@ -55,20 +55,21 @@ function Order({ offorder, listproduct }) {
                                 <MDBCol md="8">
                                     <MDBCardBody className="p-0 d-flex flex-column items-center justify-center">
                                         <MDBTypography tag="h5" className='pt-3 pb-2 text-gray-600'>Danh sách sản phẩm</MDBTypography>
-                                        <div className=" mt-2 rounded d-flex flex-row bd-highlight items-center border-bottom  " style={{ backgroundColor: 'white', width: '100%', height: '40px' }}>
-                                            <div className='d-flex justify-center' style={{ width: '35%' }}>
+                                        <div className="mt-2 rounded d-flex flex-row bd-highlight items-center border-bottom" style={{ backgroundColor: 'white', width: '100%', height: '40px' }}>
+                                            <div className='d-flex justify-center' style={{ width: '35%' }} key="product">
                                                 Sản phẩm
                                             </div>
-                                            <div className='d-flex justify-center' style={{ width: '25%' }}>
+                                            <div className='d-flex justify-center' style={{ width: '25%' }} key="price">
                                                 Đơn giá
                                             </div>
-                                            <div className='d-flex justify-center' style={{ width: '20%' }}>
+                                            <div className='d-flex justify-center' style={{ width: '20%' }} key="quantity">
                                                 Số lượng
                                             </div>
-                                            <div className='d-flex justify-center' style={{ width: '25%' }}>
+                                            <div className='d-flex justify-center' style={{ width: '25%' }} key="action">
                                                 Thao tác
                                             </div>
                                         </div>
+
                                         <div className='w-full pr-2  pb-2' style={{ maxHeight: '400px', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
 
                                             {products.map((item, index) => (
@@ -127,7 +128,7 @@ function Order({ offorder, listproduct }) {
                                                                     <path d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
                                                                 </svg>
                                                             </button>
-                                                            <a href={'http://localhost:3000/xemchitiet?chitietproduct='+item.product._id} title="Xem Chi tiết" className='border rounded w-10 h-10 d-flex items-center justify-center'>
+                                                            <a href={'http://localhost:3000/xemchitiet?chitietproduct=' + item.product._id} title="Xem Chi tiết" className='border rounded w-10 h-10 d-flex items-center justify-center'>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="size-6">
                                                                     <path d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                                                                 </svg>

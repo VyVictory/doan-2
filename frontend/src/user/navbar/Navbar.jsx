@@ -155,7 +155,7 @@ const NavigationBar = () => {
             <button onClick={submitshowaddress} style={{ "height": "30px" }} type='submit' className={`${styles.hover} ${styles.button} border-0 d-flex align-items-center justify-content-center bg-transparent`}>
               <img src={img_local} style={{ "height": "60%" }} alt="Location Icon" />
               <div>
-                Giao Đến:
+                Địa Chỉ Giao Hàng
               </div>
             </button>
           </div>
