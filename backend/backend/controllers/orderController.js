@@ -29,58 +29,56 @@ function calcPrices(orderItems) {
   };
 }
 
-
-const createOrder = async (req, res) => {
+const createOrder = asyncHandler(async (req, res) => {
   try {
-    const { orderItems, shippingAddress, paymentMethod } = req.body;
+    const { shippingAddress, paymentMethod, items } = req.body;
 
-    if (orderItems && orderItems.length === 0) {
-      res.status(400);
-      throw new Error("No order items");
-    }
+    // Mảng chứa các đơn hàng đã tạo
+    const createdOrders = [];
 
-    const itemsFromDB = await Product.find({
-      _id: { $in: orderItems.map((x) => x._id) },
-    });
-
-    const dbOrderItems = orderItems.map((itemFromClient) => {
-      const matchingItemFromDB = itemsFromDB.find(
-        (itemFromDB) => itemFromDB._id.toString() === itemFromClient._id
-      );
-
-      if (!matchingItemFromDB) {
-        res.status(404);
-        throw new Error(`Product not found: ${itemFromClient._id}`);
+    // Duyệt qua mỗi sản phẩm trong mảng items và tạo đơn hàng riêng biệt
+    for (const item of items) {
+      const product = await Product.findById(item._id);
+      if (!product) {
+        return res.status(404).json({ error: `Product not found: ${item._id}` });
       }
 
-      return {
-        ...itemFromClient,
-        product: itemFromClient._id,
-        price: matchingItemFromDB.price,
-        _id: undefined,
+      // Thêm thông tin sản phẩm vào mảng đặt hàng
+      const dbOrderItem = {
+        product: product._id, // ID của sản phẩm
+        name: product.name,
+        price: product.price,
+        quantity: item.quantity,
+        image: product.image
       };
-    });
 
-    const { itemsPrice, taxPrice, shippingPrice, totalPrice } =
-      calcPrices(dbOrderItems);
+      // Tính toán tổng số tiền, thuế, và phí vận chuyển cho từng đơn hàng
+      const { itemsPrice, taxPrice, shippingPrice, totalPrice } = calcPrices([dbOrderItem]);
 
-    const order = new Order({
-      orderItems: dbOrderItems,
-      user: req.user._id,
-      shippingAddress,
-      paymentMethod,
-      itemsPrice,
-      taxPrice,
-      shippingPrice,
-      totalPrice,
-    });
+      // Tạo một đơn hàng mới từ thông tin được cung cấp và tính toán
+      const order = new Order({
+        items: [dbOrderItem],
+        user: req.user._id,
+        shippingAddress,
+        paymentMethod,
+        itemsPrice,
+        taxPrice,
+        shippingPrice,
+        totalPrice,
+      });
 
-    const createdOrder = await order.save();
-    res.status(201).json(createdOrder);
+      // Lưu đơn hàng vào cơ sở dữ liệu
+      const createdOrder = await order.save();
+      createdOrders.push(createdOrder);
+    }
+
+    // Trả về các đơn hàng được tạo
+    res.status(201).json(createdOrders);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
+
 
 const getAllOrders = async (req, res) => {
   try {

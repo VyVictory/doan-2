@@ -13,6 +13,7 @@ import Authmodule from '../module/authmodule';
 import ChatBubble from '../chat/chat';
 import Cart from '../user/cart/cart.jsx';
 import RouterAdmin from './RouterAdmin.jsx';
+import ResetPassword from '../user/resetPassword.jsx';
 
 function Routerr() {
     const [showNavbar, setShowNavbar] = useState(true);
@@ -42,7 +43,7 @@ function Routerr() {
                     :
                     <Router>
                         {/* Hiển thị Navbar seller nếu showNavbar là true */}
-                        {showNavbar ? <UserBar /> : <Sellerbar />}
+                        {window.location.pathname.startsWith('/resetPassword')   ? null : (showNavbar ? <UserBar /> : <Sellerbar />)}
 
                         {/* Chỉ hiển thị thành phần Sellercenter khi showNavbar đúng */}
                         {!showNavbar && isTokenExist && <Sellercenter />}
@@ -51,12 +52,15 @@ function Routerr() {
                         <chat />
                         <Routes>
                             {showNavbar ? (
+                                
                                 <>
+                                    <Route path="/resetPassword/*" element={<ResetPassword />} />
                                     <Route path="/" element={<Home />} />
                                     <Route path="/xemchitiet" element={<Xemchitiet />} />
 
                                     {isTokenExist && <>
                                         <Route path="/customer/*" element={<Customer />} />
+                                        
                                         <Route path='/cart/*' element={<Cart />} />
                                     </>}
 

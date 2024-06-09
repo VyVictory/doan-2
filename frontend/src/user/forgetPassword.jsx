@@ -1,23 +1,32 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './css/LoginForm.module.css'; // Import CSS module
-import axioslogin from '../module/axioslogin'
 import CloseButton from 'react-bootstrap/CloseButton';
-function ForgetPassword({ onClose, onR ,onF}) {
-  const [email, setEmail] = useState('email@email.com');
-  const [password, setPassword] = useState('password');
-  const { loginfunction, message } = axioslogin(); // Corrected from axioslogin to Authmodule
-  const formData = {
-    email: email,
-    password: password,
-  };
+
+function ForgetPassword({ onClose }) {
+  const [email, setEmail] = useState(''); // Khởi tạo email rỗng
+  const [message, setMessage] = useState('');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = {
-      email: email,
-      password: password,
-    };
-    await loginfunction(formData);
+    try {
+      // Kiểm tra xem email đã được nhập vào hay chưa
+      if (!email) {
+        setMessage('Vui lòng nhập địa chỉ email');
+        return;
+      }
+
+      console.log('Email:', email); // In ra nội dung của biến email
+
+      // Gửi yêu cầu đặt lại mật khẩu với email đã nhập
+      const response = await axios.get(`http://localhost:5000/api/users/auth/forgotpassword?email=${email}`, {
+      });
+
+      setMessage('Email khôi phục mật khẩu đã được gửi!');
+    } catch (error) {
+      console.error('Error:', error);
+      setMessage('Có lỗi xảy ra. Vui lòng thử lại.');
+    }
   };
 
   return (
@@ -40,15 +49,14 @@ function ForgetPassword({ onClose, onR ,onF}) {
           </div>
           <div className='d-flex justify-content-end'>
             <div>
-              <CloseButton aria-label="Hide"
-                onClick={onClose} />
+              <CloseButton aria-label="Hide" onClick={onClose} />
             </div>
           </div>
           <div className='' style={{ margin: "10px" }}>
             <form onSubmit={handleSubmit} className='p-1'>
 
               <div className='pd d-flex flex-column align-items-start mt-3'>
-                <label >Địa Chỉ Email:</label>
+                <label>Địa Chỉ Email:</label>
                 <input
                   type="email"
                   className="form-control"
@@ -56,31 +64,12 @@ function ForgetPassword({ onClose, onR ,onF}) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                <label style={{}} className='mt-2'>Mật Khẩu:</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="Mật khẩu"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
               </div>
 
               <div className='pb-2 d-flex flex-column mt-2'>
-                <button type="submit" className="btn btn-primary btn-block">Đăng Nhập</button>
-
-
-                <div className='d-flex flex-row items-center mt-1 justify-center'>
-                  <div className='text-sm mr-1 text-gray-400'>
-                    chưa có tài khoản!
-                  </div>
-                  <a href='#' >Đăng Ký Mới</a>
-
-                </div>
-                <a style={{ float: "right" }} href='#' >Quên mật khẩu</a>
+                <button type="submit" className="btn btn-primary btn-block">Gửi yêu cầu</button>
                 {message && <p className='text-red-600' style={{ marginBottom: '-10px' }}>{message}</p>}
               </div>
-
             </form>
           </div>
         </div>

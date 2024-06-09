@@ -231,16 +231,16 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
 
 const updateUserActiveStatus = asyncHandler(async (req, res) => {
   try {
+    const { isActive } = req.body;
     const user = await User.findById(req.params.id);
 
     if (!user) {
       return res.status(400).json({ message: 'User not found' });
     }
 
-    // Update isActive status to the opposite of its current value
-    user.isActive = !user.isActive;
+    user.isActive = isActive;
 
-    await user.save(); // Persist the change to the database
+    await user.save(); 
 
     res.json({ message: `User ${user.username} is now ${user.isActive ? 'active' : 'inactive'}`, email: user.email });
   } catch (error) {
@@ -249,6 +249,21 @@ const updateUserActiveStatus = asyncHandler(async (req, res) => {
   }
 });
 
+const getUserActiveStatus = asyncHandler(async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+
+    // Trả về trạng thái hoạt động của người dùng
+    res.json({ isActive: user.isActive });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error getting user activity status' });
+  }
+});
 
 const deleteUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
@@ -428,7 +443,7 @@ const changePassword = asyncHandler(async (req, res) => {
 //đổi mật khẩu
 
 const forgotPassword = asyncHandler(async (req, res) => {
-  const { email } = req.body; // Lấy email từ body request
+  const { email } = req.query; 
 
   if (!email) {
       res.status(400).json({ message: 'Missing email' });
@@ -445,15 +460,14 @@ const forgotPassword = asyncHandler(async (req, res) => {
   
   await user.save();
 
-  const html = `click vào link dưới dưới đây để đổi mật khẩu link này có thời gian tồn tại 15 phút. <a href="${process.env.URL_SERVER}/${resetToken}">CLICK HERE</a>`;
+  const html = `click vào link dưới dưới đây để đổi mật khẩu link này có thời gian tồn tại 15 phút. <a href="${process.env.URL_SERVER}?token=${resetToken}">CLICK HERE</a>`;
 
   const mailData = {
       email,
-      html
-      
+      html 
   };
-   await console.log(mailData);
   
+  // Gửi email
   const mailResponse = await sendMail(mailData);
 
   console.log(`Forgot password email sent to: ${email}`); 
@@ -463,21 +477,35 @@ const forgotPassword = asyncHandler(async (req, res) => {
   });
 });
 
-const resetPassword = asyncHandler(async(req, res) => {
-  const {password, token} = req.body
-  const passwordResetToken = crypto.createHash('sha256').update(token).digest('hex')
-  const user =  await User.findOne({passwordResetToken, passwordRestExpires: {$gt:Date.now() } } )
-  if(!user) throw new Error('invalid reset token')
-    user.password = password
-    user.passwordResetToken = undefined
-    user.passwordChangeAt = Date.now()
-    user.passwordRestExpires = undefined
-    await user.save() 
-    return res.status(200).json({
-      success: user ? true : false,
-      mes: user ? 'update password': 'something went wrong'
-    })
-})
+
+const resetPassword = asyncHandler(async (req, res) => {
+  const { password } = req.body;
+  const token = req.query.token; // Lấy token từ query parameter
+
+  if (!token) {
+    return res.status(400).json({ message: 'Missing token' });
+  }
+
+  const passwordResetToken = crypto.createHash('sha256').update(token).digest('hex');
+  const user = await User.findOne({ passwordResetToken, passwordRestExpires: { $gt: Date.now() } });
+
+  if (!user) {
+    return res.status(404).json({ message: 'Invalid reset token' });
+  }
+
+  user.password = password;
+  user.passwordResetToken = undefined;
+  user.passwordChangeAt = Date.now();
+  user.passwordRestExpires = undefined;
+
+  await user.save();
+
+  return res.status(200).json({
+    success: true,
+    mes: 'Update password'
+  });
+});
+
 
 export {
   registerUser,
@@ -485,6 +513,7 @@ export {
   getUserAddresses,
   loginUser,
   updateUserActiveStatus,
+  getUserActiveStatus,
   logoutCurrentUser,
   getAllUsers,
   getCurrentUserProfile,

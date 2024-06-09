@@ -10,6 +10,7 @@ import {
   getUserById,
   updateUserById,
   updateUserActiveStatus,
+  getUserActiveStatus,
   getShop,
   updateShop,
   changePassword,
@@ -59,6 +60,11 @@ router
   .delete(authenticate, authorizeAdmin, deleteUserById)
   .get(authenticate, authorizeAdmin, getUserById)
   .put(authenticate, authorizeAdmin, updateUserById)
+  
+
+  router
+  .route("/active/:id")
+  .get(authenticate, authorizeAdmin, getUserActiveStatus)
   .patch(authenticate, authorizeAdmin, updateUserActiveStatus);
 
 export default router;
