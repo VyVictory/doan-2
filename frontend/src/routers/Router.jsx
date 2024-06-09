@@ -55,7 +55,6 @@ function Routerr() {
                                 <>
                                     <Route path="/" element={<Home />} />
                                     <Route path="/xemchitiet" element={<Xemchitiet />} />
-
                                     {isTokenExist && <>
                                         <Route path="/customer/*" element={<Customer />} />
                                         <Route path='/cart/*' element={<Cart />} />

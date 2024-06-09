@@ -27,14 +27,14 @@ function Customerleftbar() {
                                 Thông tin tài khoản
                             </div>
                         </a>
-                        <a className={`${stylesnavbar.button} ${style.selectnav}`} href="/customer/notification" >
+                        {/* <a className={`${stylesnavbar.button} ${style.selectnav}`} href="/customer/notification" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
                                 <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6" />
                             </svg>
                             <div className={`${style.textselect} `}>
                                 Thông báo của tôi
                             </div>
-                        </a>
+                        </a> */}
                         <a className={`${stylesnavbar.button} ${style.selectnav}`} href="/customer/historybuyandsell" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-basket2" viewBox="0 0 16 16">
                                 <path d="M4 10a1 1 0 0 1 2 0v2a1 1 0 0 1-2 0zm3 0a1 1 0 0 1 2 0v2a1 1 0 0 1-2 0zm3 0a1 1 0 1 1 2 0v2a1 1 0 0 1-2 0z" />
@@ -44,7 +44,7 @@ function Customerleftbar() {
                                 Quản lý đơn hàng
                             </div>
                         </a>
-                        <a className={`${stylesnavbar.button} ${style.selectnav}`} style={{ marginLeft: '2px' }} href="/customer/return-tracking" >
+                        {/* <a className={`${stylesnavbar.button} ${style.selectnav}`} style={{ marginLeft: '2px' }} href="/customer/return-tracking" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 <g clip-path="url(#clip0_955_70824)">
                                     <path d="M17.743 14.87L19.524 13.315C19.836 13.043 19.869 12.569 19.596 12.257C19.324 11.945 18.85 11.913 18.537 12.185L15.256 15.049C15.094 15.191 15 15.397 15 15.614C15 15.831 15.094 16.037 15.257 16.179L18.538 19.042C18.681 19.166 18.856 19.227 19.031 19.227C19.24 19.227 19.448 19.14 19.596 18.97C19.868 18.658 19.836 18.184 19.524 17.912L17.766 16.378C20.388 16.457 22.499 18.646 22.499 21.34V23.249C22.499 23.663 22.835 23.999 23.249 23.999C23.663 23.999 24 23.664 24 23.25V21.341C24 17.81 21.204 14.935 17.743 14.87Z" fill="#000000  " />
@@ -61,15 +61,15 @@ function Customerleftbar() {
                             <div className={`${style.textselect} `}>
                                 Quản lý đổi trả
                             </div>
-                        </a>
-                        <a className={`${stylesnavbar.button} ${style.selectnav}`} href="/customer/wishlist" >
+                        </a> */}
+                        {/* <a className={`${stylesnavbar.button} ${style.selectnav}`} href="/customer/wishlist" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                                 <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
                             </svg>
                             <div className={`${style.textselect} `}>
                                 Sản phẩm yêu thích
                             </div>
-                        </a>
+                        </a> */}
                         {/* Sử dụng class "nav-link" cho các liên kết */}
                     </nav>
                 </div>

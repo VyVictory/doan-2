@@ -105,7 +105,7 @@ const NavigationBar = () => {
                 </button>
               </div>
             </div>
-            {isTokenExist ? (
+            {/* {isTokenExist ? (
               <div style={{ marginRight: '8%' }}>
                 <button onClick={(e) => { handleClick('thongbao') }} className={`${styles.hover} ${styles.button} position-relative`} style={{ "height": "40px", "width": "40px", "marginRight": "4%", "marginLeft": "5%", paddingLeft: '5px' }}>
                   <img src={img_thongbao} style={{ "height": "30px" }} alt="Car Icon" />
@@ -115,7 +115,7 @@ const NavigationBar = () => {
                   </span>
                 </button>
               </div>
-            ) : (<></>)}
+            ) : (<></>)} */}
             {/* tk da dang nhap*/}
             {isTokenExist ? (
               <div className={`${styles.container} `} style={{ zIndex: '9999' }}>
@@ -123,9 +123,10 @@ const NavigationBar = () => {
                   <UserAvatarName profile={profile} />
                 </div>
                 <ul className={styles.list}>
+                <li><a href='/kenhnguoiban'><button className={`${styles.hover} ${styles.listaccount}`}>kênh người bán</button></a></li>
                   <li><a href='/customer/account'><button className={`${styles.hover} ${styles.listaccount}`}>thông tin tài khoản</button></a></li>
                   <li><a href='/customer/historybuyandsell'><button className={`${styles.hover} ${styles.listaccount}`}>đơn hàng của tôi</button></a></li>
-                  <li><button className={`${styles.hover} ${styles.listaccount}`} onClick={handleLogout}>Đăng Xuất</button></li>
+                  <li><button className={`${styles.hover} ${styles.listaccount}`} style={{color:'red'}} onClick={handleLogout}>Đăng Xuất</button></li>
                 </ul>
               </div>
             ) : (
