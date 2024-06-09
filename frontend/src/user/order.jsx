@@ -4,17 +4,24 @@ import Select from 'react-select';
 import axios from 'axios';
 import GetAddressShip from '../module/getAddressShip';
 import GetProductByIdCart from '../module/getProductByIdCart';
+import PostShipping from '../module/postShipping'; // Ensure the correct path here
 function Order({ offorder, listproduct }) {
     const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [postalCode, setPostalCode] = useState('');
+    const [country, setCountry] = useState('');
+    const [payment, setPayment] = useState('Thanh toán khi nhận hàng');
+    const [phone, setPhone] = useState('');
     const [products, setProducts] = useState([]);
     const { addressship } = GetAddressShip();
     const [summoney, setSummoney] = useState(0);
+
+    // Fetch products and calculate total price
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 let productsData = [];
                 for (let index = 0; index < listproduct.length; index++) {
-                    // const response = await axios.get(`http://localhost:5000/api/carts/product/${listproduct[index]}`, { withCredentials: true });
                     const response = await GetProductByIdCart({ idproduct: listproduct[index] });
                     productsData.push(response);
                 }
@@ -27,7 +34,8 @@ function Order({ offorder, listproduct }) {
         if (listproduct.length > 0) {
             fetchProducts();
         }
-    }, [listproduct]); // Run the effect whenever listproduct changes
+    }, [listproduct]);
+
     useEffect(() => {
         let sum = 0;
         if (products) {
@@ -37,11 +45,42 @@ function Order({ offorder, listproduct }) {
         }
         setSummoney(sum);
     }, [products]);
-    console.log(products)
+
+    // Delete product from order
     function submitdeleteproduct(idproduct) {
         setProducts(prevProducts => prevProducts.filter(item => item.product._id !== idproduct));
     }
+    if (payment === '') {
+        setPayment('Thanh toán khi nhận hàng');
+    }
+    // Confirm order and post shipping information
+    async function thanhtoan() {
+        if (address === '' && products.length === 0) {
+            return;
+        } else {
+            const data = {
+                shippingAddress: {
+                    address: address,
+                    city: city,
+                    postalCode: postalCode,
+                    country: country
+                },
+                paymentMethod: payment,
+                items: products.map(item => ({ _id: item.product._id, quantity: item.quantity }))
+            }
+            try {
+                const response = await axios.post(`http://localhost:5000/api/carts/checkout`, data, { withCredentials: true });
+                alert('Đặt Hàng Thành Công.');
+                window.location.href='/cart';
+                return response.data;
+                //http://localhost:5000/api/api/orders
+            } catch (error) {
+                console.error('Error posting shipping:', error);
+                // Handle shipping post error
+            }
+        }
 
+    }
     return (
         <section style={{ backgroundColor: 'none', padding: '0', background: 'none' }}>
             <MDBContainer>
@@ -69,9 +108,7 @@ function Order({ offorder, listproduct }) {
                                                 Thao tác
                                             </div>
                                         </div>
-
                                         <div className='w-full pr-2  pb-2' style={{ maxHeight: '400px', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-
                                             {products.map((item, index) => (
                                                 <div className='border mb-2 rounded d-flex flex-column'>
                                                     <div key={index} className=" d-flex flex-row bd-highlight items-center p-2 pb-0" style={{ backgroundColor: 'white', width: '100%', height: 'auto' }}>
@@ -164,26 +201,38 @@ function Order({ offorder, listproduct }) {
                                         <MDBTypography tag="h5" className='pt-4 pb-2 text-gray-600'>Thông tin thanh toán</MDBTypography>
 
                                         <div className='w-full mt-3 p-2 pt-2 pb-2 border'>
-                                            <div className="form-group mb-3  bd-highlight">
+                                            <div className="form-group mb-3 bd-highlight">
                                                 <MDBTypography tag="h6">Địa chỉ giao hàng:</MDBTypography>
                                                 <Select
-                                                    options={addressship.map(a => ({ value: a._id, label: a.street }))}
-                                                    id="street"
+                                                    options={addressship.map(a => ({ label: a.street, value: `${a.street}, ${a.city}, ${a.apartment}, ${a.countries}` }))}
                                                     placeholder="Chọn đường"
-                                                    value={{ label: address, value: address }}
-                                                    onChange={(selectedOption) => setAddress(selectedOption.label)}
+                                                    value={{ value: `${address}, ${city}, ${postalCode}, ${country}`, label: address }}
+                                                    onChange={(selectedOption) => {
+                                                        const selectedAddress = selectedOption.value.split(", ");
+                                                        setAddress(selectedAddress[0]);
+                                                        setCity(selectedAddress[1]);
+                                                        setPostalCode(selectedAddress[2]);
+                                                        setCountry(selectedAddress[3]);
+                                                    }}
                                                 />
                                             </div>
+
                                             <div className="form-group mb-3 me-auto">
                                                 <MDBTypography tag="h6">Chọn phương thức thanh toán:</MDBTypography>
                                                 <select
+                                                    onChange={(e) => setPayment(e.target.value)}
                                                     className="form-control"
                                                     id="payment"
+                                                    value={payment} // Set the selected value to the state variable
+                                                    required
                                                 >
-                                                    <option value="Thanh toán khi nhận hàng">Thanh toán khi nhận hàng</option>
+                                                    <option value="">Chọn phương thức thanh toán</option>
+                                                    <option value="Thanh toán khi nhận hàng">Thanh toán khi nhận hàng</option> {/* Default empty option */}
+
                                                     {/* <option value="PaymentCard">Thanh toán bằng thẻ</option> */}
                                                 </select>
                                             </div>
+
                                             <div className="form-group mb-3 me-auto">
                                                 <MDBTypography tag="h6">Số điện thoại liên hệ</MDBTypography>
                                                 <input
@@ -191,6 +240,7 @@ function Order({ offorder, listproduct }) {
                                                     className="form-control"
                                                     id="phone"
                                                     placeholder="Nhập số điện thoại"
+                                                    onChange={(e) => setPhone(e.target.value)}
                                                 />
                                             </div>
                                         </div>
@@ -199,7 +249,7 @@ function Order({ offorder, listproduct }) {
                                             <span className='text-red-600'>{(summoney).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</span><span className='text-origin-800' style={{ verticalAlign: "super" }}>đ</span>
                                         </div>
 
-                                        <button className='btn btn-success mb-4'>Xác Nhận</button>
+                                        <button onClick={thanhtoan} className='btn btn-success mb-4'>Xác Nhận</button>
                                     </MDBCardBody>
                                 </MDBCol>
                             </MDBRow>

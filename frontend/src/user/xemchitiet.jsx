@@ -9,13 +9,17 @@ import GetProduct from '../module/getproduct';
 import renderRatingStars from '../allview/renderRatingStart';
 import TopProduct from './topProduct';
 import { PostCar } from '../module/postcart';
+import OrderOneProduct from './orderoneproduct';
+
 
 function Xemchitiet() {
     const [urlpicture, setUrlpicture] = useState('http://localhost:5000');
     const urlParams = new URLSearchParams(window.location.search);
     const chitietproduct = urlParams.get('chitietproduct');
     const [sanpham, setSanpham] = useState([]);
+    const [showdorder, setShoworder] = useState(false);
     const [numberProduct, setNumberProduct] = useState(0);
+    const [listproduct,setListproduct] = useState([])
     useEffect(() => {
         const fetchProductList = async () => {
             const { sanpham } = await GetProduct();
@@ -23,6 +27,15 @@ function Xemchitiet() {
         };
         fetchProductList();
     }, []);
+    const submitshoworder = async (e) => {
+        setListproduct([
+            {
+              "_id": sanpham._id,
+              "quantity": numberProduct
+            },]);
+        e.preventDefault();
+        setShoworder(!showdorder);
+    };
     if (numberProduct > sanpham.quantity) {
         setNumberProduct(sanpham.quantity)
     } else if (numberProduct < 1) {
@@ -44,6 +57,15 @@ function Xemchitiet() {
     return (
         <div className="Xemchitiet">
             <ToastContainer />
+            {
+                showdorder ?
+                    <div
+                        className="d-flex justify-content-center align-items-center"
+                        style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 9999, background: 'none', padding: '0px' }}
+                    ><OrderOneProduct offorder={submitshoworder} listproduct={listproduct} numberproduct={numberProduct} />
+                    </div>
+                    : ''
+            }
             <div className='pl-4 pr-4' style={{}}>
                 <div className='d-flex flex-row'>
                     <div className='rounded' style={{ width: '76%', overflow: 'hidden' }}>
@@ -225,7 +247,7 @@ function Xemchitiet() {
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                                             </svg>
                                         </button>
-                                        <button className='btn btn btn-success ml-2' type='button'>
+                                        <button onClick={submitshoworder} className='btn btn btn-success ml-2' type='button'>
                                             Mua ngay
                                         </button>
                                     </div>
