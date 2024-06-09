@@ -480,7 +480,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
 const resetPassword = asyncHandler(async (req, res) => {
   const { password } = req.body;
-  const token = req.query.token; // Lấy token từ query parameter
+  const token = req.query.token; 
 
   if (!token) {
     return res.status(400).json({ message: 'Missing token' });
