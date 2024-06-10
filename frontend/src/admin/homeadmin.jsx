@@ -4,7 +4,7 @@ function homeadmin() {
 
     return (
         <div className="Home">
-          
+
         </div >
     );
 }

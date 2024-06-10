@@ -1,9 +1,7 @@
 import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon, MDBBtn, MDBTooltip } from 'mdb-react-ui-kit';
 import React, { useEffect, useState } from 'react';
 import Authmodule from '../module/authmodule';
-import EditPassword from './EditPass';
-import EditEmail from './EditEmail';
-import EditPhone from './EditPhone';
+
 
 function ProfileAdmin({ offprofile, profile }) {
     const [previewSrc, setPreviewSrc] = useState(null);
@@ -83,6 +81,7 @@ function ProfileAdmin({ offprofile, profile }) {
         }
         setProfileUpdate({ ...profileUpdate, born: e.target.value });
     };
+
     return (
         <section style={{ backgroundColor: 'none', padding: '0', background: 'none', }}>
             <MDBContainer >
@@ -92,7 +91,7 @@ function ProfileAdmin({ offprofile, profile }) {
                             {profileview ?
                                 <>
 
-                                    <div style={{ width: '100%',position:'absolute' }}>
+                                    <div style={{ width: '100%', position: 'absolute' }}>
                                         <MDBBtn className="btn-close d-flex justify-content-end" color="none" aria-label="Close" onClick={offprofile} style={{ float: 'right' }} />
                                     </div>
                                     <div className='d-flex ml-5' style={{ marginLeft: '25px' }}>
@@ -185,7 +184,7 @@ function ProfileAdmin({ offprofile, profile }) {
                                             </div>
                                             <div style={{ width: '120px', marginLeft: '5%' }}>
                                                 <div className="CustomerAccount pl-3 pr-3 mt-3 mb-3">
-                                                    <div style={{ width: '300px' }}>
+                                                    <div style={{ width: '500px' }}>
                                                         <div className=' mb-3 text-lg text-gray-500'>
                                                             Số điện thoại & email
                                                         </div>
@@ -196,14 +195,14 @@ function ProfileAdmin({ offprofile, profile }) {
                                                                 </svg>
                                                             </div>
                                                             <div className='ml-3'>
-                                                                <div>
+                                                                <div className='text-nowrap w-36'>
                                                                     Số điện thoại
                                                                 </div>
-                                                                <div>
-                                                                    0372830148
+                                                                <div >
+                                                                    {profile.phone}
                                                                 </div>
                                                             </div>
-                                                            <a href='#' className='ml-5 btn btn-info'>
+                                                            <a href='/admin/EditPhone' className='ml-5 btn btn-info text-nowrap'>
                                                                 Thay đổi
                                                             </a>
                                                         </div>
@@ -215,20 +214,20 @@ function ProfileAdmin({ offprofile, profile }) {
 
                                                             </div>
                                                             <div className='ml-3'>
-                                                                <div>
+                                                                <div className='text-nowrap w-36'>
                                                                     Địa chỉ email
                                                                 </div>
-                                                                <div>
-                                                                    @email
+                                                                <div className='text-nowrap'>
+                                                                    {profile.email}
                                                                 </div>
                                                             </div>
-                                                            <a href='#' className='ml-5 btn btn-info'>
+                                                            <a href='/admin/EditEmail' style={{ float: 'right' }} className='ml-5 btn btn-info text-nowrap'>
                                                                 Thay đổi
                                                             </a>
                                                         </div>
                                                     </div>
-                                                    <div style={{ width: '300px' }}>
-                                                        <div className=' mb-3 mt-4 text-lg text-gray-500'>
+                                                    <div style={{ width: '500px' }}>
+                                                        <div className=' mb-3 mt-4 text-lg text-gray-500 text-nowrap '>
                                                             Bảo mật
                                                         </div>
                                                         <div className='d-flex justify-content-between flex-row items-center w-60 mb-3'>
@@ -238,12 +237,12 @@ function ProfileAdmin({ offprofile, profile }) {
                                                                 </svg>
 
                                                             </div>
-                                                            <div className='ml-3'>
-                                                                <div>
+                                                            <div className='ml-3 text-nowrap'>
+                                                                <div className='w-36'>
                                                                     Mật Khẩu
                                                                 </div>
                                                             </div>
-                                                            <a href='#' className='ml-5 btn btn-info'>
+                                                            <a href='/admin/EditPassword' className='ml-5 btn btn-info text-nowrap'>
                                                                 Thay đổi
                                                             </a>
                                                         </div>
