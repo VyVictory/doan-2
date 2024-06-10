@@ -27,6 +27,7 @@ const addProduct = asyncHandler(async (req, res) => {
     const product = new Product({
       ...req.fields,
       user: req.user._id,
+      countInStock: quantity
     });
 
     await product.save();
@@ -99,6 +100,31 @@ const getProductShopCurrent = asyncHandler(async (req, res) => {
     console.error(error);
     res.status(500).json({ error: error.message });
   }
+});
+
+const restockProduct = asyncHandler(async (req, res) => {
+  const { productId } = req.params;
+  const { quantity } = req.body;
+
+  if (quantity <= 0) {
+    return res.status(400).json({ error: 'Invalid quantity. Must be greater than 0.' });
+  }
+
+  const product = await Product.findById(productId);
+
+  if (!product) {
+    return res.status(404).json({ error: 'Product not found.' });
+  }
+
+  product.quantity += quantity;
+  product.countInStock += quantity;
+
+  await product.save();
+
+  res.json({
+    message: 'Product restocked successfully.',
+    product
+  });
 });
 
 const getProductShopById = asyncHandler(async (req, res) => {
@@ -344,4 +370,5 @@ export {
   getProductShopCurrent,
   getProductShopById,
   getProductByIdWithApproval,
+  restockProduct,
 };

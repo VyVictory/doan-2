@@ -19,6 +19,7 @@ import {
   getProductShopById,
   getProductByIdWithApproval,
   fakeDelete,
+  restockProduct,
 
 } from "../controllers/productController.js";
 import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
@@ -32,6 +33,7 @@ router
 router.route("/allproducts").get(fetchAllProducts);
 router.route("/:id/reviews").post(authenticate, checkId, addProductReview);
 router.put("/approve/:id", authenticate, authorizeAdmin, formidable(), configApprove);
+router.patch("/countStock/:productid",authenticate,restockProduct);
 
 
 router.route("/shop").get(authenticate,getProductShopCurrent);
