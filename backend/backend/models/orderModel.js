@@ -63,6 +63,23 @@ const orderSchema = mongoose.Schema(
       default: 0.0,
     },
 
+    shipping: {
+      type:Boolean,
+      require: true,
+      default: false
+    },
+
+    isCancle: {
+      type:Boolean,
+      require: true,
+      default: false
+    },
+
+    idShop: {
+      type: mongoose.Schema.Types.ObjectId, required: true, ref: "User",
+      required: true,
+    },
+
     totalPrice: {
       type: Number,
       required: true,

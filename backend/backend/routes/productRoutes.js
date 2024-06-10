@@ -39,7 +39,7 @@ router.patch("/countStock/:productid",authenticate,restockProduct);
 router.route("/shop").get(authenticate,getProductShopCurrent);
 router.get('/shop/:id', getProductShopById);
 
-router.get('/approve/:id', authenticate, authorizeAdmin, getProductByIdWithApproval);
+router.get('/approve/:id', authenticate, getProductByIdWithApproval);
 
 router.get("/top", fetchTopProducts);
 router.get("/new", fetchNewProducts);
@@ -49,8 +49,8 @@ router.route("fakedelete",authenticate,fakeDelete);
 router
   .route("/:id")
   .get(fetchProductById)
-  .put(authenticate, authorizeAdmin, formidable(), updateProductDetails)
-  .delete(authenticate, authorizeAdmin, removeProduct);
+  .put(authenticate, formidable(), updateProductDetails)
+  .delete(authenticate, removeProduct);
 
 router.route("/filtered-products").post(filterProducts);
 

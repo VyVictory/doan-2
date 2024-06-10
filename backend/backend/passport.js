@@ -9,9 +9,9 @@ passport.use(new GoogleStrategy({
     callbackURL: "api/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
-    // User.findOrCreate({ googleId: profile.id }, function (err, user) {
+
     console.log(profile);
-      return cb(err, user);
-    // });
+      return cb(null, profile);
+
   }
 ));

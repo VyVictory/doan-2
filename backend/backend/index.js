@@ -16,7 +16,7 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import authRouter from "./routes/authRoutes.js"
-import './passport.js';
+import "./passport.js";
 
 dotenv.config();
 const port = process.env.PORT || 5000;

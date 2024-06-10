@@ -33,6 +33,10 @@ const createOrder = asyncHandler(async (req, res) => {
   try {
     const { shippingAddress, paymentMethod, items } = req.body;
 
+    if (!items || items.length === 0) {
+      return res.status(400).json({ error: "No items to order" });
+    }
+
     // Mảng chứa các đơn hàng đã tạo
     const createdOrders = [];
 
@@ -65,11 +69,17 @@ const createOrder = asyncHandler(async (req, res) => {
         taxPrice,
         shippingPrice,
         totalPrice,
+        shipping: false,
+        isCancle: false, // Thêm thuộc tính này
       });
 
       // Lưu đơn hàng vào cơ sở dữ liệu
       const createdOrder = await order.save();
       createdOrders.push(createdOrder);
+
+      // Cập nhật số lượng sản phẩm trong kho
+      product.countInStock -= item.quantity;
+      await product.save();
     }
 
     // Trả về các đơn hàng được tạo
@@ -79,15 +89,110 @@ const createOrder = asyncHandler(async (req, res) => {
   }
 });
 
-
-const getAllOrders = async (req, res) => {
+const updateOrderShipping = asyncHandler(async (req, res) => {
   try {
-    const orders = await Order.find({}).populate("user", "id username");
-    res.json(orders);
+    const { orderId } = req.params;
+
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    // Kiểm tra trường isCancle, nếu là true thì không thể cập nhật
+    if (order.isCancle) {
+      return res.status(400).json({ error: 'Order has been canceled and cannot be updated' });
+    }
+
+    // Cập nhật trạng thái shipping từ false thành true
+    order.shipping = true;
+
+    const updatedOrder = await order.save();
+
+    res.json(updatedOrder);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+const cancelOrder = asyncHandler(async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    // Kiểm tra trạng thái shipping, nếu là true thì không cho hủy
+    if (order.shipping) {
+      return res.status(400).json({ error: 'Order has been shipped and cannot be canceled' });
+    }
+
+    // Cập nhật trường isCancle từ false thành true và status thành "order canceled"
+    order.isCancle = true;
+    order.status = "order canceled";
+
+    const updatedOrder = await order.save();
+
+    res.json({ message: 'Order canceled successfully', order: updatedOrder });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+
+const updateOrderStatus = asyncHandler(async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+    const { _id: userId } = req.user; 
+
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    // Kiểm tra xem _id của người dùng có trùng khớp với id của người bán không
+    if (order.user.toString() !== userId) {
+      return res.status(403).json({ error: 'Unauthorized' });
+    }
+
+    order.status = status;
+
+    const updatedOrder = await order.save();
+
+    res.json(updatedOrder);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+
+const getAllOrdersSale = async (req, res) => {
+  try {
+    const orders = await Order.find({}).populate({
+      path: "items.product",
+      populate: {
+        path: "user",
+        match: { _id: req.user._id }
+      }
+    });
+
+    // Lọc ra những đơn hàng có sản phẩm thuộc người bán
+    const filteredOrders = orders.filter(order => order.items.some(item => item.product.user));
+
+    res.json(filteredOrders);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 const getUserOrders = async (req, res) => {
   try {
@@ -205,7 +310,7 @@ const markOrderAsDelivered = async (req, res) => {
 
 export {
   createOrder,
-  getAllOrders,
+  getAllOrdersSale,
   getUserOrders,
   countTotalOrders,
   calculateTotalSales,
@@ -213,4 +318,7 @@ export {
   findOrderById,
   markOrderAsPaid,
   markOrderAsDelivered,
+  updateOrderStatus,
+  updateOrderShipping,
+  cancelOrder,
 };
