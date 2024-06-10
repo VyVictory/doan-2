@@ -45,11 +45,11 @@ function CustomerAccount() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!img) {
       await changeAvatar(img);
       console.log(message, errors, data);
-      
+
       if (data.image) {
         setProfileUpdate((prevProfile) => ({
           ...prevProfile,
@@ -89,7 +89,7 @@ function CustomerAccount() {
                 <input type="file" id="fileInput" className='d-none' onChange={previewImage} />
                 <label htmlFor="fileInput">
                   <img
-                    src={previewSrc || 'http://localhost:5000'+profile.avatar ||'avt_img'}
+                    src={previewSrc || 'http://localhost:5000' + profile.avatar || 'avt_img'}
                     style={{ height: '100px', width: '100px', cursor: 'pointer', border: '3px solid rgb(194, 225, 255)', borderRadius: '50%' }}
                     alt="Avatar Preview"
                   />
@@ -200,10 +200,10 @@ function CustomerAccount() {
                     Địa chỉ email
                   </div>
                   <div className='text-nowrap'>
-                   {profile.email}
+                    {profile.email}
                   </div>
                 </div>
-                <a href='/customer/editemail' style={{float:'right'}} className='ml-5 btn btn-info text-nowrap'>
+                <a href='/customer/editemail' style={{ float: 'right' }} className='ml-5 btn btn-info text-nowrap'>
                   Thay đổi
                 </a>
               </div>

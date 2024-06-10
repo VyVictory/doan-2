@@ -55,7 +55,7 @@ function Order({ offorder, listproduct }) {
     }
     // Confirm order and post shipping information
     async function thanhtoan() {
-        if (address === '' && products.length === 0) {
+        if (address === '' &&phone==='' && products.length === 0) {
             return;
         } else {
             const data = {
@@ -66,6 +66,7 @@ function Order({ offorder, listproduct }) {
                     country: country
                 },
                 paymentMethod: payment,
+                phone:phone,
                 items: products.map(item => ({ _id: item.product._id, quantity: item.quantity }))
             }
             try {
@@ -179,7 +180,7 @@ function Order({ offorder, listproduct }) {
                                                             <div className='text-green-1000'>
                                                                 Thành tiền:
                                                             </div>
-                                                            <div className=' text-red-600 d-flex flex-row'>
+                                                            <div className=' text-red-600 d-flex  ml-3 flex-row'>
                                                                 {(item.quantity * item.product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span className=' text-orange-800' style={{ verticalAlign: "super" }}>đ</span>
                                                             </div>
                                                         </div>

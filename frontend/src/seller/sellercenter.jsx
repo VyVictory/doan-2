@@ -77,12 +77,12 @@ const Sellercenter = () => {
                             <NavLink to="/kenhnguoiban/quanlytaichinh" className={`${location.pathname === '/kenhnguoiban/quanlytaichinh' ? stylecenter.navlinkactive : stylecenter.navlink}`}>Quản Lý Tài Chính</NavLink>
                         </span>
                     </button> */}
-                        <button type="submit" className={`${stylecenter.buttonlist}`} aria-label="Search" style={{ minHeight: "40px", padding: "10px", width: "104%", marginLeft: "6px" }}>
+                        {/* <button type="submit" className={`${stylecenter.buttonlist}`} aria-label="Search" style={{ minHeight: "40px", padding: "10px", width: "104%", marginLeft: "6px" }}>
                             <img src={img_shop} style={{ height: "30px", float: "left", paddingRight: '10px' }} alt="User Avatar" />
                             <span className="" style={{ minWidth: "100px", float: "left" }}>
                                 <NavLink to="/kenhnguoiban/quanlyshop" className={`${location.pathname === '/kenhnguoiban/quanlyshop' ? stylecenter.navlinkactive : stylecenter.navlink}`}>Quản Lý Shop</NavLink>
                             </span>
-                        </button>
+                        </button> */}
                     </div>
                     <div class="col-10 " style={{ backgroundColor: "#E8D2D2" }}>
                         {showFormHome && <FormHome />}

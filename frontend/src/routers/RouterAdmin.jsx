@@ -5,6 +5,9 @@ import AdminMenu from '../admin/AdminMenu';
 import ListAccount from '../admin/ListAccount';
 import ChatBubble from '../chat/chat';
 import Listproduct from '../admin/Listproduct';
+import EditPassword from '../admin/EditPass';
+import EditEmail from '../admin/EditEmail';
+import EditPhone from '../admin/EditPhone';
 function RouterAdmin() {
 
     return (
@@ -17,6 +20,12 @@ function RouterAdmin() {
                     <Route path="/admin" element={<HomeAdmin />} />
                     <Route path='/admin/listaccounts' element={<ListAccount />} />
                     <Route path='/admin/listproducts' element={<Listproduct />} />
+
+                    <Route path='/admin/EditEmail' element={<EditEmail />} />
+                    <Route path='/admin/EditPassword' element={<EditPassword />} />
+                    <Route path='/admin/EditPhone' element={<EditPhone />} />
+
+
                 </Routes>
             </Router>
         </div>

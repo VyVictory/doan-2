@@ -18,6 +18,7 @@ const ProductForm = () => {
   const [mota, setMota] = useState('');
   const [brand, setBrand] = useState('');
   const [soluong, setSoluong] = useState('');
+
   const [loai, setLoai] = useState('');
   const [hidden, setHidden] = useState('no');
 

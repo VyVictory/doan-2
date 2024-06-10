@@ -4,6 +4,7 @@ import Select from 'react-select';
 import axios from 'axios';
 import GetAddressShip from '../module/getAddressShip';
 import GetProductByIdCart from '../module/getProductByIdCart';
+import { PostCar } from '../module/postcart';
 import GetProduct from '../module/getproduct';
 function OrderOneProduct({ offorder, listproduct, numberproduct }) {
     const [address, setAddress] = useState('');
@@ -29,7 +30,7 @@ function OrderOneProduct({ offorder, listproduct, numberproduct }) {
     }
     // Confirm order and post shipping information
     async function thanhtoan() {
-        if (address === '') {
+        if (address === ''&& phone=='') {
             return;
         } else {
             const data = {
@@ -40,10 +41,12 @@ function OrderOneProduct({ offorder, listproduct, numberproduct }) {
                     country: country
                 },
                 paymentMethod: payment,
+                phone:phone,
                 items: listproduct
             }
             console.log(data);
             try {
+                await PostCar({ idproduct: listproduct[0]._id, numberproduct: listproduct[0].quantity });
                 const response = await axios.post(`http://localhost:5000/api/carts/checkout`, data, { withCredentials: true });
                 alert('Đặt Hàng Thành Công.');
                 return response.data;

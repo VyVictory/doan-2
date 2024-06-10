@@ -13,32 +13,32 @@ import { DeleteProductById } from '../module/deleteproductById';
 
 const Qlsp = () => {
     const { profile } = useProfile();
-    const [list, setList] = useState('tatca');
-    const [searchTerm, setSearchTerm] = useState('');
-    const [filteredSanpham, setFilteredSanpham] = useState([]);
-    const [sanpham, setSanpham] = useState([]);
-    const [searchCriteria, setSearchCriteria] = useState('name');
-    const [searchValue, setSearchValue] = useState('');
+    const [list, setList] = useState('tatca'); // Initialize list as 'tatca'
+    const [searchTerm, setSearchTerm] = useState(""); // Add state for search term
+    const [filteredSanpham, setFilteredSanpham] = useState([]); // Add state for filtered products
 
     const handleSetList = (value) => {
         setList(value);
     };
-
+    
     const handleDeleteProductByid = async (id, name) => {
         try {
             await DeleteProductById({ idproduct: id });
             toast.success(`Xóa sản phẩm ${name} thành công!`, { autoClose: 2000 });
+            // Cập nhật lại danh sách
             setSanpham(sanpham.filter(product => product._id !== id));
         } catch (error) {
             console.error(error);
             toast.error(`Xóa sản phẩm ${name} thất bại.`, { autoClose: 2000 });
         }
     };
-
+    
     const cellStyle = {
         maxWidth: '200px',
         wordWrap: 'break-word',
     };
+    
+    const [sanpham, setSanpham] = useState([]); // Initialize sanpham as an empty array
 
     useEffect(() => {
         const fetchData = async () => {
@@ -46,7 +46,7 @@ const Qlsp = () => {
                 const response = await axios.get(`http://localhost:5000/api/products/shop/${profile._id}`, { withCredentials: true });
                 if (response.data) {
                     const sortedSanpham = response.data.sort((a, b) => {
-                        const nameA = a.name.toUpperCase();
+                        const nameA = a.name.toUpperCase(); // Chuyển tên sản phẩm thành chữ hoa để so sánh không phân biệt hoa thường
                         const nameB = b.name.toUpperCase();
                         if (nameA < nameB) {
                             return -1;
@@ -54,7 +54,7 @@ const Qlsp = () => {
                         if (nameA > nameB) {
                             return 1;
                         }
-                        return a.price - b.price;
+                        return a.price - b.price; // Tên bằng nhau thì so sánh giá
                     });
                     setSanpham(sortedSanpham);
                 } else {
@@ -68,50 +68,31 @@ const Qlsp = () => {
         if (profile && profile._id) {
             fetchData();
         }
-    }, [profile]);
+    }, [profile]); // Dependency array with profile to refetch if profile changes
 
     useEffect(() => {
         if (searchTerm) {
             setFilteredSanpham(
                 sanpham.filter(product =>
-                    product[searchCriteria].toString().toLowerCase().includes(searchTerm.toLowerCase())
+                    product.name.toLowerCase().includes(searchTerm.toLowerCase())
                 )
             );
         } else {
             setFilteredSanpham(sanpham);
         }
-    }, [searchTerm, searchCriteria, sanpham]);
+    }, [searchTerm, sanpham]); // Dependency array for searchTerm and sanpham
 
-    const handleSearch = () => {
-        setSearchTerm(searchValue);
+    const getButtonStyle = (e) => {
+        return {
+            marginRight: '10px',
+            ...(e === "" || e === "no" ? { backgroundColor: 'green', color: 'white' } : {}),
+        };
     };
 
-    useEffect(() => {
-        if (list === "danghoatdong") {
-            // Lọc danh sách sản phẩm đang hoạt động (có trường Approve == true)
-            setFilteredSanpham(sanpham.filter(product => product.Approve === true));
-        } else if (list === "hethang") {
-            // Lọc danh sách sản phẩm hết hàng (có countInStock == 0)
-            setFilteredSanpham(sanpham.filter(product => product.countInStock === 0));
-        } else if (list === "vipham") {
-            // Lọc danh sách sản phẩm vi phạm (có ApproveStatus = "vipham")
-            setFilteredSanpham(sanpham.filter(product => product.ApproveStatus === "vipham"));
-        } else if (list === "choduyet") {
-
-            setFilteredSanpham(sanpham.filter(product => product.ApproveStatus === " " && product.Approve === false));
-
-        } else if (list === "daan") {
-            setFilteredSanpham(sanpham.filter(product => product.ApproveStatus === "tuchoi" && product.Approve === false));
-        } else {
-            // Nếu không phải trường hợp trên, hiển thị toàn bộ danh sách sản phẩm
-            setFilteredSanpham(sanpham.filter(product => product.Approve === true));
-        }
-    }, [list, sanpham]);
-
     return (
-        <div className="shadow p-3 mb-5 bg-body rounded" style={{ marginTop: '20px', marginLeft: '10px', marginRight: '10px' }}>
+        <div className="shadow p-3 mb-5 bg-body rounded" style={{ marginTop: "20px", marginLeft: "10px", marginRight: "10px" }}>
             <ToastContainer />
-            <Container fluid className="border">
+            <Container fluid className='border'>
                 {/* Header */}
                 <Row className="text-white d-flex bg-slate-200" style={{ height: "40px", paddingTop: "10px", height: "100%" }}>
                     <Col className={`${list === 'tatca' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
@@ -131,70 +112,51 @@ const Qlsp = () => {
                         <NavLink onClick={() => handleSetList("vipham")} className={`${list === 'vipham' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Vi Phạm</h6></NavLink>
                     </Col>
                     <Col className={`${list === 'daan' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
-                        <NavLink onClick={() => handleSetList("daan")} className={`${list === 'daan' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Bị Từ Chối</h6></NavLink>
+                        <NavLink onClick={() => handleSetList("daan")} className={`${list === 'daan' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Đã Ẩn</h6></NavLink>
                     </Col>
                 </Row>
 
                 {/* Body */}
-
                 <Row>
                     <nav className="navbar navbar-expand-lg mt-2">
                         <div className="navbar-collapse w">
                             <nav className="navbar navbar-expand-lg mr-12 " style={{ width: '80%', marginLeft: '2%' }}>
-
-                                <select
-                                    id="search-criteria"
-                                    value={searchCriteria}
-                                    onChange={(e) => setSearchCriteria(e.target.value)}
-                                    className='border w-full h-full' name="cars" style={{ height: "41px", maxWidth: "20%" }}>
-                                    <option value="name">Tên Sản Phẩm</option>
-                                    <option value="price">Giá</option>
-                                    <option value="countInStock">Kho</option>
-                                    <option value="quantity">Đã Bán</option>
-                                </select>
-                                <div className="relative w-full">
-                                    <input
-                                        type="search"
-                                        id="search-dropdown"
-                                        className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                                        placeholder="Nội Dung Tìm Kiếm"
-                                        value={searchValue}
-                                        onChange={(e) => setSearchValue(e.target.value)}
-                                        required
-                                    />
-                                    <button
-                                        type="submit"
-                                        className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                        onClick={handleSearch}
-                                    >
-                                        <svg
-                                            className="w-4 h-4"
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 20 20"
-                                        >
-                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                        </svg>
-                                        <span className="sr-only">Search</span>
-                                    </button>
+                                <div className="navbar-collapse d-flex flex-row ">
+                                    {/* <select id="cars" className='border w-full h-full' name="cars" style={{ "height": "41px", "width": "10%" }}>
+                                        <option value="volvo">Volvo</option>
+                                        <option value="saab">Saab</option>
+                                        <option value="fiat">Fiat</option>
+                                        <option value="audi">Audi</option>
+                                    </select> */}
+                                    <div className="relative w-full">
+                                        <input 
+                                            type="search" 
+                                            id="search-dropdown" 
+                                            className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" 
+                                            placeholder="Nội Dung Tìm Kiếm" 
+                                            value={searchTerm}
+                                            onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on change
+                                            required 
+                                        />
+                                        <button type="submit" className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                            </svg>
+                                            <span className="sr-only">Search</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </nav>
-                            <div>
-                                <NavLink
-                                    type="submit"
-                                    className="btn btn-outline-success text-nowrap"
-                                    style={{ height: '40px', marginRight: '24px', paddingTop: '10px' }}
-                                    to="/kenhnguoiban/quanlysanpham/themsanpham"
-                                >
-                                    <h6 className="mb-0">Thêm Sản Phẩm</h6>
-                                </NavLink>
+                            <div >
+                                <NavLink type="submit" className={`${styles.hover} btn btn-outline-success text-nowrap`} style={{ height: "40px", marginRight: "24px", paddingTop: "10px" }} to="/kenhnguoiban/quanlysanpham/themsanpham"><h6 className="mb-0">Thêm Sản Phẩm</h6></NavLink>
                             </div>
+
                         </div>
                     </nav>
                 </Row>
-                <Row className="pt-3">
+                <Row className='pt-3'>
                     <Col>
+                        {/* Nội dung của Body */}
                         <Container fluid>
                             <Row>
                                 <Col>
@@ -211,6 +173,7 @@ const Qlsp = () => {
                                             </tr>
                                         </thead>
                                         <tbody className='text-center' style={{ wordBreak: 'break-all' }}>
+
                                             {
                                                 filteredSanpham.length > 0 ? (
                                                     filteredSanpham.map((product, index) => (
@@ -218,17 +181,23 @@ const Qlsp = () => {
                                                             <td style={cellStyle}>
                                                                 <div className='d-flex flex-column justify-center'>
                                                                     <div className='d-flex justify-center'>
-                                                                        <img style={{ maxHeight: '100px', maxWidth: '200px' }} src={'http://localhost:5000' + product.image} alt="Product" />
+                                                                        <img style={{ maxHeight: '100px', maxWidth: '200px' }} src={'http://localhost:5000' + product.image}></img>
                                                                     </div>
+
                                                                     {product.name}
                                                                 </div>
+
                                                             </td>
-                                                            <td>{product.category.name}</td>
+                                                            <td >
+                                                                {product.category.name}
+                                                            </td>
                                                             <td>{(product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span></td>
+
                                                             <td>{product.countInStock}</td>
                                                             <td>{product.quantity - product.countInStock}</td>
                                                             <td>
                                                                 {product.countInStock === 0 ? (<div className='text-red-500'>Hết Hàng</div>) : (<div className='text-green-500'>Còn Hàng</div>)}
+
                                                             </td>
                                                             <td>
                                                                 <button className='m-3' style={{ "border": "none" }}>
@@ -245,9 +214,7 @@ const Qlsp = () => {
                                                         </tr>
                                                     ))
                                                 ) : (
-                                                    <tr>
-                                                        <td colSpan="7" className="text-center">No products available.</td>
-                                                    </tr>
+                                                    <p>No products available.</p>
                                                 )}
                                         </tbody>
                                     </Table>
@@ -258,7 +225,7 @@ const Qlsp = () => {
                 </Row>
             </Container>
         </div>
-    );
-};
+    )
+}
 
 export default Qlsp;

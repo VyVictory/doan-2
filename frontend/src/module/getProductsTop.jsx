@@ -8,7 +8,7 @@ const GetProductsTop = async () => {
         // Check if response.data is an array and has length greater than 0
         if (Array.isArray(response.data) && response.data.length > 0) {
             // Filter products where Approve is true
-            const approvedProducts = response.data.filter(product => product.Approve === true);
+            const approvedProducts = response.data.filter(product => product.Approve === true && product.countInStock!==0);
             return { sanphams: approvedProducts };
         } else {
             console.error('No data found');

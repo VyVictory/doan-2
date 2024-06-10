@@ -1,13 +1,11 @@
-import styles from './css/seller.module.css'; // Import CSS modules
-import stylecenter from './css/sellercenter.module.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Table } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import trash_0 from './imgseller/recycle-bin.png'
+import trash_0 from './imgseller/recycle-bin.png';
 import useProfile from '../module/profile.module';
 import { DeleteProductById } from '../module/deleteproductById';
 
@@ -86,56 +84,13 @@ const Qlsp = () => {
         setSearchTerm(searchValue);
     };
 
-    useEffect(() => {
-        if (list === "danghoatdong") {
-            // Lọc danh sách sản phẩm đang hoạt động (có trường Approve == true)
-            setFilteredSanpham(sanpham.filter(product => product.Approve === true));
-        } else if (list === "hethang") {
-            // Lọc danh sách sản phẩm hết hàng (có countInStock == 0)
-            setFilteredSanpham(sanpham.filter(product => product.countInStock === 0));
-        } else if (list === "vipham") {
-            // Lọc danh sách sản phẩm vi phạm (có ApproveStatus = "vipham")
-            setFilteredSanpham(sanpham.filter(product => product.ApproveStatus === "vipham"));
-        } else if (list === "choduyet") {
-
-            setFilteredSanpham(sanpham.filter(product => product.ApproveStatus === " " && product.Approve === false));
-
-        } else if (list === "daan") {
-            setFilteredSanpham(sanpham.filter(product => product.ApproveStatus === "tuchoi" && product.Approve === false));
-        } else {
-            // Nếu không phải trường hợp trên, hiển thị toàn bộ danh sách sản phẩm
-            setFilteredSanpham(sanpham.filter(product => product.Approve === true));
-        }
-    }, [list, sanpham]);
-
     return (
         <div className="shadow p-3 mb-5 bg-body rounded" style={{ marginTop: '20px', marginLeft: '10px', marginRight: '10px' }}>
             <ToastContainer />
             <Container fluid className="border">
-                {/* Header */}
-                <Row className="text-white d-flex bg-slate-200" style={{ height: "40px", paddingTop: "10px", height: "100%" }}>
-                    <Col className={`${list === 'tatca' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
-                        <NavLink onClick={() => handleSetList("tatca")} className={`${list === 'tatca' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Tất Cả</h6></NavLink>
-                    </Col>
-                    <Col className={`${list === 'danghoatdong' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
-                        <NavLink onClick={() => handleSetList("danghoatdong")} className={`${list === 'danghoatdong' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Đang Hoạt Động</h6></NavLink>
-                    </Col>
-
-                    <Col className={`${list === 'hethang' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
-                        <NavLink onClick={() => handleSetList("hethang")} className={`${list === 'hethang' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Hết Hàng</h6></NavLink>
-                    </Col>
-                    <Col className={`${list === 'choduyet' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
-                        <NavLink onClick={() => handleSetList("choduyet")} className={`${list === 'choduyet' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Chờ Duyệt</h6></NavLink>
-                    </Col>
-                    <Col className={`${list === 'vipham' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
-                        <NavLink onClick={() => handleSetList("vipham")} className={`${list === 'vipham' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Vi Phạm</h6></NavLink>
-                    </Col>
-                    <Col className={`${list === 'daan' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
-                        <NavLink onClick={() => handleSetList("daan")} className={`${list === 'daan' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Bị Từ Chối</h6></NavLink>
-                    </Col>
+                <Row className="text-white d-flex bg-slate-200" style={{ height: '40px', paddingTop: '10px', height: '100%' }}>
+                    {/* Navigation links */}
                 </Row>
-
-                {/* Body */}
 
                 <Row>
                     <nav className="navbar navbar-expand-lg mt-2">

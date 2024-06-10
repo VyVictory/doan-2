@@ -15,13 +15,13 @@ function EditEmail() {
         } else {
             console.log("No email");
         };
-        window.location.href = '/customer/account';
+        window.location.href = '/admin';
     };
 
     return (
-        <div style={{width:'100%',paddingTop:'10%'}}>
-            <div className="d-flex justify-content-center flex-column items-center">
-                {message ? <Alert variant="success" className='d-flex justify-center items-center' style={{ width: '500px' }}>
+        <div className='d-flex justify-center' style={{width:'100%',paddingTop:'10%'}}>
+            <div className="d-flex justify-content-center flex-column items-center  bg-white w-1/2 pt-4 pb-4 border rounded">
+                {message ? <Alert variant="success" className='d-flex justify-center items-center ' style={{ width: '500px' }}>
                     <p>{message}</p>
                 </Alert> : <></>}
 

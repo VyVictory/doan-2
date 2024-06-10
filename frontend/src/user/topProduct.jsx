@@ -13,7 +13,9 @@ function TopProduct() {
         const fetchProductList = async () => {
             try {
                 const { sanphams } = await GetProductsTop(); // Call the GetProductsTop function
-                setSanphams(sanphams);
+                const approvedProducts = sanphams.filter(product => product.countInStock !==0);
+    
+                setSanphams(approvedProducts);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -80,7 +82,7 @@ function TopProduct() {
                                 <div className='d-flex flex-row justify-center mt-1'>
                                     {renderRatingStars(e.rating, 15, 15)}
                                 </div>
-                                <h5 className="card-text mb-2 text-truncate text-center" style={{ maxWidth: '130px' }}>
+                                <h5 className="card-text mb-2 ml-3 text-truncate text-center" style={{ maxWidth: '130px' }}>
                                     {e.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span>
                                 </h5>
                             </div>

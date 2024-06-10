@@ -62,7 +62,7 @@ function Cart() {
         try {
             await deleteProductCartById({ idproduct: id });
             toast.success('Xóa sản phẩm khỏi giỏ thành công!', { autoClose: 2000 });
-             window.location.href = '/cart';
+            window.location.href = '/cart';
         } catch (error) {
             console.error(error);
         }
@@ -238,22 +238,22 @@ function Cart() {
                     <div className="d-flex flex-column bd-highlight" style={{ backgroundColor: 'white', width: '100%', height: '100%' }}>
                         <div>
                             <div className="d-flex align-items-end" style={{ width: '100%' }}>
-                                <div className="border" style={{ backgroundColor: 'white', height: '150px', width: '100%', ...fixedStyle }}>
-                                    <div className='' style={{ marginTop: '20px' }}>
-                                        <div className='d-flex flex-row align-items-center' style={{ borderBottom: 'dashed gray 1px', height: '60px', paddingLeft: '2%', paddingRight: '10%' }}>
+                                <div className="border" style={{ backgroundColor: 'white', height: '100px', width: '100%', ...fixedStyle }}>
+                                    <div className='d-flex items-center' style={{ marginTop: '20px' }}>
+                                        {/* <div className='d-flex flex-row align-items-center' style={{ borderBottom: 'dashed gray 1px', height: '60px', paddingLeft: '2%', paddingRight: '10%' }}>
                                             <img src={img_voucher} style={{ width: '50px', height: '50px', marginRight: '1%' }}></img>
-                                            {/* <button type="button" class="btn btn-success" style={{ marginLeft: '1%' }} >Chọn Voucher</button> */}
+                                            <button type="button" class="btn btn-success" style={{ marginLeft: '1%' }} >Chọn Voucher</button>
                                             <span className='text-nowrap'>
                                                 Tổng Giảm:
                                                 <span className='text-nowrap' style={{ float: 'right', color: 'red' }}>
                                                     0 VND
                                                 </span>
                                             </span>
-                                        </div>
+                                        </div> */}
                                         {/* <div style={{ borderBottom: 'dashed gray 1px' }}>
                                         aaa
                                     </div> */}
-                                        <div className='d-flex flex-row align-items-center p-1' style={{ height: '100%' }}>
+                                        <div className='d-flex flex-row align-items-center p-1  w-full' style={{ height: '100%' }}>
                                             <div className='' style={{ width: '90%', height: '100%', paddingLeft: '2%', display: 'flex', flex: 'row', alignItems: 'center' }}>
                                                 <input
                                                     style={{ width: '30px', height: '30px' }}
@@ -263,7 +263,7 @@ function Cart() {
                                                     checked={selectAllChecked}
                                                     onChange={handleSelectAll}
                                                 />
-                                                <label className="form-check-label mr-2" htmlFor="selectAll">
+                                                <label className="form-check-label mr-2 text-nowrap" htmlFor="selectAll">
                                                     Chọn tất cả
                                                 </label>
                                                 <div style={{ marginRight: '10px' }}>
@@ -274,22 +274,24 @@ function Cart() {
                                                         type="button" class="btn btn-outline-danger">Xóa</button>
                                                 </div>
                                             </div>
-
-                                            <h4 className='text-nowrap' style={{ marginRight: '10px' }}>
-                                                Tổng thanh toán:
-                                            </h4>
-                                            <div className='d-flex flex-row'>
-                                                <h4 className='text-nowrap mr-2' style={{ color: 'red' }}>
-                                                    {(summoney).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                                            <div className='d-flex flex-row items-center pr-5' style={{float:'right'}}>
+                                                <h4 className='text-nowrap' style={{ marginRight: '10px' }}>
+                                                    Tổng thanh toán:
                                                 </h4>
-                                                <h4 > VND</h4>
+                                                <div className='d-flex flex-row'>
+                                                    <h4 className='text-nowrap mr-2' style={{ color: 'red' }}>
+                                                        {(summoney).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                                                    </h4>
+                                                    <h4 > VND</h4>
+                                                </div>
+
+                                                <div className='d-block ' style={{ marginRight: '2%', marginLeft: '2%' }}>
+                                                    <button onClick={submitshoworder} className=' btn btn-info border text-nowrap' >
+                                                        Mua Hàng
+                                                    </button>
+                                                </div>
                                             </div>
 
-                                            <div className='d-block ' style={{ marginRight: '2%', marginLeft: '2%' }}>
-                                                <button onClick={submitshoworder} className=' btn btn-info border' >
-                                                    Mua Hàng
-                                                </button>
-                                            </div>
                                         </div>
 
                                     </div>
