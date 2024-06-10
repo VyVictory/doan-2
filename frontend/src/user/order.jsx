@@ -180,7 +180,7 @@ function Order({ offorder, listproduct }) {
                                                             <div className='text-green-1000'>
                                                                 Thành tiền:
                                                             </div>
-                                                            <div className=' text-red-600 d-flex flex-row'>
+                                                            <div className=' text-red-600 d-flex  ml-3 flex-row'>
                                                                 {(item.quantity * item.product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span className=' text-orange-800' style={{ verticalAlign: "super" }}>đ</span>
                                                             </div>
                                                         </div>

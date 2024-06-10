@@ -111,7 +111,7 @@ function EventProductNew() {
                                         <div className='d-flex flex-row justify-center mt-1'>
                                             {renderRatingStars(e.rating, 15, 15)}
                                         </div>
-                                        <h5 className="card-text mb-2 text-truncate text-center" style={{ maxWidth: '130px' }}>
+                                        <h5 className="card-text ml-3 mb-2 text-truncate text-center" style={{ maxWidth: '130px' }}>
                                             {e.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span>
                                         </h5>
                                     </div>

@@ -5,17 +5,28 @@ const MyOrder = () => {
     const [orders, setOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [error, setError] = useState(null); // Define state for error handling
+
     useEffect(() => {
         const fetchOrders = async () => {
-            const orders = await GetOrder();
-            orders.sort((a, b) => a.Status - b.Status);
-            // console.log(orders);
-            setOrders(orders);
+            try {
+                const result = await GetOrder();
+
+                if (Array.isArray(result)) {
+                    result.sort((a, b) => a.Status - b.Status);
+                    setOrders(result);
+                } else {
+                    setError("Received data is not an array.");
+                    console.error("GetOrder returned data that is not an array:", result);
+                }
+            } catch (error) {
+                setError("Failed to fetch orders.");
+                console.error("Error fetching orders:", error);
+            }
         };
-        console.log(orders)
+
         fetchOrders();
     }, []);
-
     const handleViewDetails = (order) => {
         setSelectedOrder(order);
     };

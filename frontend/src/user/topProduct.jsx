@@ -82,7 +82,7 @@ function TopProduct() {
                                 <div className='d-flex flex-row justify-center mt-1'>
                                     {renderRatingStars(e.rating, 15, 15)}
                                 </div>
-                                <h5 className="card-text mb-2 text-truncate text-center" style={{ maxWidth: '130px' }}>
+                                <h5 className="card-text mb-2 ml-3 text-truncate text-center" style={{ maxWidth: '130px' }}>
                                     {e.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span>
                                 </h5>
                             </div>
