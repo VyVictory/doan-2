@@ -86,6 +86,28 @@ const Qlsp = () => {
         setSearchTerm(searchValue);
     };
 
+    useEffect(() => {
+        if (list === "danghoatdong") {
+            // Lọc danh sách sản phẩm đang hoạt động (có trường Approve == true)
+            setFilteredSanpham(sanpham.filter(product => product.Approve === true));
+        } else if (list === "hethang") {
+            // Lọc danh sách sản phẩm hết hàng (có countInStock == 0)
+            setFilteredSanpham(sanpham.filter(product => product.countInStock === 0));
+        } else if (list === "vipham") {
+            // Lọc danh sách sản phẩm vi phạm (có ApproveStatus = "vipham")
+            setFilteredSanpham(sanpham.filter(product => product.ApproveStatus === "vipham"));
+        } else if (list === "choduyet") {
+
+            setFilteredSanpham(sanpham.filter(product => product.ApproveStatus === " " && product.Approve === false));
+
+        } else if (list === "daan") {
+            setFilteredSanpham(sanpham.filter(product => product.ApproveStatus === "tuchoi" && product.Approve === false));
+        } else {
+            // Nếu không phải trường hợp trên, hiển thị toàn bộ danh sách sản phẩm
+            setFilteredSanpham(sanpham.filter(product => product.Approve === true));
+        }
+    }, [list, sanpham]);
+
     return (
         <div className="shadow p-3 mb-5 bg-body rounded" style={{ marginTop: '20px', marginLeft: '10px', marginRight: '10px' }}>
             <ToastContainer />
@@ -109,7 +131,7 @@ const Qlsp = () => {
                         <NavLink onClick={() => handleSetList("vipham")} className={`${list === 'vipham' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Vi Phạm</h6></NavLink>
                     </Col>
                     <Col className={`${list === 'daan' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
-                        <NavLink onClick={() => handleSetList("daan")} className={`${list === 'daan' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Đã Ẩn</h6></NavLink>
+                        <NavLink onClick={() => handleSetList("daan")} className={`${list === 'daan' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Bị Từ Chối</h6></NavLink>
                     </Col>
                 </Row>
 
