@@ -4,6 +4,9 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors"; // Import cors module
 
+
+
+
 // Utiles
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -13,6 +16,7 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import authRouter from "./routes/authRoutes.js"
+import './passport.js';
 
 dotenv.config();
 const port = process.env.PORT || 5000;

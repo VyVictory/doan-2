@@ -1,0 +1,10 @@
+
+
+const loginSuccess = ()=> {
+
+}
+
+export {
+    loginSuccess,
+    
+}
