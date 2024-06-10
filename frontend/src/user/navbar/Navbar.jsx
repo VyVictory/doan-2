@@ -19,7 +19,7 @@ const NavigationBar = () => {
   const [showaddress, setAddress] = useState(false);
   const [showFormL, setShowFormL] = useState(false);
   const [showFormR, setShowFormR] = useState(false);
-  const [showFormF ,setShowFormF] = useState(false);
+  const [showFormF, setShowFormF] = useState(false);
   const { isTokenExist, handleLogout } = authmodule();
   const { profile } = profileModule();
   const submitshowaddress = async (e) => {
@@ -123,10 +123,11 @@ const NavigationBar = () => {
                   <UserAvatarName profile={profile} />
                 </div>
                 <ul className={styles.list}>
-                <li><a href='/kenhnguoiban'><button className={`${styles.hover} ${styles.listaccount}`}>kênh người bán</button></a></li>
+
                   <li><a href='/customer/account'><button className={`${styles.hover} ${styles.listaccount}`}>thông tin tài khoản</button></a></li>
                   <li><a href='/customer/historybuyandsell'><button className={`${styles.hover} ${styles.listaccount}`}>đơn hàng của tôi</button></a></li>
-                  <li><button className={`${styles.hover} ${styles.listaccount}`} style={{color:'red'}} onClick={handleLogout}>Đăng Xuất</button></li>
+                  <li><a href='/kenhnguoiban'><button className={`${styles.hover} ${styles.listaccount}`}>kênh người bán</button></a></li>
+                  <li><button className={`${styles.hover} ${styles.listaccount}`} style={{ color: 'red' }} onClick={handleLogout}>Đăng Xuất</button></li>
                 </ul>
               </div>
             ) : (
@@ -162,7 +163,7 @@ const NavigationBar = () => {
           </div>
         </div>
       </div>
-      {showFormL && <FormL onClose={toggleFormL} onR={toggleFormR} onF={toggleFormF}/>}
+      {showFormL && <FormL onClose={toggleFormL} onR={toggleFormR} onF={toggleFormF} />}
       {showFormR && <FormR onClose={toggleFormR} onL={toggleFormL} />}
       {showFormF && <ForgetPassword onClose={toggleFormF} />}
       {
