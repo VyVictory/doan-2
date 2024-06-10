@@ -177,14 +177,14 @@ function CustomerAccount() {
                   </svg>
                 </div>
                 <div className='ml-3'>
-                  <div>
+                  <div className='text-nowrap w-36'>
                     Số điện thoại
                   </div>
-                  <div>
-                    0372830148
+                  <div >
+                    {profile.phone}
                   </div>
                 </div>
-                <a href='/customer/editphone' className='ml-5 btn btn-info'>
+                <a href='/customer/editphone' className='ml-5 btn btn-info text-nowrap'>
                   Thay đổi
                 </a>
               </div>
@@ -196,20 +196,20 @@ function CustomerAccount() {
 
                 </div>
                 <div className='ml-3'>
-                  <div>
+                  <div className='text-nowrap w-36'>
                     Địa chỉ email
                   </div>
-                  <div>
-                    @email
+                  <div className='text-nowrap'>
+                   {profile.email}
                   </div>
                 </div>
-                <a href='/customer/editemail' className='ml-5 btn btn-info'>
+                <a href='/customer/editemail' style={{float:'right'}} className='ml-5 btn btn-info text-nowrap'>
                   Thay đổi
                 </a>
               </div>
             </div>
             <div style={{ width: '500px' }}>
-              <div className=' mb-3 mt-4 text-lg text-gray-500'>
+              <div className=' mb-3 mt-4 text-lg text-gray-500 text-nowrap '>
                 Bảo mật
               </div>
               <div className='d-flex justify-content-between flex-row items-center w-60 mb-3'>
@@ -219,12 +219,12 @@ function CustomerAccount() {
                   </svg>
 
                 </div>
-                <div className='ml-3'>
-                  <div>
+                <div className='ml-3 text-nowrap'>
+                  <div className='w-36'>
                     Mật Khẩu
                   </div>
                 </div>
-                <a href='/customer/editpassword' className='ml-5 btn btn-info'>
+                <a href='/customer/editpassword' className='ml-5 btn btn-info text-nowrap'>
                   Thay đổi
                 </a>
               </div>

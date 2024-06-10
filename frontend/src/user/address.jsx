@@ -70,7 +70,7 @@ function Address({ offaddress ,onAddAddress }) {
                                 <MDBBtn className="btn-close d-flex justify-content-end mr-4" color="none" aria-label="Close" onClick={offaddress} style={{ float: 'right' }} />
                             </div>
                             <MDBRow className="g-0 d-flex ">
-                                <MDBCol style={{ maxWidth: '800px' }}>
+                                <MDBCol>
                                     <MDBCardBody className="p-0 d-flex flex-column items-center justify-center">
                                         <MDBTypography tag="h5" className='pt-3 pb-2 text-gray-600 border-bottom w-full text-center'>Danh Sách địa chỉ giao hàng</MDBTypography>
                                         <div className=' pr-5 w-full border-bottom' style={{ maxHeight: '400px', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
@@ -105,7 +105,7 @@ function Address({ offaddress ,onAddAddress }) {
                                         </div>
 
                                         {showaddaddress ? <></> :
-                                            <button onClick={submitaddaddress} className='btn btn-success mt-2' style={{ width: '40px', height: '40px' }}>+</button>
+                                            <button onClick={submitaddaddress} className='btn btn-success mt-2' >+</button>
                                         }
                                     </MDBCardBody>
                                 </MDBCol>
