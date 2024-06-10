@@ -103,7 +103,7 @@ const getProductShopCurrent = asyncHandler(async (req, res) => {
 });
 
 const restockProduct = asyncHandler(async (req, res) => {
-  const { productId } = req.params;
+  const { productId } = req.query;
   const { quantity } = req.body;
 
   if (quantity <= 0) {

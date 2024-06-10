@@ -61,7 +61,7 @@ function Address({ offaddress ,onAddAddress }) {
     }, [addressship]);
 
     return (
-        <section style={{ backgroundColor: 'none', padding: '0', background: 'none' }}>
+        <section className='' style={{ backgroundColor: 'none', padding: '0', background: 'none' }}>
             <MDBContainer >
                 <MDBRow className="justify-content-center align-items-center">
                     <MDBCol style={{ backgroundColor: 'none', minWidth: '1000px', padding: '0' }} lg="6">

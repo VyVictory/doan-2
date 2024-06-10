@@ -5,19 +5,19 @@ import Getcategorys from '../module/getcategories.module';
 import useProductData from '../module/Productmodule';
 import GetProduct from '../module/getproduct';
 const EditProduct = () => {
-  const { message, errors, changeImgProduct, updateProduct } = useProductData();
+  const { message, errors, changeImgProduct, updateProduct,updateProductQuality } = useProductData();
   const { categorys } = Getcategorys();
 
   const [productData, setProductData] = useState({
     coverImage: null,
     images: [],
   });
-
+  const [soluongold, setSoluongold] = useState(0);
   const [ten, setTen] = useState('');
   const [gia, setGia] = useState('');
   const [mota, setMota] = useState('');
   const [brand, setBrand] = useState('');
-  const [soluong, setSoluong] = useState('');
+  const [soluong, setSoluong] = useState(0);
   const [loai, setLoai] = useState('');
   const [imageproduct, setImageproduct] = useState('');
   useEffect(() => {
@@ -26,6 +26,7 @@ const EditProduct = () => {
       setImageproduct(sanpham.image);
       setLoai(sanpham.category);
       setSoluong(sanpham.quantity);
+      setSoluongold(sanpham.quantity);
       setBrand(sanpham.brand);
       setMota(sanpham.description);
       setGia(sanpham.price);
@@ -80,7 +81,7 @@ const EditProduct = () => {
     formData.append('description', mota);
     formData.append('price', +gia);
     formData.append('category', loai);
-    formData.append('quantity', +soluong);
+    formData.append('quantity', +soluongold);
     formData.append('brand', brand);
 
     if (!productData.coverImage) {
@@ -88,16 +89,37 @@ const EditProduct = () => {
     } else {
       const uploadedImageData = await changeImgProduct(productData.coverImage);
       if (uploadedImageData.image) {
+        setImageproduct( uploadedImageData.image)
         formData.append('image', uploadedImageData.image);
       }
     }
-
+    
     console.log(formData.get('name'));
 
     try {
-      await updateProduct(formData);
+      if (soluongold == soluong) {
+        await updateProduct(formData);
+      } else {
+        try {
+          const { sanpham } = await GetProduct();
+          const response = await axios.patch(`http://localhost:5000/api/products/countStock/${sanpham._id}?productId=${sanpham._id}`, {
+            "quantity":+soluong
+          }, { withCredentials: true });
+          console.log('Update product successful!', response);
+        } catch (error) {
+          if (error.response) {
+            if (error.response.data.errors) {
+              console.log(error.response.data.errors);
+              console.log('Update product failed. Please check your inputs.');
+            } else {
+              console.log(error.response.data.message || 'Update product failed. Please try again.',soluong);
+            } 
+          } else {
+            console.log('An error occurred. Please try again later.');
+          }
+        }
+      }
       // Reset form state after successful submission
-
       alert('Sửa sản phẩm thành công!');
       window.location.href = '/kenhnguoiban/quanlysanpham';
     } catch (error) {

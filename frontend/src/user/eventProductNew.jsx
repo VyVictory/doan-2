@@ -16,7 +16,9 @@ function EventProductNew() {
         const fetchProductList = async () => {
             try {
                 const { sanphams } = await GetProducts(); // Call the GetProducts function
-                setSanphams(sanphams); // Limit to 6 products
+                const approvedProducts = sanphams.filter(product => product.countInStock !==0);
+    
+                setSanphams(approvedProducts);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }

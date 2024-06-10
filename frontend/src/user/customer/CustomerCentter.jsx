@@ -6,6 +6,7 @@ import CustomerAccount from './CustomerAccount';
 import EditEmail from './EditEmail';
 import EditPassword from './EditPass';
 import EditPhone from './EditPhone';
+import MyOrder from './myOrder';
 function CustomerCentter() {
     const afterCustomer = Spliturl("customer");
     return (
@@ -22,7 +23,7 @@ function CustomerCentter() {
                                                 afterCustomer === 'notification' ? 'Thông báo của tôi' : afterCustomer
                 }
             </h4>
-            <div className="container bg-light shadow-sm mb-5 bg-body rounded p-0 d-flex flex-row" style={{ minHeight: '300px' }}>
+            <div className="container bg-light shadow-sm bg-body rounded p-0 d-flex flex-row" style={{ minHeight: '300px' }}>
                 {
                     afterCustomer === 'wishlist' ? 'Sản phẩm yêu thích' :
                         afterCustomer === 'return-tracking' ? 'Quản lý đổi trả' :
@@ -30,7 +31,7 @@ function CustomerCentter() {
                                 afterCustomer === 'editphone' ? <EditPhone/> :
                                     afterCustomer === 'editpassword' ? <EditPassword/> :
                                         afterCustomer === 'editemail' ? <EditEmail/> :
-                                            afterCustomer === 'historybuyandsell' ? 'Đơn hàng của tôi' :
+                                            afterCustomer === 'historybuyandsell' ? <MyOrder/> :
                                                 afterCustomer === 'notification' ? 'Thông báo của tôi' : afterCustomer
                 }
             </div>

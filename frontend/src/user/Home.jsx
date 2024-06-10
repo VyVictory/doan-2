@@ -12,7 +12,9 @@ function Home() {
     useEffect(() => {
         const fetchProductList = async () => {
             const { sanphams } = await GetProducts();
-            setSanphams(sanphams);
+            const approvedProducts = sanphams.filter(product => product.countInStock !==0);
+    
+            setSanphams(approvedProducts);
         };
         fetchProductList();
     }, []);

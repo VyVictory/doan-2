@@ -13,7 +13,9 @@ function TopProduct() {
         const fetchProductList = async () => {
             try {
                 const { sanphams } = await GetProductsTop(); // Call the GetProductsTop function
-                setSanphams(sanphams);
+                const approvedProducts = sanphams.filter(product => product.countInStock !==0);
+    
+                setSanphams(approvedProducts);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }

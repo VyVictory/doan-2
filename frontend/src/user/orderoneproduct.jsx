@@ -29,7 +29,7 @@ function OrderOneProduct({ offorder, listproduct, numberproduct }) {
     }
     // Confirm order and post shipping information
     async function thanhtoan() {
-        if (address === '') {
+        if (address === ''&& phone=='') {
             return;
         } else {
             const data = {
@@ -40,6 +40,7 @@ function OrderOneProduct({ offorder, listproduct, numberproduct }) {
                     country: country
                 },
                 paymentMethod: payment,
+                phone:phone,
                 items: listproduct
             }
             console.log(data);
