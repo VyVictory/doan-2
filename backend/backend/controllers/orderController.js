@@ -37,43 +37,50 @@ const createOrder = asyncHandler(async (req, res) => {
       return res.status(400).json({ error: "No items to order" });
     }
 
-    // Mảng chứa các đơn hàng đã tạo
+
+    if (!shippingAddress.phone) {
+      return res.status(400).json({ error: "Phone number is required in shipping address" });
+    }
+
+
     const createdOrders = [];
 
-    // Duyệt qua mỗi sản phẩm trong mảng items và tạo đơn hàng riêng biệt
     for (const item of items) {
       const product = await Product.findById(item._id);
       if (!product) {
         return res.status(404).json({ error: `Product not found: ${item._id}` });
       }
 
-      // Thêm thông tin sản phẩm vào mảng đặt hàng
+
       const dbOrderItem = {
-        product: product._id, // ID của sản phẩm
+        product: product._id, 
         name: product.name,
         price: product.price,
         quantity: item.quantity,
         image: product.image
       };
 
-      // Tính toán tổng số tiền, thuế, và phí vận chuyển cho từng đơn hàng
+
       const { itemsPrice, taxPrice, shippingPrice, totalPrice } = calcPrices([dbOrderItem]);
 
-      // Tạo một đơn hàng mới từ thông tin được cung cấp và tính toán
+
       const order = new Order({
         items: [dbOrderItem],
         user: req.user._id,
-        shippingAddress,
+        shippingAddress: {
+          ...shippingAddress, 
+          phone: shippingAddress.phone 
+        },
         paymentMethod,
         itemsPrice,
         taxPrice,
         shippingPrice,
         totalPrice,
         shipping: false,
-        isCancle: false, // Thêm thuộc tính này
+        isCancle: false,
       });
 
-      // Lưu đơn hàng vào cơ sở dữ liệu
+
       const createdOrder = await order.save();
       createdOrders.push(createdOrder);
 
@@ -82,12 +89,13 @@ const createOrder = asyncHandler(async (req, res) => {
       await product.save();
     }
 
-    // Trả về các đơn hàng được tạo
+
     res.status(201).json(createdOrders);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 const updateOrderShipping = asyncHandler(async (req, res) => {
   try {

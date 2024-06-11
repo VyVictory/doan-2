@@ -68,7 +68,7 @@ function calcPrices(orderItems) {
           name: product.name,
           price: product.price,
           quantity: item.quantity,
-          image: product.image
+          image: product.image,
         };
   
         // Tính toán tổng số tiền, thuế, và phí vận chuyển cho từng đơn hàng
@@ -78,14 +78,21 @@ function calcPrices(orderItems) {
         const order = new Order({
           items: [dbOrderItem],
           user: req.user._id,
-          shippingAddress,
+          shippingAddress: {
+            address: shippingAddress.address,
+            city: shippingAddress.city,
+            postalCode: shippingAddress.postalCode,
+            country: shippingAddress.country,
+            phone: shippingAddress.phone, 
+          },
           paymentMethod,
           itemsPrice,
           taxPrice,
           shippingPrice,
           totalPrice,
           shipping: false,
-          isCancle: false, // Thêm thuộc tính này
+          isCancle: false,
+          idShop: product.user, // Thêm idShop
         });
   
         // Lưu đơn hàng vào cơ sở dữ liệu
@@ -103,6 +110,7 @@ function calcPrices(orderItems) {
       res.status(500).json({ error: error.message });
     }
   });
+  
   
   
   
