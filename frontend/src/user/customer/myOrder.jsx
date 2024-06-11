@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import GetOrder from '../../module/getorder';
 import axios from 'axios';
+import Evaluate from './Evaluate';
 const MyOrder = () => {
     const [orders, setOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [error, setError] = useState(null); // Define state for error handling
-
+    const [idproduct, setIdproduct] = useState('');
+    const [item, setItem] = useState(null);
+    const [evaluate, setEvaluate] = useState(false)
     useEffect(() => {
         const fetchOrders = async () => {
             try {
@@ -51,9 +54,9 @@ const MyOrder = () => {
             const response = await axios.put(`http://localhost:5000/api/orders/updateStatus/${idorder}`//6667b122785e0c3a70e7de69
                 , { status: "Đã Hủy" }
                 , { withCredentials: true });
-            console.log(response.data) ;
+            console.log(response.data);
             alert('hủy Thành Công.');
-            window.location.href='/customer/historybuyandsell';
+            window.location.href = '/customer/historybuyandsell';
             //http://localhost:5000/api/api/orders
         } catch (error) {
             console.error('Error posting shipping:', error);
@@ -66,6 +69,12 @@ const MyOrder = () => {
             item.name.toLowerCase().includes(searchTerm.toLowerCase())
         )
     );
+    const danhgia = (idproduct, item) => {
+        setItem(item);
+        setIdproduct(idproduct);
+        setEvaluate(!evaluate);
+
+    }
     return (
         <>
             <div className='p-2' style={{ width: '100%', backgroundColor: '#f8f8f8' }}>
@@ -101,7 +110,7 @@ const MyOrder = () => {
                         </div>
                     </div>
                     <div style={{ height: '600px', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                    
+
                         {filteredOrders.length > 0 ? (
                             filteredOrders.map((order, orderIndex) => (
                                 <div key={orderIndex} className="order border mt-2 mb-2 rounded d-flex flex-column bd-highlight items-center p-2" style={{ backgroundColor: 'white', width: '100%', height: 'auto' }}>
@@ -172,7 +181,19 @@ const MyOrder = () => {
                                                         title="Hủy đơn hàng này" className=' border btn btn-danger ml-2' style={{ backgroundColor: 'red' }}>
                                                         Hủy
                                                     </button>
-                                                    : ''
+                                                    : order.Status == "Giao Thành Công" ?
+                                                        <button
+                                                            title="Đánh giá sản phẩm"
+                                                            className='ml-2 rounded w-10 h-10 d-flex items-center justify-center'
+                                                            style={{ border: 'solid 1px green' }}
+                                                            onClick={() => danhgia(item.product, item)}
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                                            </svg>
+
+                                                        </button>
+                                                        : ""
                                                 }
                                             </div>
                                         </div>
@@ -188,7 +209,9 @@ const MyOrder = () => {
                     </div>
                 </div>
             </div>
-
+            {evaluate && (
+                <Evaluate idproduct={idproduct} item={item} offevalute={danhgia} />//idproduct
+            )}
             {selectedOrder && (
                 <div className="modal-overlay" style={{
                     position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
@@ -274,7 +297,21 @@ const MyOrder = () => {
                                                 Hủy
                                             </button>
                                         </div>
-                                        : ''
+                                        : selectedOrder.Status == "Giao Thành Công" ?
+                                            <div className='d-flex justify-center' style={{ width: '15%' }}>
+                                                <button
+                                                    title="Đánh giá sản phẩm"
+                                                    className='ml-2 rounded w-10 h-10 d-flex items-center justify-center'
+                                                    style={{ border: 'solid 1px green' }}
+                                                    onClick={() => (danhgia(item.product, item) ,handleCloseModal() )}
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                                    </svg>
+
+                                                </button>
+                                            </div> :
+                                             ""
                                     }
 
 

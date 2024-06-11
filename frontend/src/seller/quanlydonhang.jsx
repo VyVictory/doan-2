@@ -188,7 +188,7 @@ const Qldonhang = () => {
                                                         <div className='flex justify-center items-center w-2/12'>{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span className=' text-orange-800'>đ</span></div>
                                                         <div className='flex justify-center items-center w-2/12'>{item.quantity}</div>
                                                         <div className='flex justify-end items-center w-2/12' >
-                                                            <button title="View Details" className='bg-slate-300 rounded mr-2 w-10 h-10 flex items-center justify-center border border-cyan-500' onClick={() => handleViewDetails(order)}>
+                                                            <button title="View Details" className='bg-slate-400 rounded mr-2 w-10 h-10 flex items-center justify-center border border-cyan-500' onClick={() => handleViewDetails(order)}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                                                                 </svg>
@@ -197,13 +197,13 @@ const Qldonhang = () => {
                                                             {order.Status == 0
                                                                 ?
                                                                 <div>
-                                                                    <button title="Hủy đơn hàng này" className='mb-2 bg-red-300 rounded w-10 h-10 flex items-center justify-center border border-red-500' onClick={() => chaneStatus(order._id, "Đã Hủy")}>
+                                                                    <button title="Hủy đơn hàng này" className='mb-2 bg-red-400 rounded w-10 h-10 flex items-center justify-center border border-red-500' onClick={() => chaneStatus(order._id, "Đã Hủy")}>
                                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                                             <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                                         </svg>
 
                                                                     </button>
-                                                                    <button title="Xác nhận giao hàng" className='bg-green-300 rounded w-10 h-10 flex items-center justify-center border border-red-500' onClick={() => chaneStatus(order._id, "Đang Giao")}>
+                                                                    <button title="Xác nhận giao hàng" className='bg-green-400 rounded w-10 h-10 flex items-center justify-center border border-red-500' onClick={() => chaneStatus(order._id, "Đang Giao")}>
 
                                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -214,24 +214,24 @@ const Qldonhang = () => {
                                                                 : order.Status == "Đang Giao"
                                                                     ?
                                                                     <div className='d-flex flex-column'>
-                                                                        <button title="Check Giao Hàng Thất Bại" className='mb-2 bg-red-400 rounded w-10 h-10 flex items-center justify-center border border-red-500' onClick={() => chaneStatus(order._id, "Giao Thất Bại")}>
+                                                                        <button title="Check Giao Hàng Thất Bại" className='mb-2 bg-red-600 rounded w-10 h-10 flex items-center justify-center border border-red-500' onClick={() => chaneStatus(order._id, "Giao Thất Bại")}>
                                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.25-8.25-3.286Zm0 13.036h.008v.008H12v-.008Z" />
                                                                             </svg>
                                                                         </button>
-                                                                        <button title="Check Giao Hàng Thành Công" className=' bg-cyan-400 rounded w-10 h-10 flex items-center justify-center border border-red-500' onClick={() => chaneStatus(order._id, "Giao Thành Công")}>
+                                                                        <button title="Check Giao Hàng Thành Công" className=' bg-cyan-600 rounded w-10 h-10 flex items-center justify-center border border-red-500' onClick={() => chaneStatus(order._id, "Giao Thành Công")}>
                                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
                                                                             </svg>
                                                                         </button>
                                                                     </div>
                                                                     : <div className='d-flex flex-column'>
-                                                                        <button title="Check Giao Hàng Thất Bại" className='mb-2 bg-red-500 rounded w-10 h-10 flex items-center justify-center border border-red-500' onClick={() => chaneStatus(order._id, "Giao Thất Bại")}>
+                                                                        <button title="Check Giao Hàng Thất Bại" className='mb-2 bg-red-200 rounded w-10 h-10 flex items-center justify-center border border-red-500' onClick={() => chaneStatus(order._id, "Giao Thất Bại")}>
                                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.25-8.25-3.286Zm0 13.036h.008v.008H12v-.008Z" />
                                                                             </svg>
                                                                         </button>
-                                                                        <button title="Check Giao Hàng Thành Công" className=' bg-cyan-500 rounded w-10 h-10 flex items-center justify-center border border-red-500' onClick={() => chaneStatus(order._id, "Giao Thành Công")}>
+                                                                        <button title="Check Giao Hàng Thành Công" className=' bg-cyan-200 rounded w-10 h-10 flex items-center justify-center border border-red-500' onClick={() => chaneStatus(order._id, "Giao Thành Công")}>
                                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
                                                                             </svg>
