@@ -70,10 +70,11 @@ const Authmodule = () => {
                 // onClose();
                 // Check if the current URL contains '/kenhnguoiban'
                 if (window.location.href.includes('/kenhnguoiban')) {
-                    window.location.href = '/kenhnguoiban';
+                    window.location.reload()
                 } else {
-                    window.location.href = '/';
+                    window.location.reload()
                 }
+                
             }, 1000);
 
         } catch (error) {

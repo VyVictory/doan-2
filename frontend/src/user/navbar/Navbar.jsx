@@ -24,7 +24,9 @@ const NavigationBar = () => {
   const { profile } = profileModule();
   const submitshowaddress = async (e) => {
     e.preventDefault();
-    setAddress(!showaddress);
+    if(!isTokenExist){
+      setShowFormL(true);
+    }else{ setAddress(!showaddress);}
   }
   const handleAddAddress = () => {
     setAddress(false); // Tắt hiển thị phần địa chỉ
@@ -60,7 +62,14 @@ const NavigationBar = () => {
       setShowFormL(false);
     }
   };
-
+  const linkcar = async (e) => {
+    e.preventDefault();
+    if(!isTokenExist){
+      setShowFormL(true);
+    }else{ 
+      window.location.href= '/cart'
+    }
+  }
   function handleClick(a) {
     if (a == 'home') {
       window.location.href = '/';
@@ -69,10 +78,6 @@ const NavigationBar = () => {
     } else {
     }
   }
-  const profiles = {
-    fullname: "John Doe",
-    imgSrc: "path/to/your/image"
-  };
   return (
     <div style={{ "marginLeft": "0", "marginRight": "0", "width": "99.236438799999999%" }} className='border-bottom'>
       <div className={`${styles.barcustom, styles.barcontainer} row shadow-sm p-3  bg-body rounded`}>
@@ -146,15 +151,16 @@ const NavigationBar = () => {
             )}
             {/*000000000*/}
             <div style={{ "height": "20px", "display": "block", "width": "1px", "marginLeft": "20px" }} className='bg-secondary'></div>
-            <a href='/cart' style={{ "marginRight": "10%", "marginLeft": "3%" }}>
+            <a onClick={linkcar} style={{ "marginRight": "10%", "marginLeft": "3%" }}>
               <button type='submit' className={`${styles.hover} ${styles.button} `} style={{ "height": "40px", "width": "40px", paddingLeft: '10px' }}>
                 <img src={img_car} style={{ "height": "30px", "marginLeft": "-4px" }} alt="Car Icon" />
               </button>
             </a>
 
           </div>
+          
           <div style={{ "height": "40%" }} className={`justify-content-center  align-items-center d-flex`}>
-            <button onClick={submitshowaddress} style={{ "height": "30px" }} type='submit' className={`${styles.hover} ${styles.button} border-0 d-flex align-items-center justify-content-center bg-transparent`}>
+            <button  onClick={submitshowaddress} style={{ "height": "30px" }} type='submit' className={`${styles.hover} ${styles.button} border-0 d-flex align-items-center justify-content-center bg-transparent`}>
               <img src={img_local} style={{ "height": "60%" }} alt="Location Icon" />
               <div>
                 Địa Chỉ Giao Hàng
@@ -171,7 +177,7 @@ const NavigationBar = () => {
           <div
             className="d-flex justify-content-center align-items-center"
             style={{ position: 'fixed', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 9999, background: 'none', padding: '0px' }}
-          ><Address offaddress={submitshowaddress} onAddAddress={handleAddAddress} />
+          >{isTokenExist?<Address offaddress={submitshowaddress} onAddAddress={handleAddAddress} />:""}
 
           </div>
           : ''

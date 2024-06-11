@@ -50,11 +50,7 @@ function OrderOneProduct({ offorder, listproduct, numberproduct }) {
                 await PostCar({ idproduct: listproduct[0]._id, numberproduct: listproduct[0].quantity });
                 const response = await axios.post(`http://localhost:5000/api/carts/checkout`, data, { withCredentials: true });
                 alert('Đặt Hàng Thành Công.');
-<<<<<<< Updated upstream
                 window.location.href = `/xemchitiet?chitietproduct=${listproduct[0]._id}`;
-=======
-                window.location.href =`http://localhost:3000/xemchitiet?chitietproduct=${listproduct[0]._id}`
->>>>>>> Stashed changes
                 return response.data;
                 //http://localhost:5000/api/api/orders
 

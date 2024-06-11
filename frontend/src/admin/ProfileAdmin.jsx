@@ -81,7 +81,6 @@ function ProfileAdmin({ offprofile, profile }) {
         }
         setProfileUpdate({ ...profileUpdate, born: e.target.value });
     };
-
     return (
         <section style={{ backgroundColor: 'none', padding: '0', background: 'none', }}>
             <MDBContainer >

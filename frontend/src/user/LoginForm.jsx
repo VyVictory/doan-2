@@ -4,8 +4,8 @@ import styles from './css/LoginForm.module.css'; // Import CSS module
 import axioslogin from '../module/axioslogin'
 import CloseButton from 'react-bootstrap/CloseButton';
 function LoginForm({ onClose, onR ,onF}) {
-  const [email, setEmail] = useState('email@email.com');
-  const [password, setPassword] = useState('password');
+  const [email, setEmail] = useState('');//email@email.com
+  const [password, setPassword] = useState('');//password
   const { loginfunction, message } = axioslogin(); // Corrected from axioslogin to Authmodule
   const formData = {
     email: email,
