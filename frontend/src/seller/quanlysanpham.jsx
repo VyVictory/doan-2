@@ -115,23 +115,23 @@ const Qlsp = () => {
                 {/* Header */}
                 <Row className="text-white d-flex bg-slate-200" style={{ height: "40px", paddingTop: "10px", height: "100%" }}>
                     <Col className={`${list === 'tatca' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
-                        <NavLink onClick={() => handleSetList("tatca")} className={`${list === 'tatca' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Tất Cả</h6></NavLink>
+                        <NavLink onClick={() => handleSetList("tatca")} className={`${list === 'tatca' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} text-nowrap`}>Tất Cả</h6></NavLink>
                     </Col>
                     <Col className={`${list === 'danghoatdong' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
-                        <NavLink onClick={() => handleSetList("danghoatdong")} className={`${list === 'danghoatdong' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Đang Hoạt Động</h6></NavLink>
+                        <NavLink onClick={() => handleSetList("danghoatdong")} className={`${list === 'danghoatdong' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} text-nowrap`}>Đang Hoạt Động</h6></NavLink>
                     </Col>
 
                     <Col className={`${list === 'hethang' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
-                        <NavLink onClick={() => handleSetList("hethang")} className={`${list === 'hethang' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Hết Hàng</h6></NavLink>
+                        <NavLink onClick={() => handleSetList("hethang")} className={`${list === 'hethang' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} text-nowrap`}>Hết Hàng</h6></NavLink>
                     </Col>
                     <Col className={`${list === 'choduyet' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
-                        <NavLink onClick={() => handleSetList("choduyet")} className={`${list === 'choduyet' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Chờ Duyệt</h6></NavLink>
+                        <NavLink onClick={() => handleSetList("choduyet")} className={`${list === 'choduyet' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} text-nowrap`}>Chờ Duyệt</h6></NavLink>
                     </Col>
                     <Col className={`${list === 'vipham' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
-                        <NavLink onClick={() => handleSetList("vipham")} className={`${list === 'vipham' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Vi Phạm</h6></NavLink>
+                        <NavLink onClick={() => handleSetList("vipham")} className={`${list === 'vipham' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} text-nowrap`}>Vi Phạm</h6></NavLink>
                     </Col>
                     <Col className={`${list === 'daan' ? styles.gachchanactive : styles.gachchan} text-center align-content-center text-uppercase mx-3`}>
-                        <NavLink onClick={() => handleSetList("daan")} className={`${list === 'daan' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} `}>Bị Từ Chối</h6></NavLink>
+                        <NavLink onClick={() => handleSetList("daan")} className={`${list === 'daan' ? styles.navlinkactive : styles.navlink}`}><h6 className={`${styles.hovertext} text-nowrap`}>Bị Từ Chối</h6></NavLink>
                     </Col>
                 </Row>
 
@@ -193,7 +193,7 @@ const Qlsp = () => {
                         </div>
                     </nav>
                 </Row>
-                <Row className="pt-3">
+                <Row className="pt-3 border-top" style={{ height: '1000px', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                     <Col>
                         <Container fluid>
                             <Row>

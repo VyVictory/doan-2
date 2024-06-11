@@ -19,7 +19,7 @@ function Xemchitiet() {
     const [sanpham, setSanpham] = useState([]);
     const [showdorder, setShoworder] = useState(false);
     const [numberProduct, setNumberProduct] = useState(0);
-    const [listproduct,setListproduct] = useState([])
+    const [listproduct, setListproduct] = useState([])
     useEffect(() => {
         const fetchProductList = async () => {
             const { sanpham } = await GetProduct();
@@ -30,8 +30,8 @@ function Xemchitiet() {
     const submitshoworder = async (e) => {
         setListproduct([
             {
-              "_id": sanpham._id,
-              "quantity": numberProduct
+                "_id": sanpham._id,
+                "quantity": numberProduct
             },]);
         e.preventDefault();
         setShoworder(!showdorder);
@@ -161,26 +161,29 @@ function Xemchitiet() {
                                     </div>
                                 </div>
                                 {/* <div>Tổng quan</div> */}
-                                {Array.from({ length: 50 }).map((_, index) => (
-                                    <div className='border-top p-5 pt-2 pb-2'>
-                                        <div className='d-flex flex-row items-center ml-1'>
-                                            <div className='d-flex flex-row mt-2' >
-                                                {renderRatingStars(sanpham.rating, 20, 20)}
+                                {sanpham.reviews && sanpham.reviews.length > 0 ? (
+                                    sanpham.reviews.map((review, index) => (
+                                        <div key={index} className='border-top p-5 pt-2 pb-2'>
+                                            <div className='d-flex flex-row items-center ml-1'>
+                                                <div className='d-flex flex-row mt-2'>
+                                                    {renderRatingStars(review.rating, 20, 20)} {/* Use review.rating instead of sanpham.rating */}
+                                                </div>
+                                                {review.rating == 1 ? "Tệ" : review.rating == 2 ? "Tạm ổn" : review.rating == 3 ? "Khá hài lòng" : review.rating == 4 ? "Hài lòng" : "Cực kì hài lòng"}
                                             </div>
-                                            : cực kì hài lòng
-                                        </div>
 
-                                        <div className='d-flex flex-row items-center' style={{ color: 'green' }}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
-                                            </svg>
-                                            đã mua hàng
+                                            <div className='d-flex flex-row items-center' style={{ color: 'green' }}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                                                </svg>
+                                                đã mua hàng
+                                            </div>
+                                            <div className='mt-2 ml-1 mb-1'>
+                                                {review.comment}
+                                            </div>
                                         </div>
-                                        <div className='mt-2 ml-1 mb-1'>
-                                            nội dung đánh giá:
-                                        </div>
-                                    </div>
-                                ))}
+                                    ))
+                                ) : null} {/* Return null if there are no reviews */}
+
                             </div>
                         </div>
                     </div>

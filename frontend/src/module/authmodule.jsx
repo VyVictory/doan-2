@@ -1,18 +1,27 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import cookieModule from './cookie.module';
-
+import useProfile from './profile.module';
 const Authmodule = () => {
   const { deleteCookie, setCookie } = cookieModule();
   const [isTokenExist, setIsTokenExist] = useState(false);
+  const [isAdmin ,setIsAdmin] = useState(false);
   const [message, setMessage] = useState('');
   const [data, setData] = useState({});
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsTokenExist(!!token);
-  }, []);
+    checkAuthentication();
+  }, []); // Run once when the component mounts
+  const checkAuthentication = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/users/profile', { withCredentials: true });
+      setIsTokenExist(true);
+    } catch (error) {
+      setIsTokenExist(false);
+    }
+  };
+
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -25,10 +34,10 @@ const Authmodule = () => {
     const formData = new FormData();
     formData.append('image', avatarFile);
 
-    // Log FormData entries for debugging
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ': ' + pair[1]);
-    }
+    // // Log FormData entries for debugging
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0] + ': ' + pair[1]);
+    // }
 
     try {
       const token = localStorage.getItem('token');
@@ -71,7 +80,7 @@ const Authmodule = () => {
     }
   };
 
-  return { isTokenExist, message, errors, data, handleLogout, changeAvatar, updateProfile };
+  return { isTokenExist,isAdmin, message, errors, data, handleLogout, changeAvatar, updateProfile };
 };
 
 export default Authmodule;
