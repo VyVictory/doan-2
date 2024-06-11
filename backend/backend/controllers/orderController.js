@@ -157,17 +157,11 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
   try {
     const { orderId } = req.params;
     const { status } = req.body;
-    const { _id: userId } = req.user; 
 
     const order = await Order.findById(orderId);
 
     if (!order) {
       return res.status(404).json({ error: 'Order not found' });
-    }
-
-    // Kiểm tra xem _id của người dùng có trùng khớp với id của người bán không
-    if (order.user.toString() !== userId) {
-      return res.status(403).json({ error: 'Unauthorized' });
     }
 
     order.status = status;

@@ -30,7 +30,7 @@ router.route("/total-sales").get(calculateTotalSales);
 router.route("/total-sales-by-date").get(calcualteTotalSalesByDate);
 router.route("/:id").get(authenticate, findOrderById);
 router.route("/:id/pay").put(authenticate, markOrderAsPaid);
-router.route("/updateStatus:id").put(authenticate, updateOrderStatus);
+router.route("/updateStatus/:orderId").put(authenticate, updateOrderStatus);
 router.route("/updateShip/:id").put(authenticate, updateOrderShipping);
 router.route("/cancle/:id").put(authenticate, cancelOrder);
 router
