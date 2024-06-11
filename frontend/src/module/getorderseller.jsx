@@ -2,7 +2,11 @@ import axios from 'axios';
 
 const GetOrderSeller = async () => {
     try {
+<<<<<<< Updated upstream
         const response = await axios.get('http://localhost:5000/api/orders/mine', { withCredentials: true });
+=======
+        const response = await axios.get('http://localhost:5000/api/orders', { withCredentials: true });
+>>>>>>> Stashed changes
         
         if (response.data) {
             return response.data;
