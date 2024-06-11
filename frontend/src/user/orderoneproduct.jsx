@@ -38,13 +38,14 @@ function OrderOneProduct({ offorder, listproduct, numberproduct }) {
                     address: address,
                     city: city,
                     postalCode: postalCode,
-                    country: country
+                    country: country,
+                    phone:phone
                 },
                 paymentMethod: payment,
-                phone:phone,
                 items: listproduct
             }
             console.log(data);
+            console.log("truoc cai nay");
             try {
                 await PostCar({ idproduct: listproduct[0]._id, numberproduct: listproduct[0].quantity });
                 const response = await axios.post(`http://localhost:5000/api/carts/checkout`, data, { withCredentials: true });

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const GetOrder = async () => {
     try {
-        const response = await axios.get('http://localhost:5000/api/orders', { withCredentials: true });
+        const response = await axios.get('http://localhost:5000/api/orders/mine', { withCredentials: true });
         
         if (response.data) {
             return response.data;
