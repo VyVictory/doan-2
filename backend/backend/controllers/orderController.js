@@ -158,15 +158,22 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
     const { orderId } = req.params;
     const { status } = req.body;
 
+    console.log("Order ID:", orderId);
+    console.log("Requested status:", status);
+
     const order = await Order.findById(orderId);
 
     if (!order) {
       return res.status(404).json({ error: 'Order not found' });
     }
 
-    order.status = status;
+    console.log("Current order status:", order.Status);
+
+    order.Status = status;
 
     const updatedOrder = await order.save();
+
+    console.log("Updated order status:", updatedOrder.Status);
 
     res.json(updatedOrder);
   } catch (error) {
