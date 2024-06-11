@@ -63,7 +63,7 @@ function TopProduct() {
                                         margin: '0'
                                     }}
                                 >
-                                    {e.description}
+                                    {e.name}
                                 </div>
                                 <div
                                     className="card-text mt-1"

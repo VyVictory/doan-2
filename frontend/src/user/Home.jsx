@@ -9,36 +9,60 @@ import EventProductNew from './eventProductNew';
 function Home() {
     const [urlpicture, setUrlpicture] = useState('http://localhost:5000');
     const [sanphams, setSanphams] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
     useEffect(() => {
         const fetchProductList = async () => {
-            const { sanphams } = await GetProducts();
-            const approvedProducts = sanphams.filter(product => product.countInStock !==0);
-    
-            setSanphams(approvedProducts);
+            try {
+                const response = await axios.get(`http://localhost:5000/api/products?pageNumber=${currentPage}`);
+                setTotalPages(response.data.pages);
+                if (response.data && response.data.products) {
+                    setSanphams(response.data.products);
+                } else {
+                    console.error('No data found');
+                    setSanphams([]);
+                }
+            } catch (err) {
+                console.error(err);
+                setSanphams([]);
+            }
         };
         fetchProductList();
-    }, []);
-    //console.log(sanphams)
-    const webpage = (a, b, c) => {
-        // Chuyển hướng ở đây
-        window.location.href = '/xemchitiet?' + 'chitietproduct=' + a;
+    }, [currentPage]);
+
+    const webpage = (id, name, value) => {
+        window.location.href = `/xemchitiet?chitietproduct=${id}`;
     };
+
+    const handlePageChange = async (page) => {
+        setCurrentPage(page);
+    };
+
+    const renderPageButtons = () => {
+        const buttons = [];
+        for (let i = 1; i <= totalPages; i++) {
+            buttons.push(
+                <button key={i} onClick={() => handlePageChange(i)} className={`btn btn-danger m-2 ${currentPage === i ? styles.activePage : styles.pageButton}`}>
+                    {i}
+                </button>
+            );
+        }
+        return buttons;
+    };
+
     return (
         <div className="Home">
             <div className="d-flex">
-                <div className="container mt-1 bg-transparent  p-4 mb-5 bg-body rounded">
-                    {/* <div>
-                        cac event
-                    </div> */}
+                <div className="container mt-1 bg-transparent p-4 mb-5 bg-body rounded">
                     <div className=" mt-4 pl-0 pb-1 bg-white rounded">
                         <EventProductNew />
                     </div>
                     <div className=" mt-4 pl-0 pb-1 bg-white rounded">
                         <TopProduct />
                     </div>
-
                     <div className="d-flex flex-column  mt-4 pb-2 bg-white rounded">
-                        <label htmlFor="cardTitle" className='d-flex justify-center mt-1'><h5 className='text-red-400'>Gợi ý hôm nay</h5></label>
+                        <label htmlFor="cardTitle" className='d-flex justify-center mt-1'><h5 className='text-red-400'>Danh Sách Sản Phẩm</h5></label>
                         <div className="container d-flex flex-wrap justify-center">
                             {sanphams.length > 0 ? (
                                 sanphams.map((e) => (
@@ -50,7 +74,7 @@ function Home() {
                                     >
                                         <div className='card-img-top d-flex justify-center h-140' style={{ height: '140px' }}>
                                             <img
-                                                style={{  maxHeight: '140px' }}
+                                                style={{ maxHeight: '140px' }}
                                                 src={urlpicture + e.image}
                                                 className="p-1"
                                                 alt={e.name}
@@ -69,7 +93,7 @@ function Home() {
                                                     margin: '0'
                                                 }}
                                             >
-                                                {e.description}
+                                                {e.name}
                                             </div>
                                             <div
                                                 className="card-text mt-1"
@@ -99,6 +123,11 @@ function Home() {
                             )}
                         </div>
                     </div>
+                    <div className='w-full d-flex justify-center'>
+                        <div className="pagination">
+                            {renderPageButtons()}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,5 +135,3 @@ function Home() {
 }
 
 export default Home;
-
-

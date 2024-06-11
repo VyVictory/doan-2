@@ -34,10 +34,10 @@ const Authmodule = () => {
     const formData = new FormData();
     formData.append('image', avatarFile);
 
-    // Log FormData entries for debugging
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ': ' + pair[1]);
-    }
+    // // Log FormData entries for debugging
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0] + ': ' + pair[1]);
+    // }
 
     try {
       const token = localStorage.getItem('token');

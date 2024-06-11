@@ -16,6 +16,7 @@ import RouterAdmin from './RouterAdmin.jsx';
 import ResetPassword from '../user/resetPassword.jsx';
 import Editproduct from '../seller/editproduct.jsx';
 import useProfile from '../module/profile.module.jsx';
+import Products from '../user/products.jsx';
 
 function Routerr() {
     const [showNavbar, setShowNavbar] = useState(true);
@@ -63,6 +64,7 @@ function Routerr() {
                             <>
                                 <Route path="/resetPassword/*" element={<ResetPassword />} />
                                 <Route path="/" element={<Home />} />
+                                <Route path="/products*" element={<Products />} />
                                 <Route path="/xemchitiet" element={<Xemchitiet />} />
                                 {isTokenExist && <>
                                     <Route path="/customer/*" element={<Customer />} />

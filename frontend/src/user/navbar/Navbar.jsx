@@ -20,13 +20,15 @@ const NavigationBar = () => {
   const [showFormL, setShowFormL] = useState(false);
   const [showFormR, setShowFormR] = useState(false);
   const [showFormF, setShowFormF] = useState(false);
+  const [NameProduct, setNameProduct] = useState("");
+
   const { isTokenExist, handleLogout } = authmodule();
   const { profile } = profileModule();
   const submitshowaddress = async (e) => {
     e.preventDefault();
-    if(!isTokenExist){
+    if (!isTokenExist) {
       setShowFormL(true);
-    }else{ setAddress(!showaddress);}
+    } else { setAddress(!showaddress); }
   }
   const handleAddAddress = () => {
     setAddress(false); // Tắt hiển thị phần địa chỉ
@@ -64,10 +66,10 @@ const NavigationBar = () => {
   };
   const linkcar = async (e) => {
     e.preventDefault();
-    if(!isTokenExist){
+    if (!isTokenExist) {
       setShowFormL(true);
-    }else{ 
-      window.location.href= '/cart'
+    } else {
+      window.location.href = '/cart'
     }
   }
   function handleClick(a) {
@@ -76,6 +78,7 @@ const NavigationBar = () => {
     } else if (a == 'thongbao') {
       window.location.href = '/customer/notification';
     } else {
+      window.location.href = `/${a}`;
     }
   }
   return (
@@ -90,12 +93,10 @@ const NavigationBar = () => {
         <div className={`${styles.barcustom}  col-sm-7  justify-content-center d-flex flex-column padding-0`}>
           <nav class="navbar navbar-light bg-light">
             <div class="container-fluid flex-row-reverse">
-              <input class="form-control me-2" style={{ width: '100%' }} type="search" placeholder="Search" aria-label="Search"></input>
-              <img type="submit" src={img_search} style={{ "height": "30px", position: 'absolute', marginRight: '15px' }} className='border-left-2' />
+              <input onChange={(e) => setNameProduct(e.target.value)} class="form-control me-2" style={{ width: '100%', paddingRight: '40px' }} type="search" placeholder="Search" aria-label="Search"></input>
+              <img onClick={(e) => { handleClick(`products?name=${NameProduct}`) }} type="submit" src={img_search} style={{ "height": "30px", position: 'absolute', marginRight: '15px' }} className='border-left-2' />
             </div>
           </nav>
-
-
           <div style={{ "marginTop": "2px", "height": "30px", "marginBottom": "-10px" }} className={`w-100 mt-10 bg-dark d-none`}>
             bbbbbnb
           </div>
@@ -158,9 +159,9 @@ const NavigationBar = () => {
             </a>
 
           </div>
-          
+
           <div style={{ "height": "40%" }} className={`justify-content-center  align-items-center d-flex`}>
-            <button  onClick={submitshowaddress} style={{ "height": "30px" }} type='submit' className={`${styles.hover} ${styles.button} border-0 d-flex align-items-center justify-content-center bg-transparent`}>
+            <button onClick={submitshowaddress} style={{ "height": "30px" }} type='submit' className={`${styles.hover} ${styles.button} border-0 d-flex align-items-center justify-content-center bg-transparent`}>
               <img src={img_local} style={{ "height": "60%" }} alt="Location Icon" />
               <div>
                 Địa Chỉ Giao Hàng
@@ -177,7 +178,7 @@ const NavigationBar = () => {
           <div
             className="d-flex justify-content-center align-items-center"
             style={{ position: 'fixed', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 9999, background: 'none', padding: '0px' }}
-          >{isTokenExist?<Address offaddress={submitshowaddress} onAddAddress={handleAddAddress} />:""}
+          >{isTokenExist ? <Address offaddress={submitshowaddress} onAddAddress={handleAddAddress} /> : ""}
 
           </div>
           : ''

@@ -1,12 +1,14 @@
 import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon, MDBBtn, MDBTooltip } from 'mdb-react-ui-kit';
 import React, { useEffect, useState } from 'react';
 import Authmodule from '../module/authmodule';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ProfileAdmin({ offprofile, profile }) {
     const [previewSrc, setPreviewSrc] = useState(null);
     const [editview, setEditview] = useState('');
     const [profileview, setProfileview] = useState(true);
+    const [number, setNumber] = useState(0);
     const [profileUpdate, setProfileUpdate] = useState({
         username: '',
         fullname: '',
@@ -53,22 +55,28 @@ function ProfileAdmin({ offprofile, profile }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (!img) {
+        if (img) { // Check if an image is selected
             await changeAvatar(img);
-            console.log(message, errors, data);
-
+            // console.log(message, errors, data);
             if (data.image) {
                 setProfileUpdate((prevProfile) => ({
                     ...prevProfile,
                     avatar: data.image,
                 }));
+                if (number == 0) {
+                    toast.success('bấm lại để xác nhận', { autoClose: 2000 });
+                    setNumber(1);
+                } if (number == 1) {
+                    await updateProfile(profileUpdate);
+                    toast.success('Cập nhật thông tin thành công!', { autoClose: 2000 });
+                    window.location.href = '/admin'
+                }
             }
         } else {
+            await updateProfile(profileUpdate);
+            toast.success('Cập nhật thông tin thành công!', { autoClose: 2000 });
             console.log("No image selected");
         }
-        await updateProfile(profileUpdate);
-        console.log(message);
     };
     // Get today's date in YYYY-MM-DD format
     const today = new Date();
@@ -83,6 +91,7 @@ function ProfileAdmin({ offprofile, profile }) {
     };
     return (
         <section style={{ backgroundColor: 'none', padding: '0', background: 'none', }}>
+                <ToastContainer />
             <MDBContainer >
                 <MDBRow className="justify-content-center align-items-center">
                     <MDBCol style={{ backgroundColor: 'none', minWidth: '1000px', padding: '0' }} lg="6">

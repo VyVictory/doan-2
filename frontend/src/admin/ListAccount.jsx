@@ -1,43 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import {
-    MDBBadge, MDBCard, MDBCardBody, MDBCol, MDBContainer, MDBIcon, MDBRow, MDBTable, MDBTableBody, MDBTableHead, MDBTooltip,
-} from "mdb-react-ui-kit";
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import ProfileDetail from './ProfileDetail';
-import GetAllProfileAmin from '../module/getAllProfileAmin';
 import axios from 'axios';
+import { MDBBadge, MDBCard, MDBCardBody, MDBCol, MDBContainer, MDBRow, MDBTable, MDBTableBody, MDBTableHead, MDBTooltip } from "mdb-react-ui-kit";
 
 export default function ListAccount() {
-    const [showdetail, setShowdetail] = useState(false);
+    const [listUser, setListUser] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [filter, setFilter] = useState('all');
-    const { listUser, message } = GetAllProfileAmin();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(10);
 
-    const submitshowdetail = async (e) => {
-        e.preventDefault();
-        setShowdetail(!showdetail);
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    const fetchUsers = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/api/users', { withCredentials: true });
+            setListUser(response.data);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
     };
 
     const active = async (id, isActive) => {
         try {
-            const response = await axios.patch(
+            await axios.patch(
                 `http://localhost:5000/api/users/active/${id}`,
-                { isActive: isActive }, // Data to be sent in the body of the request
-                { withCredentials: true } // Configuration options
+                { isActive: isActive },
+                { withCredentials: true }
             );
-            console.log('User activation status updated successfully:', response.data);
+            console.log('User activation status updated successfully.');
+            fetchUsers(); // Refresh the list after updating
         } catch (error) {
             console.error('Error updating user activation status:', error);
         }
-        window.location.href = '/admin/listaccounts';
     };
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
+        setCurrentPage(1); // Reset to the first page when search term changes
     };
 
     const handleFilterChange = (e) => {
         setFilter(e.target.value);
+        setCurrentPage(1); // Reset to the first page when filter changes
     };
 
     const filteredUsers = listUser.filter((user) => {
@@ -45,6 +51,14 @@ export default function ListAccount() {
         const matchesFilter = filter === 'all' || (filter === 'active' && user.isActive) || (filter === 'inactive' && !user.isActive);
         return matchesSearchTerm && matchesFilter;
     });
+
+    // Calculate current items based on pagination
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentUsers = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <section className="gradient-custom-2">
@@ -86,43 +100,33 @@ export default function ListAccount() {
                                         </tr>
                                     </MDBTableHead>
                                     <MDBTableBody>
-                                        {message ? (
-                                            <tr>
-                                                <td colSpan="5" className="text-center">{message}</td>
-                                            </tr>
-                                        ) : filteredUsers.length > 0 ? (
-                                            filteredUsers.map((e) => (
-                                                <tr key={e._id} className="fw-normal">
+                                        {currentUsers.length > 0 ? (
+                                            currentUsers.map((user) => (
+                                                <tr key={user._id} className="fw-normal">
                                                     <th className='d-flex flex-row align-items-center h-24'>
-                                                        <img src={"http://localhost:5000" + e.avatar} alt="avatar 1" style={{ width: "45px", height: "auto" }} />
-                                                        <span className="ms-2">{e.username}</span>
+                                                        <img src={"http://localhost:5000" + user.avatar} alt="avatar 1" style={{ width: "45px", height: "auto" }} />
+                                                        <span className="ms-2">{user.username}</span>
                                                     </th>
                                                     <td className="align-middle">
-                                                        <span>{e.email}</span>
+                                                        <span>{user.email}</span>
                                                     </td>
                                                     <td className="align-middle">
-                                                        <span>{e.gender === 'male' ? 'nam' : e.gender === 'female' ? 'nữ' : 'Khác'}</span>
+                                                        <span>{user.gender === 'male' ? 'nam' : user.gender === 'female' ? 'nữ' : 'Khác'}</span>
                                                     </td>
                                                     <td className="align-middle">
                                                         <h6 className="mb-0">
-                                                            <MDBBadge className="mx-2" color={e.isActive ? "success" : "danger"}>
-                                                                {e.isActive ? 'online' : 'offline'}
+                                                            <MDBBadge className="mx-2" color={user.isActive ? "success" : "danger"}>
+                                                                {user.isActive ? 'online' : 'offline'}
                                                             </MDBBadge>
                                                         </h6>
                                                     </td>
                                                     <td className="align-middle">
                                                         <div className='d-flex flex-row align-items-center'>
                                                             <MDBTooltip tag="a" wrapperProps={{ href: "#!" }} title="Ban-Unban">
-                                                                {e.isActive
-                                                                    ? <a type="button" onClick={() => active(e._id, false)} className="btn btn-danger">Ban</a>
-                                                                    : <a type="button" onClick={() => active(e._id, true)} className="btn btn-success">Unban</a>}
+                                                                {user.isActive
+                                                                    ? <a type="button" onClick={() => active(user._id, false)} className="btn btn-danger">Ban</a>
+                                                                    : <a type="button" onClick={() => active(user._id, true)} className="btn btn-success">Unban</a>}
                                                             </MDBTooltip>
-                                                            {/* <MDBTooltip tag="a" wrapperProps={{ href: "#!" }} title="Detail">
-                                                                <svg onClick={submitshowdetail} style={{ marginLeft: '10px' }} xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-info-circle" viewBox="0 0 16 16">
-                                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                                                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
-                                                                </svg>
-                                                            </MDBTooltip> */}
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -132,22 +136,26 @@ export default function ListAccount() {
                                                 <td colSpan="5" className="text-center">No user available.</td>
                                             </tr>
                                         )}
+
                                     </MDBTableBody>
                                 </MDBTable>
+                                <ul className="pagination justify-content-center mt-4">
+                                    {Array.from({ length: Math.ceil(filteredUsers.length / itemsPerPage) }, (_, index) => (
+                                        <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                                            <button onClick={() => paginate(index + 1)} className="page-link">{index + 1}</button>
+                                        </li>
+                                    ))}
+                                </ul>
                             </MDBCardBody>
                         </MDBCard>
+
                     </MDBCol>
+
                 </MDBRow>
+
             </MDBContainer>
-            {
-                showdetail ?
-                    <div
-                        className="d-flex justify-content-center align-items-center"
-                        style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 9999, background: 'none', padding: '0px' }}
-                    ><ProfileDetail offprofiledetail={submitshowdetail} />
-                    </div>
-                    : ''
-            }
+            {/* Pagination */}
+
         </section>
     );
 }

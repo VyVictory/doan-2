@@ -8,6 +8,7 @@ import Listproduct from '../admin/Listproduct';
 import EditPassword from '../admin/EditPass';
 import EditEmail from '../admin/EditEmail';
 import EditPhone from '../admin/EditPhone';
+import CategoryListPage from '../admin/CategoryListPage';
 function RouterAdmin() {
 
     return (
@@ -24,8 +25,8 @@ function RouterAdmin() {
                     <Route path='/admin/EditEmail' element={<EditEmail />} />
                     <Route path='/admin/EditPassword' element={<EditPassword />} />
                     <Route path='/admin/EditPhone' element={<EditPhone />} />
-
-
+                    <Route path='/admin/EditPhone' element={<EditPhone />} />
+                    <Route path='/admin/listproducttypes' element={<CategoryListPage />} />
                 </Routes>
             </Router>
         </div>
