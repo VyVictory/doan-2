@@ -46,12 +46,14 @@ const MyOrder = () => {
         setSearchTerm(event.target.value);
     };
     //api/orders/updateStatus/
-    const huysanpham = async (idproduct) => {
+    const huysanpham = async (idorder) => {
         try {
-          
-            const response = await axios.put(`http://localhost:5000/api/orders/updateStatus/${idproduct}`, {status:"huy"}, { withCredentials: true });
+            const response = await axios.put(`http://localhost:5000/api/orders/updateStatus/${idorder}`//6667b122785e0c3a70e7de69
+                , { status: "Đã Hủy" }
+                , { withCredentials: true });
+            console.log(response.data) ;
             alert('hủy Thành Công.');
-            return response.data;
+            window.location.href='/customer/historybuyandsell';
             //http://localhost:5000/api/api/orders
         } catch (error) {
             console.error('Error posting shipping:', error);
@@ -99,7 +101,7 @@ const MyOrder = () => {
                         </div>
                     </div>
                     <div style={{ height: '600px', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                    {console.log(filteredOrders)}
+                    
                         {filteredOrders.length > 0 ? (
                             filteredOrders.map((order, orderIndex) => (
                                 <div key={orderIndex} className="order border mt-2 mb-2 rounded d-flex flex-column bd-highlight items-center p-2" style={{ backgroundColor: 'white', width: '100%', height: 'auto' }}>
@@ -163,11 +165,11 @@ const MyOrder = () => {
                                                         <path d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                                                     </svg>
                                                 </button>
-                                              
+
                                                 {order.Status == 0
-                                                    ? <button 
-                                                    onClick={() => huysanpham(order._id)}
-                                                    title="Hủy đơn hàng này" className=' border btn btn-danger ml-2' style={{ backgroundColor: 'red' }}>
+                                                    ? <button
+                                                        onClick={() => huysanpham(order._id)}
+                                                        title="Hủy đơn hàng này" className=' border btn btn-danger ml-2' style={{ backgroundColor: 'red' }}>
                                                         Hủy
                                                     </button>
                                                     : ''
@@ -263,6 +265,20 @@ const MyOrder = () => {
                                     <div className='d-flex justify-center' style={{ width: '15%' }}>
                                         {(item.price * item.quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span className=' text-orange-1000' style={{ verticalAlign: "super" }}>đ</span>
                                     </div>
+                                    {selectedOrder.Status == 0
+                                        ?
+                                        <div className='d-flex justify-center' style={{ width: '15%' }}>
+                                            <button
+                                                onClick={() => huysanpham(selectedOrder._id)}
+                                                title="Hủy đơn hàng này" className=' border btn btn-danger ml-2' style={{ backgroundColor: 'red' }}>
+                                                Hủy
+                                            </button>
+                                        </div>
+                                        : ''
+                                    }
+
+
+
                                 </div>
                             ))}
                         </div>

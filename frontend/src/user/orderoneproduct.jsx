@@ -30,7 +30,7 @@ function OrderOneProduct({ offorder, listproduct, numberproduct }) {
     }
     // Confirm order and post shipping information
     async function thanhtoan() {
-        if (address === ''&& phone=='') {
+        if (address === '' && phone == '') {
             return;
         } else {
             const data = {
@@ -39,7 +39,7 @@ function OrderOneProduct({ offorder, listproduct, numberproduct }) {
                     city: city,
                     postalCode: postalCode,
                     country: country,
-                    phone:phone
+                    phone: phone
                 },
                 paymentMethod: payment,
                 items: listproduct
@@ -50,8 +50,10 @@ function OrderOneProduct({ offorder, listproduct, numberproduct }) {
                 await PostCar({ idproduct: listproduct[0]._id, numberproduct: listproduct[0].quantity });
                 const response = await axios.post(`http://localhost:5000/api/carts/checkout`, data, { withCredentials: true });
                 alert('Đặt Hàng Thành Công.');
+                window.location.href = `/xemchitiet?chitietproduct=${listproduct[0]._id}`;
                 return response.data;
                 //http://localhost:5000/api/api/orders
+
             } catch (error) {
                 console.error('Error posting shipping:', error);
                 // Handle shipping post error
