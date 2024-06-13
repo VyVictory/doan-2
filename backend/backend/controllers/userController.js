@@ -76,33 +76,35 @@ const loginUser = asyncHandler(async (req, res) => {
   console.log(email);
   console.log(password);
 
-  const existingUser = await User.findOne({ email });
-  
+  try {
+    const existingUser = await User.findOne({ email });
 
-  if (existingUser) {
-    const isPasswordValid = await bcrypt.compare(
-      password,
-      existingUser.password
-    );
-    if (!existingUser.isActive) {
-      return res.status(401).json({ message: 'User is inactive. Please contact administrator.' });
+    if (!existingUser) {
+      return res.status(404).json({ error: 'User not found' });
     }
 
-    if (isPasswordValid) {
-     const token = createToken(res, existingUser._id);
+    const isPasswordValid = await bcrypt.compare(password, existingUser.password);
 
-
-      res.status(201).json({
-        _id: existingUser._id,
-        username: existingUser.username,
-        email: existingUser.email,
-        isAdmin: existingUser.isAdmin,
-        token
-      });
-      return;
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: 'Invalid password' });
     }
+
+    const token = createToken(res, existingUser._id);
+
+    res.status(200).json({
+      _id: existingUser._id,
+      username: existingUser.username,
+      email: existingUser.email,
+      isAdmin: existingUser.isAdmin,
+      token
+    });
+
+  } catch (error) {
+    console.error('Error in loginUser:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
+
 
 
 const getShop = asyncHandler(async  (req, res) => {
@@ -478,6 +480,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 
+
+
 const resetPassword = asyncHandler(async (req, res) => {
   const { password } = req.body;
   const token = req.query.token; 
@@ -493,7 +497,11 @@ const resetPassword = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: 'Invalid reset token' });
   }
 
-  user.password = password;
+  // Băm mật khẩu mới
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Lưu thông tin mật khẩu mới đã băm và xóa các thuộc tính liên quan đến reset mật khẩu
+  user.password = hashedPassword;
   user.passwordResetToken = undefined;
   user.passwordChangeAt = Date.now();
   user.passwordRestExpires = undefined;
@@ -502,7 +510,7 @@ const resetPassword = asyncHandler(async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    mes: 'Update password'
+    message: 'Password updated'
   });
 });
 
