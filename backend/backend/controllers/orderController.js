@@ -212,14 +212,15 @@ const getUserOrders = async (req, res) => {
   }
 };
 
-const countTotalOrders = async (req, res) => {
+const countTotalOrders = asyncHandler(async (req, res) => {
   try {
-    const totalOrders = await Order.countDocuments();
+    // Đếm số lượng đơn hàng có idShop trùng với id của người bán hiện tại
+    const totalOrders = await Order.countDocuments({ idShop: req.user._id });
     res.json({ totalOrders });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
 
 const calculateTotalSales = async (req, res) => {
   try {
@@ -233,11 +234,21 @@ const calculateTotalSales = async (req, res) => {
 
 const calcualteTotalSalesByDate = async (req, res) => {
   try {
+    const { month, year } = req.query;
+
+    // Xây dựng query điều kiện
+    let matchConditions = { isPaid: true, idShop: req.user._id };
+
+    // Nếu có month và year, thêm vào điều kiện query
+    if (month && year) {
+      const start = new Date(year, month - 1, 1);
+      const end = new Date(year, month, 0);
+      matchConditions.paidAt = { $gte: start, $lt: end };
+    }
+
     const salesByDate = await Order.aggregate([
       {
-        $match: {
-          isPaid: true,
-        },
+        $match: matchConditions,
       },
       {
         $group: {
@@ -247,6 +258,9 @@ const calcualteTotalSalesByDate = async (req, res) => {
           totalSales: { $sum: "$totalPrice" },
         },
       },
+      {
+        $sort: { _id: 1 }
+      }
     ]);
 
     res.json(salesByDate);
