@@ -2,6 +2,7 @@ import Order from "../models/orderModel.js";
 import Product from "../models/productModel.js";
 import Cart from "../models/cartModel.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
+import User from "../models/userModel.js";
 // Utility Function
 
 
@@ -141,7 +142,7 @@ const cancelOrder = asyncHandler(async (req, res) => {
 
     // Cập nhật trường isCancle từ false thành true và status thành "order canceled"
     order.isCancle = true;
-    order.status = "order canceled";
+    order.status = "Đã Hủy";
 
     const updatedOrder = await order.save();
 
@@ -196,7 +197,8 @@ const getAllOrdersSale = async (req, res) => {
     // Lọc ra những đơn hàng có sản phẩm thuộc người bán
     const filteredOrders = orders.filter(order => order.items.some(item => item.product.user));
 
-    res.json(filteredOrders);
+     res.json(filteredOrders);
+    // res.json({orders:filteredOrders, user:req.user});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -294,6 +296,7 @@ const markOrderAsPaid = async (req, res) => {
     if (order) {
       order.isPaid = true;
       order.paidAt = Date.now();
+      order.status = "Giao Thành Công";
       order.paymentResult = {
         id: req.body.id,
         status: req.body.status,
@@ -319,7 +322,7 @@ const markOrderAsDelivered = async (req, res) => {
     if (order) {
       order.isDelivered = true;
       order.deliveredAt = Date.now();
-
+      order.status = "Giao Thành Công";
       const updatedOrder = await order.save();
       res.json(updatedOrder);
     } else {

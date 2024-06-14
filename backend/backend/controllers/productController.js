@@ -194,7 +194,7 @@ const removeProduct = asyncHandler(async (req, res) => {
 
 const fetchProducts = asyncHandler(async (req, res) => {
   try {
-    const pageSize =18;
+    const pageSize =20;
     const pageNumber = req.query.pageNumber || 1; 
 
     const keyword = req.query.keyword

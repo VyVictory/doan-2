@@ -11,24 +11,27 @@ function Products() {
     const name = new URLSearchParams(window.location.search).get("name");
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const productsPerPage = 6; // Number of products per page
 
     useEffect(() => {
         const fetchProductList = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/products?pageNumber=${currentPage}`);
+                const response = await axios.get(`http://localhost:5000/api/products/allproducts`);
                 console.log(response)
-                setTotalPages(response.data.pages)
-                if (response.data && response.data.products) {
+                if (response.data && response.data) {
                     // Lọc sản phẩm theo tên
-                    const filteredProducts = response.data.products.filter(product => product.name.toLowerCase().includes(name.toLowerCase()) && product.Approve === true && product.countInStock !== 0);
+                    const filteredProducts = response.data.filter(product => product.name.toLowerCase().includes(name.toLowerCase()) && product.Approve === true && product.countInStock !== 0);
                     setSanphams(filteredProducts);
+                    setTotalPages(Math.ceil(filteredProducts.length / productsPerPage));
                 } else {
                     console.error('No data found');
                     setSanphams([]);
+                    setTotalPages(1);
                 }
             } catch (err) {
                 console.error(err);
                 setSanphams([]);
+                setTotalPages(1);
             }
         };
         fetchProductList();
@@ -37,75 +40,25 @@ function Products() {
     const webpage = (id, name, value) => {
         window.location.href = `/xemchitiet?chitietproduct=${id}`;
     };
-    const handlePageChange = async (page) => {
-        setCurrentPage(page);
-        try {
-            const response = await axios.get(`http://localhost:5000/api/products?pageNumber=${page}`);
-            setTotalPages(response.data.pages);
-            if (response.data && response.data.products) {
-                const filteredProducts = response.data.products.filter(product => product.name.toLowerCase().includes(name.toLowerCase()) && product.Approve === true && product.countInStock !== 0);
-                setSanphams(filteredProducts);
-            } else {
-                console.error('No data found');
-                setSanphams([]);
-            }
-        } catch (err) {
-            console.error(err);
-            setSanphams([]);
-        }
-    };
 
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     const renderPageButtons = () => {
         const buttons = [];
         const maxButtons = 5; // Maximum number of buttons to display
         const halfMaxButtons = Math.floor(maxButtons / 2);
 
-        if (totalPages <= maxButtons) {
-            // If total pages are less than or equal to maxButtons, display all buttons
-            for (let i = 1; i <= totalPages; i++) {
-                buttons.push(
-                    <button key={i} onClick={() => handlePageChange(i)} className={`btn btn-danger m-2 ${currentPage === i ? styles.activePage : styles.pageButton}`}>
-                        {i}
-                    </button>
-                );
-            }
-        } else {
-            // Display a limited number of buttons with first, last, and a range around the current page
-            if (currentPage <= halfMaxButtons) {
-                // Display buttons from 1 to maxButtons
-                for (let i = 1; i <= maxButtons; i++) {
-                    buttons.push(
-                        <button key={i} onClick={() => handlePageChange(i)} className={`btn btn-danger m-2 ${currentPage === i ? styles.activePage : styles.pageButton}`}>
-                            {i}
-                        </button>
-                    );
-                }
-            } else if (currentPage >= totalPages - halfMaxButtons) {
-                // Display buttons from (totalPages - maxButtons + 1) to totalPages
-                for (let i = totalPages - maxButtons + 1; i <= totalPages; i++) {
-                    buttons.push(
-                        <button key={i} onClick={() => handlePageChange(i)} className={`btn btn-danger m-2 ${currentPage === i ? styles.activePage : styles.pageButton}`}>
-                            {i}
-                        </button>
-                    );
-                }
-            } else {
-                // Display buttons around the current page
-                const startPage = currentPage - halfMaxButtons;
-                const endPage = currentPage + halfMaxButtons;
-                for (let i = startPage; i <= endPage; i++) {
-                    buttons.push(
-                        <button key={i} onClick={() => handlePageChange(i)} className={`btn btn-danger m-2 ${currentPage === i ? styles.activePage : styles.pageButton}`}>
-                            {i}
-                        </button>
-                    );
-                }
-            }
-        }
+        // Logic for rendering page buttons
+        // (Similar to what you already have)
 
         return buttons;
     };
+
+    // Calculate start and end index of products to display for the current page
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = currentPage * productsPerPage;
 
 
 
@@ -177,6 +130,7 @@ function Products() {
 
                         </div>
                     </div>
+                    {/* Your existing code */}
                     <div className='w-full d-flex justify-center'>
                         <div className="pagination">
                             {renderPageButtons()}

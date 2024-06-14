@@ -95,21 +95,44 @@ const Qldonhang = () => {
             return <span className='text-red-600'>{status}</span>;
         } else return <span className='text-green-600'>{status}</span>;;
     };
-
+   // Giao Thành Công
     const handleCloseModal = () => {
         setSelectedOrder(null);
     };
+    // const getprofilebyid = (idprofile) => {
+
+    //     return:
+    // };
 
     const chaneStatus = async (idorder, status) => {
         try {
-            const response = await axios.put(`http://localhost:5000/api/orders/updateStatus/${idorder}`, { status: status }, { withCredentials: true });
-            console.log(response.data);
+            if(status=="Đã Hủy"){
+                const response = await axios.put(`http://localhost:5000/api/orders/cancle/${idorder}`, { withCredentials: true });
+                //http://localhost:5000/api/orders/cancle/
+                console.log(response.data);
+            }else if(status=="Giao Thành Công"){
+                const response = await axios.put(`http://localhost:5000/api/orders/${idorder}/deliver/`, { withCredentials: true });
+                //http://localhost:5000/api/orders/cancle/
+                console.log(response.data);
+            }else{
+                const response = await axios.put(`http://localhost:5000/api/orders/updateStatus/${idorder}`, { status: status }, { withCredentials: true });
+                console.log(response.data);
+            }
             let mess = ['hủy thành công', 'đã xác nhận giao hàng', 'đã xác nhận giao hàng thành công', 'xác nhận giao hàng thất bại']
             alert(status == "Đã Hủy" ? mess[0] : status == "Đang Giao" ? mess[1] : status == "Giao Thành Công" ? mess[2] : status == "Giao Thất Bại" ? mess[3] : status);
             window.location.href = '/kenhnguoiban/quanlydonhang';
         } catch (error) {
             console.error('Error posting shipping:', error);
         }
+        // try {
+        //     const response = await axios.put(`http://localhost:5000/api/orders/updateStatus/${idorder}`, { status: status }, { withCredentials: true });
+        //     console.log(response.data);
+        //     let mess = ['hủy thành công', 'đã xác nhận giao hàng', 'đã xác nhận giao hàng thành công', 'xác nhận giao hàng thất bại']
+        //     alert(status == "Đã Hủy" ? mess[0] : status == "Đang Giao" ? mess[1] : status == "Giao Thành Công" ? mess[2] : status == "Giao Thất Bại" ? mess[3] : status);
+        //     window.location.href = '/kenhnguoiban/quanlydonhang';
+        // } catch (error) {
+        //     console.error('Error posting shipping:', error);
+        // }
     }
     console.log(filteredOrders);
     console.log(searchCriteria)
@@ -172,16 +195,16 @@ const Qldonhang = () => {
                                                 <div key={itemIndex} className="border mt-2 rounded flex flex-column p-0 bg-gray-100 w-full">
 
                                                     <div className="border rounded flex flex-row items-center p-2 bg-gray-100 w-full">
-                                                        <div onClick={() => handleClickLink()} className='flex flex-row items-center w-2/12 cursor-pointer'>
-                                                            <div className='flex flex-col items-center'>
-                                                                <img className="max-h-24 max-w-20 p-1" src={'http://localhost:5000/uploads/avatar/avatarDefault.jpg'} alt={item.name} />
-                                                                <div className="card-text h-8 text-xs text-left overflow-hidden line-clamp-2 w-36">{order.user}</div>
+                                                        <div className='flex flex-row items-center w-2/12 cursor-pointer'>
+                                                            <div className='flex flex-col items-center justify-center'>
+                                                                <img className="max-h-24 max-w-20 p-1" src={'http://localhost:5000'+item.product.user.avatar} alt={item.name} />
+                                                                <div className="card-text h-8 text-xs text-center overflow-hidden line-clamp-2 w-36">{item.product.user.fullname}</div>
                                                             </div>
                                                         </div>
-                                                        <div onClick={() => handleClickLink()} className='flex flex-row items-center justify-center w-3/12 cursor-pointer'>
+                                                        <div onClick={() => handleClickLink(item._id)} className='flex flex-row items-center justify-center w-3/12 cursor-pointer'>
                                                             <div className='flex flex-col items-center'>
                                                                 <img className="max-h-24 max-w-20 p-1" src={'http://localhost:5000' + item.image || ''} alt={item.name} />
-                                                                <div className="card-text h-8 text-xs text-left overflow-hidden line-clamp-2 w-36">{item.name}</div>
+                                                                <div className="card-text h-8 text-xs text-center overflow-hidden line-clamp-2 w-36">{item.name}</div>
                                                             </div>
                                                         </div>
                                                         <div className='flex justify-center items-center w-2/12'>{setStatus(order.Status)}</div>
@@ -225,18 +248,7 @@ const Qldonhang = () => {
                                                                             </svg>
                                                                         </button>
                                                                     </div>
-                                                                    : <div className='d-flex flex-column'>
-                                                                        <button title="Check Giao Hàng Thất Bại" className='mb-2 bg-red-200 rounded w-10 h-10 flex items-center justify-center border border-red-500' onClick={() => chaneStatus(order._id, "Giao Thất Bại")}>
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.25-8.25-3.286Zm0 13.036h.008v.008H12v-.008Z" />
-                                                                            </svg>
-                                                                        </button>
-                                                                        <button title="Check Giao Hàng Thành Công" className=' bg-cyan-200 rounded w-10 h-10 flex items-center justify-center border border-red-500' onClick={() => chaneStatus(order._id, "Giao Thành Công")}>
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
-                                                                            </svg>
-                                                                        </button>
-                                                                    </div>
+                                                                    : ""
                                                             }
                                                         </div>
                                                     </div>

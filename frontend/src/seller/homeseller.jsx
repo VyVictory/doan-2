@@ -14,7 +14,7 @@ const Homeseller = () => {
   useEffect(() => {
     const fetchTotalOrders = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/orders//total-orders', { withCredentials: true });
+        const response = await axios.get('http://localhost:5000/api/orders/total-orders', { withCredentials: true });
         setTotalOrders(response.data.totalOrders);
       } catch (error) {
         console.error('Error fetching total orders:', error);

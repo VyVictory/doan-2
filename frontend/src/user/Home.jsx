@@ -11,25 +11,25 @@ function Home() {
     const [sanphams, setSanphams] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-
     useEffect(() => {
         const fetchProductList = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/products?pageNumber=${currentPage}`);
                 setTotalPages(response.data.pages);
                 if (response.data && response.data.products) {
-                    setSanphams(response.data.products);
+                    const filteredProducts = response.data.products.filter(product => product.Approve === true && product.countInStock !== 0);
+                    setSanphams(filteredProducts);
                 } else {
                     console.error('No data found');
-                    setSanphams([]);
+
                 }
             } catch (err) {
                 console.error(err);
-                setSanphams([]);
             }
         };
         fetchProductList();
     }, [currentPage]);
+
 
     const webpage = (id, name, value) => {
         window.location.href = `/xemchitiet?chitietproduct=${id}`;
