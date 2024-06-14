@@ -14,7 +14,7 @@ const Homeseller = () => {
   useEffect(() => {
     const fetchTotalOrders = async () => {
       try {
-        const response = await axios.get('/api/orders/countTotalOrders', { withCredentials: true });
+        const response = await axios.get('http://localhost:5000/api/orders//total-orders', { withCredentials: true });
         setTotalOrders(response.data.totalOrders);
       } catch (error) {
         console.error('Error fetching total orders:', error);
@@ -23,7 +23,7 @@ const Homeseller = () => {
 
     const fetchTotalSales = async () => {
       try {
-        const response = await axios.get('/api/orders/calculateTotalSales', { withCredentials: true });
+        const response = await axios.get('http://localhost:5000/api/orders/total-sales', { withCredentials: true });
         setTotalSales(response.data.totalSales);
       } catch (error) {
         console.error('Error fetching total sales:', error);
@@ -32,7 +32,7 @@ const Homeseller = () => {
 
     const fetchSalesByDate = async () => {
       try {
-        const response = await axios.get('/api/orders/calculateTotalSalesByDate', {
+        const response = await axios.get('http://localhost:5000/api/orders/total-sales-by-date', {
           params: { month, year },
           withCredentials: true,
         });
@@ -95,5 +95,4 @@ const Homeseller = () => {
     </div>
   );
 }
-
 export default Homeseller;
