@@ -142,7 +142,7 @@ const cancelOrder = asyncHandler(async (req, res) => {
 
     // Cập nhật trường isCancle từ false thành true và status thành "order canceled"
     order.isCancle = true;
-    order.status = "Đã Hủy";
+    order.Status = "Đã Hủy";
 
     const updatedOrder = await order.save();
 
@@ -315,24 +315,37 @@ const markOrderAsPaid = async (req, res) => {
   }
 };
 
-const markOrderAsDelivered = async (req, res) => {
-  try {
-    const order = await Order.findById(req.params.id);
+const markOrderAsDelivered = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-    if (order) {
-      order.isDelivered = true;
-      order.deliveredAt = Date.now();
-      order.status = "Giao Thành Công";
-      const updatedOrder = await order.save();
-      res.json(updatedOrder);
-    } else {
+  try {
+    const order = await Order.findById(id);
+
+    if (!order) {
       res.status(404);
       throw new Error("Order not found");
     }
+
+    // Kiểm tra xem đơn hàng có thuộc về người bán không
+    // if (order.idShop.toString() !== req.user._id.toString()) {
+    //   res.status(401);
+    //   throw new Error("Unauthorized access to this order");
+    // }
+
+    // Cập nhật trạng thái đơn hàng
+    order.Status = "Giao Thành Công";
+    order.isPaid = true;
+    order.paidAt = Date.now();
+    order.isDelivered = true;
+    order.deliveredAt = Date.now();
+
+    // Lưu và trả về đơn hàng đã cập nhật
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(error.status || 500).json({ error: error.message });
   }
-};
+});
 
 export {
   createOrder,

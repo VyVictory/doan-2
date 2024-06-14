@@ -14,7 +14,7 @@ const Homeseller = () => {
   useEffect(() => {
     const fetchTotalOrders = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/orders/total-orders', { withCredentials: true });
+        const response = await axios.get('http://localhost:5000/api/orders//total-orders', { withCredentials: true });
         setTotalOrders(response.data.totalOrders);
       } catch (error) {
         console.error('Error fetching total orders:', error);
@@ -29,6 +29,10 @@ const Homeseller = () => {
         console.error('Error fetching total sales:', error);
       }
     };
+
+
+
+
 
     const fetchSalesByDate = async () => {
       try {
@@ -55,12 +59,10 @@ const Homeseller = () => {
         console.error('Error fetching sales by date:', error);
       }
     };
-
     fetchTotalOrders();
     fetchTotalSales();
     fetchSalesByDate();
   }, [month, year]);
-
   return (
     <div className="dashboard-container" style={{ padding: '20px' }}>
       <div className='container'>

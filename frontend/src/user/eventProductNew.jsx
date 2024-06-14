@@ -58,7 +58,7 @@ function EventProductNew() {
 
                 </button>
                 <div className='d-flex' style={{ flex: 1, overflow: 'hidden', height: '', display: 'flex' }}>
-                    <TransitionGroup className='d-flex' style={{ width: `${sanphams.length * 50}%`, transform: `translateX(-${currentIndex * (100 / sanphams.length)}%)`, transition: 'transform 500ms' }}>
+                    <TransitionGroup className='d-flex' style={{ width: `${sanphams.length * 50}% `, transform: `translateX(-${currentIndex * (100 / sanphams.length)}%)`, transition: 'transform 500ms' }}>
                         {sanphams.length > 0 && sanphams.map((e, index) => (
                             <CSSTransition
                                 key={e._id}

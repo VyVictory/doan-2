@@ -23,7 +23,6 @@ const Qlsp = () => {
     const handleSetList = (value) => {
         setList(value);
     };
-
     const handleDeleteProductByid = async (id, name) => {
         try {
             await DeleteProductById({ idproduct: id });
@@ -43,7 +42,7 @@ const Qlsp = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/products/shop/${profile._id}`, { withCredentials: true });
+                const response = await axios.get(`http://localhost:5000/api/products/shop`, { withCredentials: true });
                 if (response.data) {
                     const sortedSanpham = response.data.sort((a, b) => {
                         const nameA = a.name.toUpperCase();
@@ -104,10 +103,10 @@ const Qlsp = () => {
             setFilteredSanpham(sanpham.filter(product => product.ApproveStatus === "tuchoi" && product.Approve === false));
         } else {
             // Nếu không phải trường hợp trên, hiển thị toàn bộ danh sách sản phẩm
-            setFilteredSanpham(sanpham.filter(product => product.Approve === true));
+            setFilteredSanpham(sanpham);
         }
     }, [list, sanpham]);
-
+console.log(filteredSanpham)
     return (
         <div className="shadow p-3 mb-5 bg-body rounded" style={{ marginTop: '20px', marginLeft: '10px', marginRight: '10px' }}>
             <ToastContainer />
@@ -223,12 +222,12 @@ const Qlsp = () => {
                                                                     {product.name}
                                                                 </div>
                                                             </td>
-                                                            <td>{product.category.name}</td>
+                                                            <td>{product.category.name }</td>
                                                             <td>{(product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span></td>
                                                             <td>{product.countInStock}</td>
                                                             <td>{product.quantity - product.countInStock}</td>
                                                             <td>
-                                                                {product.countInStock === 0 ? (<div className='text-red-500'>Hết Hàng</div>) : (<div className='text-green-500'>Còn Hàng</div>)}
+                                                                {product.Approve==true?(product.countInStock === 0 ? (<div className='text-red-500'>Hết Hàng</div>) : (<div className='text-green-500'>Còn Hàng</div>)):(<div className='text-red-500'>{product.ApproveStatus==" "?'đang chờ admin duyệt':""}</div>)}
                                                             </td>
                                                             <td>
                                                                 <button className='m-3' style={{ "border": "none" }}>

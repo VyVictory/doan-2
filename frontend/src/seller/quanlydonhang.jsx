@@ -111,7 +111,7 @@ const Qldonhang = () => {
                 //http://localhost:5000/api/orders/cancle/
                 console.log(response.data);
             }else if(status=="Giao Thành Công"){
-                const response = await axios.put(`http://localhost:5000/api/orders/${idorder}/deliver/`, { withCredentials: true });
+                const response = await axios.put(`http://localhost:5000/api/orders/${idorder}/deliver`, { withCredentials: true });
                 //http://localhost:5000/api/orders/cancle/
                 console.log(response.data);
             }else{
@@ -261,7 +261,7 @@ const Qldonhang = () => {
                                     ))
                                 ) : (
                                     <div className='flex items-center justify-center'>
-                                        <p>No orders found.</p>
+                                        <p>Đang Tải.....</p>
                                     </div>
                                 )}
                             </div>

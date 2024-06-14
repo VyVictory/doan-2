@@ -32,10 +32,10 @@ router.route("/:id").get(authenticate, findOrderById);
 router.route("/:id/pay").put(authenticate, markOrderAsPaid);
 router.route("/updateStatus/:orderId").put(authenticate, updateOrderStatus);
 router.route("/updateShip/:id").put(authenticate, updateOrderShipping);
-router.route("/cancle/:id").put(authenticate, cancelOrder);
+router.route("/cancle/:orderId").put( cancelOrder);//authenticate,
 router
   .route("/:id/deliver")
-  .put(authenticate, markOrderAsDelivered);
+  .put( markOrderAsDelivered);//authenticate,
 
 
 export default router;

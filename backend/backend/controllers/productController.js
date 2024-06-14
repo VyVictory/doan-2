@@ -89,9 +89,9 @@ const getProductShopCurrent = asyncHandler(async (req, res) => {
   try {
     const userId = req.user._id;
 
-    const products = await Product.find({ user: userId });
+    const products = await Product.find({ user: userId }).populate('category', 'name');
 
-    if (!products) {
+    if (!products.length) {
       return res.status(404).json({ error: 'No products found for this user' });
     }
 
