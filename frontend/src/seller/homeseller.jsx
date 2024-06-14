@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 
 const Homeseller = () => {
@@ -8,13 +8,12 @@ const Homeseller = () => {
   const [totalSales, setTotalSales] = useState(0);
   const [salesByDate, setSalesByDate] = useState([]);
   const [salesData, setSalesData] = useState({});
-  const [month, setMonth] = useState('');
-  const [year, setYear] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   useEffect(() => {
     const fetchTotalOrders = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/orders//total-orders', { withCredentials: true });
+        const response = await axios.get('http://localhost:5000/api/orders/total-orders', { withCredentials: true });
         setTotalOrders(response.data.totalOrders);
       } catch (error) {
         console.error('Error fetching total orders:', error);
@@ -30,11 +29,9 @@ const Homeseller = () => {
       }
     };
 
-
-
-
-
     const fetchSalesByDate = async () => {
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth() + 1; // Month is zero-based
       try {
         const response = await axios.get('http://localhost:5000/api/orders/total-sales-by-date', {
           params: { month, year },
@@ -49,7 +46,6 @@ const Homeseller = () => {
             {
               label: 'Doanh thu theo ngày',
               data: sales,
-              fill: false,
               backgroundColor: 'rgb(75, 192, 192)',
               borderColor: 'rgba(75, 192, 192, 0.2)',
             },
@@ -59,10 +55,12 @@ const Homeseller = () => {
         console.error('Error fetching sales by date:', error);
       }
     };
+
     fetchTotalOrders();
     fetchTotalSales();
     fetchSalesByDate();
-  }, [month, year]);
+  }, [selectedDate]);
+
   return (
     <div className="dashboard-container" style={{ padding: '20px' }}>
       <div className='container'>
@@ -74,27 +72,50 @@ const Homeseller = () => {
         <div>
           <h3>Doanh thu theo ngày:</h3>
           <div>
-            <label>Chọn tháng: </label>
+            <label>Chọn tháng và năm: </label>
             <input
-              type="number"
-              value={month}
-              onChange={(e) => setMonth(e.target.value)}
-              placeholder="Tháng"
-            />
-            <label>Chọn năm: </label>
-            <input
-              type="number"
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
-              placeholder="Năm"
+              type="month"
+              value={selectedDate.toISOString().slice(0, 7)} // Format: "YYYY-MM"
+              onChange={(e) => setSelectedDate(new Date(e.target.value))}
+              placeholder="Tháng và năm"
             />
           </div>
           {salesData.labels && (
-            <Line data={salesData} />
+            <Bar
+              data={salesData}
+              options={{
+                scales: {
+                  x: {
+                    grid: {
+                      display: false
+                    }
+                  },
+                  y: {
+                    beginAtZero: true
+                  }
+                },
+                plugins: {
+                  legend: {
+                    display: true,
+                    position: 'top'
+                  }
+                },
+                layout: {
+                  padding: {
+                    left: 10,
+                    right: 10,
+                    top: 10,
+                    bottom: 10
+                  }
+                },
+                barPercentage: 0.1 // 10% width of bars
+              }}
+            />
           )}
         </div>
       </div>
     </div>
   );
 }
+
 export default Homeseller;

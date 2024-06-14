@@ -216,8 +216,17 @@ const getUserOrders = async (req, res) => {
 
 const countTotalOrders = asyncHandler(async (req, res) => {
   try {
-    // Đếm số lượng đơn hàng có idShop trùng với id của người bán hiện tại
-    const totalOrders = await Order.countDocuments({ idShop: req.user._id });
+    // Kiểm tra nếu req.user không tồn tại hoặc không có _id, trả về lỗi 401
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+
+    // Lấy userId từ req.user._id
+    const userId = req.user._id;
+
+    // Đếm số lượng đơn hàng có Status là "Giao Thành Công" của người dùng hiện tại (có userId)
+    const totalOrders = await Order.countDocuments({ idShop: userId, Status: 'Giao Thành Công' });
+
     res.json({ totalOrders });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -226,21 +235,40 @@ const countTotalOrders = asyncHandler(async (req, res) => {
 
 const calculateTotalSales = async (req, res) => {
   try {
-    const orders = await Order.find();
-    const totalSales = orders.reduce((sum, order) => sum + order.totalPrice, 0);
-    res.json({ totalSales });
+    // Lấy userId từ req.user._id
+    const userId = req.user._id;
+
+    // Xây dựng query để tính tổng doanh thu từ những đơn hàng có idShop là userId và Status là "Giao Thành Công"
+    const totalSales = await Order.aggregate([
+      {
+        $match: {
+          idShop: userId,
+          Status: 'Giao Thành Công'
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalSales: { $sum: "$totalPrice" }
+        }
+      }
+    ]);
+
+    // Trả về kết quả totalSales nếu tồn tại
+    if (totalSales.length > 0) {
+      res.json({ totalSales: totalSales[0].totalSales });
+    } else {
+      res.json({ totalSales: 0 }); // Trường hợp không có đơn hàng nào thỏa mãn điều kiện
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-
 const calcualteTotalSalesByDate = async (req, res) => {
   try {
     const { month, year } = req.query;
-
     // Xây dựng query điều kiện
-    let matchConditions = { isPaid: true, idShop: req.user._id };
-
+    let matchConditions = { idShop: req.user._id, Status:"Giao Thành Công" };
     // Nếu có month và year, thêm vào điều kiện query
     if (month && year) {
       const start = new Date(year, month - 1, 1);
@@ -270,7 +298,6 @@ const calcualteTotalSalesByDate = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 const findOrderById = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id).populate(

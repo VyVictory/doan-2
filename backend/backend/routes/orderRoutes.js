@@ -25,9 +25,9 @@ router
   .get(authenticate, getAllOrdersSale);
 
 router.route("/mine").get(authenticate, getUserOrders);
-router.route("/total-orders").get(countTotalOrders);
-router.route("/total-sales").get(calculateTotalSales);
-router.route("/total-sales-by-date").get(calcualteTotalSalesByDate);
+router.route("/total-orders").get(authenticate,countTotalOrders);
+router.route("/total-sales").get(authenticate,calculateTotalSales);
+router.route("/total-sales-by-date").get(authenticate,calcualteTotalSalesByDate);
 router.route("/:id").get(authenticate, findOrderById);
 router.route("/:id/pay").put(authenticate, markOrderAsPaid);
 router.route("/updateStatus/:orderId").put(authenticate, updateOrderStatus);
