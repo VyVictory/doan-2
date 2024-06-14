@@ -57,17 +57,25 @@ function CustomerAccount() {
           avatar: data.image,
         }));
         if (number == 0) {
-          toast.success('bấm lại để xác nhận', { autoClose: 2000 });
+          toast.error('bấm lại để xác nhận', { autoClose: 2000 });
           setNumber(1);
         } if (number == 1) {
           await updateProfile(profileUpdate);
-          toast.success('Cập nhật thông tin thành công!', { autoClose: 2000 });
-          window.location.href ='/customer/account'
+          if (!message) {
+            toast.error('Username Bị Trùng!', { autoClose: 2000 });
+          } else {
+            toast.success('Cập nhật thông tin thành công!', { autoClose: 2000 });
+          }
+          window.location.href = '/customer/account'
         }
       }
     } else {
       await updateProfile(profileUpdate);
-      toast.success('Cập nhật thông tin thành công!', { autoClose: 2000 });
+      if (!message) {
+        toast.error('Username Bị Trùng!', { autoClose: 2000 });
+      } else {
+        toast.success('Cập nhật thông tin thành công!', { autoClose: 2000 });
+      }
       console.log("No image selected");
     }
   };
@@ -113,7 +121,7 @@ function CustomerAccount() {
                     Họ & Tên:
                   </label>
                 </div>
-                <div className='d-flex flex-column justify-center'>
+                <div className='d-flex flex-column justify-center' >
                   <input
                     type="text"
                     className="form-control"
@@ -122,11 +130,15 @@ function CustomerAccount() {
                     onChange={(e) => setProfileUpdate({ ...profileUpdate, username: e.target.value })}
                     placeholder="Nhập tên đăng nhập"
                   />
+                  {/* <strong className="mb-2 pb-1">
+                    {profileUpdate.username}
+                  </strong> */}
                   <div className='h-4'>
                   </div>
                   <input
+                    style={{ minWidth: '200px' }}
                     type="text"
-                    className="form-control "
+                    className="form-control pb-2"
                     id='fullnameinput'
                     value={profileUpdate.fullname}
                     onChange={(e) => setProfileUpdate({ ...profileUpdate, fullname: e.target.value })}
@@ -171,7 +183,7 @@ function CustomerAccount() {
             </div>
           </div>
         </div>
-        <div style={{ width: '120px', marginLeft: '5%' }}>
+        <div style={{ minWidth: '140px', marginLeft: '5%' }}>
           <div className="CustomerAccount pl-3 pr-3 mt-3 mb-3">
             <div style={{ width: '500px' }}>
               <div className=' mb-3 text-lg text-gray-500'>

@@ -64,13 +64,13 @@ const Homeseller = () => {
   return (
     <div className="dashboard-container" style={{ padding: '20px' }}>
       <div className='container'>
-        <h1>Thống kê</h1>
+        <div className='w-full d-flex' style={{justifyContent:'center'}}><h1>Thống kê</h1></div>
         <div>
           <h2>Tổng số đơn hàng: {totalOrders}</h2>
-          <h2>Tổng doanh thu: {totalSales}</h2>
+          <h2>Tổng doanh thu: {totalSales.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<span style={{ verticalAlign: "super" }}>đ</span></h2>
         </div>
         <div>
-          <h3>Doanh thu theo ngày:</h3>
+          <h3>Doanh thu theo tháng:</h3>
           <div>
             <label>Chọn tháng và năm: </label>
             <input

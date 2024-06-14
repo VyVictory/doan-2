@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './css/LoginForm.module.css'; // Import CSS module
 import CloseButton from 'react-bootstrap/CloseButton';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function ForgetPassword({ onClose }) {
   const [email, setEmail] = useState(''); // Khởi tạo email rỗng
   const [message, setMessage] = useState('');
@@ -21,7 +22,7 @@ function ForgetPassword({ onClose }) {
       // Gửi yêu cầu đặt lại mật khẩu với email đã nhập
       const response = await axios.get(`http://localhost:5000/api/users/auth/forgotpassword?email=${email}`, {
       });
-
+      toast.success('Email khôi phục mật khẩu đã được gửi vào Email để đổi mật khẩu mới', { autoClose: 2000 });
       setMessage('Email khôi phục mật khẩu đã được gửi!');
     } catch (error) {
       console.error('Error:', error);
@@ -43,6 +44,7 @@ function ForgetPassword({ onClose }) {
       alignItems: 'center',
     }}>
       <div className={styles.modal} style={{ backgroundColor: 'white', opacity: '1' }}>
+      <ToastContainer />
         <div className={styles.modalContent} style={{ width: '100%' }}>
           <div className='d-flex justify-content-center'>
             <h2 className='sans-serif' style={{ position: 'absolute', }}>Quên mật khẩu</h2>

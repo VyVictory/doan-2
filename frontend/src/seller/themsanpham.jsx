@@ -3,7 +3,8 @@ import ImageInput from './imgthemanh';
 import axios from 'axios';
 import Getcategorys from '../module/getcategories.module';
 import useProductData from '../module/Productmodule';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProductForm = () => {
   const { message, errors, changeImgProduct, imgProduct, postProduct } = useProductData();
@@ -77,6 +78,7 @@ const ProductForm = () => {
       formData.append('image', uploadedImageData.image);
       // Submit the form
       await postProduct(formData);
+      toast.success('Thêm thành công sản phẩm '+ten, { autoClose: 2000 });
       // console.log(message);
       // console.log(errors);
     } else {
@@ -90,18 +92,20 @@ const ProductForm = () => {
       alertMessage.style.margin = '10px';
       const parentElement = document.getElementById('thongbao');
       parentElement.appendChild(alertMessage);
+      toast.success('Thêm thất bại sản phẩm ', { autoClose: 2000 });
     }
   };
 
   return (
     <div className="container mt-5 mb-5">
+      <ToastContainer />
       <div id='thongbao'></div>
       <div className='d-flex justify-center'>
         <h2>Thêm Sản Phẩm</h2>
       </div>
-      <div>
+      <div className='d-flex' style={{justifyContent:'center'}}>
         {/* Hiển thị thông điệp thành công hoặc thất bại */}
-        {message && <p>{message}</p>}
+        {message && <strong className='text-green-500'>{message}</strong>}
         {errors.length > 0 && (
           <ul>
             {errors.map((error, index) => (
@@ -113,7 +117,7 @@ const ProductForm = () => {
 
       <form onSubmit={handleSubmit} >
         <div className='d-flex flex-row '>
-          <div className="mb-3 justify-content-center border-end">
+          <div className="mb-3 justify-content-center">
             <div className='d-flex flex-row align-items-center'>
               <h5 className='text-rose-500'>*</h5><label htmlFor="coverImage" className="form-label">Ảnh Bìa:</label>
             </div>
@@ -134,7 +138,7 @@ const ProductForm = () => {
               )}
             </div>
           </div>
-          <div className="mb-3 ml-4">
+          {/* <div className="mb-3 ml-4">
             <div className='d-flex flex-row align-items-center'>
               <h5 className='text-rose-500'>*</h5><label htmlFor="images" className="form-label">Hình Ảnh Khác:</label>
             </div>
@@ -155,7 +159,7 @@ const ProductForm = () => {
                 </div>
               )}
             </div>
-          </div>
+          </div> */}
         </div>
         <div className='d-flex flex-row'>
           <div className="mb-3 pr-5" style={{ minWidth: '50%' }}>

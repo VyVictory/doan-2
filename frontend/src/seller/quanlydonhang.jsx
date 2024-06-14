@@ -135,7 +135,6 @@ const Qldonhang = () => {
         // }
     }
     console.log(filteredOrders);
-    console.log(searchCriteria)
     return (
         <div className="shadow p-3 mb-5 bg-body rounded mt-5 mx-4">
             <Container fluid className='border'>
@@ -281,11 +280,11 @@ const Qldonhang = () => {
                         <h2 className="text-xl pl-2 font-bold mb-4 d-flex justify-center ml-4">Chi Tiết Đơn Hàng</h2>
                         <div>
                             <div className='d-flex flex-row'>
-                                <div>
+                                <div className='mr-2'>
                                     <img src={"http://localhost:5000" + selectedOrder.items[0].image} />
                                 </div>
                                 <div>
-                                    <p><strong>Order ID:</strong> {selectedOrder._id}</p>
+                                    <p className='d-flex flex-row'><strong className='text-nowrap'>Order ID:</strong> {selectedOrder._id}</p>
                                     <p><strong>Trạng Thái:</strong> {selectedOrder.Status}</p>
                                     <p><strong>Ngày Đặt Hàng:</strong> {new Date(selectedOrder.createdAt).toLocaleDateString()}</p>
                                     <p><strong>Lần Tương Tác Gần Nhất:</strong> {new Date(selectedOrder.updatedAt).toLocaleDateString()}</p>

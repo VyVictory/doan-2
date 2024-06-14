@@ -32,7 +32,7 @@ function TopProduct() {
     return (
         <div className=" pb-2">
             <label htmlFor="cardTitle " className='d-flex justify-center' >
-                <h5 className='m-2 mb-1 text-red-400'  >Sản Phẩm Hot</h5></label>
+                <h5 className='m-2 mb-1 text-red-400'  >Sản Phẩm Top</h5></label>
             <div className="  d-flex flex-wrap d-flex justify-center items-center">
                 {sanphams.length > 0 ? (
                     sanphams.map((e) => (

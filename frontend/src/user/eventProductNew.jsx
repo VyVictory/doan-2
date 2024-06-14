@@ -49,7 +49,7 @@ function EventProductNew() {
     return (
         <div>
             <label htmlFor="cardTitle " className='d-flex justify-center' >
-                <h5 className='m-2 mb-1 text-red-400'  >Sản Phẩm Top</h5></label>
+                <h5 className='m-2 mb-1 text-red-400'  >Sản Phẩm Mới</h5></label>
             <div className='d-flex flex-row' style={{ alignItems: 'center' }}>
                 <button onClick={handleBack} className='p-1'>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

@@ -3,6 +3,8 @@ import { MDBBtn } from 'mdb-react-ui-kit';
 import start from '../imguser/bar/star.png'
 import startyellow from '../imguser/bar/star(1).png'
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Evaluate({ idproduct, item, offevalute }) {
     const [rating, setRating] = useState(1);
     const [comment, setComment] = useState('');
@@ -17,23 +19,25 @@ function Evaluate({ idproduct, item, offevalute }) {
     const handleCommentChange = (event) => {
         setComment(event.target.value);
     };
-
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = axios.post(`http://localhost:5000/api/products/${idproduct}/reviews`, {
+            const response = await axios.post(`http://localhost:5000/api/products/${idproduct}/reviews`, {
                 "rating": rating + 1,
                 "comment": comment
             },
-                { withCredentials: true }
-            );
+                { withCredentials: true });
             console.log('Response:', response.data);
-           // alert('đánh giá thành công')
-           // window.location.href='/customer/historybuyandsell'
+            // alert('đánh giá thành công')
+            toast.success('Bạn đã đánh giá sản phẩm này ', { autoClose: 2000 });
+            setTimeout(() => {
+                window.location.href = '/customer/historybuyandsell';
+            }, 2000);   
         } catch (err) {
-            console.error('Error:', err);
+            toast.error('Bạn đã đánh giá sản phẩm này ', { autoClose: 2000 });
         }
     };
+
 
     return (
         <div className="modal-overlay" style={{
@@ -41,6 +45,7 @@ function Evaluate({ idproduct, item, offevalute }) {
             backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex',
             alignItems: 'center', justifyContent: 'center'
         }}>
+             <ToastContainer />
             <div className="modal-content" style={{
                 backgroundColor: 'white', padding: '20px', borderRadius: '8px',
                 width: '60%', maxWidth: '800px'
