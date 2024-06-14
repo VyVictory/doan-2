@@ -184,7 +184,7 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
 
 
 
-const getAllOrdersSale = async (req, res) => {
+const getAllOrdersSale = asyncHandler(async (req, res) => {
   try {
     const orders = await Order.find({}).populate({
       path: "items.product",
@@ -192,17 +192,16 @@ const getAllOrdersSale = async (req, res) => {
         path: "user",
         match: { _id: req.user._id }
       }
-    });
+    }).populate("user", "username avatar"); // Populate thêm thông tin username từ user trong order
 
     // Lọc ra những đơn hàng có sản phẩm thuộc người bán
     const filteredOrders = orders.filter(order => order.items.some(item => item.product.user));
 
-     res.json(filteredOrders);
-    // res.json({orders:filteredOrders, user:req.user});
+    res.json(filteredOrders);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
 
 
 const getUserOrders = async (req, res) => {

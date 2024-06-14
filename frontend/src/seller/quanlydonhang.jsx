@@ -196,8 +196,8 @@ const Qldonhang = () => {
                                                     <div className="border rounded flex flex-row items-center p-2 bg-gray-100 w-full">
                                                         <div className='flex flex-row items-center w-2/12 cursor-pointer'>
                                                             <div className='flex flex-col items-center justify-center'>
-                                                                <img className="max-h-24 max-w-20 p-1" src={'http://localhost:5000'+item.product.user.avatar} alt={item.name} />
-                                                                <div className="card-text h-8 text-xs text-center overflow-hidden line-clamp-2 w-36">{item.product.user.fullname}</div>
+                                                                <img className="max-h-24 max-w-20 p-1" src={'http://localhost:5000'+order.user.avatar} alt={item.name} />
+                                                                <div className="card-text h-8 text-xs text-center overflow-hidden line-clamp-2 w-36">{order.user.username}</div>
                                                             </div>
                                                         </div>
                                                         <div onClick={() => handleClickLink(item._id)} className='flex flex-row items-center justify-center w-3/12 cursor-pointer'>
